@@ -1,16 +1,16 @@
 import { Card, Group, Image, Skeleton, Text } from '@mantine/core';
-import { Asset } from '@metaplex-foundation/mpl-core';
+import { Collection } from '@metaplex-foundation/mpl-core';
 import { useAssetJson } from '../Create/hooks';
 
 import classes from './ExplorerCard.module.css';
 import RetainQueryLink from '../RetainQueryLink';
 
-export function ExplorerAssetCard({ asset }: { asset: Asset }) {
-  const { error, isPending, data: json } = useAssetJson(asset);
+export function ExplorerCollectionCard({ collection }: { collection: Collection }) {
+  const { error, isPending, data: json } = useAssetJson(collection);
 
   return (
     <RetainQueryLink
-      href={`/explorer/${asset.publicKey}`}
+      href={`/explorer/collection/${collection.publicKey}`}
       style={{
         textDecoration: 'none',
       }}
@@ -29,11 +29,11 @@ export function ExplorerAssetCard({ asset }: { asset: Asset }) {
             </Skeleton>
           </Card.Section>
           <Group justify="space-between" mt="md">
-            <Text fw={500}>{asset.name}</Text>
+            <Text fw={500}>{collection.name}</Text>
           </Group>
 
         </Card>
-        {/* {asset?.metadata
+        {/* {collection?.metadata
           && <Badge
             variant="default"
             style={{
@@ -42,7 +42,7 @@ export function ExplorerAssetCard({ asset }: { asset: Asset }) {
               right: '0.5rem',
 
             }}
-          >#{asset.metadata.inscriptionRank.toString()!}
+          >#{collection.metadata.inscriptionRank.toString()!}
              </Badge>} */}
       </Skeleton>
     </RetainQueryLink>

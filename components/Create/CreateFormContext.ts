@@ -4,7 +4,8 @@ export interface AuthorityManagedPluginValues {
   royalties: {
     enabled: boolean;
     // authority: string;
-    ruleSet: 'None' | 'AllowList' | 'DenyList';
+    ruleSet: 'None' | 'Allow list' | 'Deny list';
+    programs: string[];
     basisPoints: number;
     creators: {
       percentage: number;
@@ -30,9 +31,7 @@ export interface AuthorityManagedPluginValues {
   attributes: {
     enabled: boolean;
     // authority: string;
-    data: {
-      [key: string]: string;
-    }
+    data: { key: string; value: string }[];
   };
   update: {
     enabled: boolean;
@@ -44,8 +43,12 @@ export const defaultAuthorityManagedPluginValues: AuthorityManagedPluginValues =
   royalties: {
     enabled: false,
     ruleSet: 'None',
+    programs: [],
     basisPoints: 500,
-    creators: [],
+    creators: [{
+      percentage: 100,
+      address: '',
+    }],
   },
   soulbound: {
     enabled: false,
@@ -61,7 +64,10 @@ export const defaultAuthorityManagedPluginValues: AuthorityManagedPluginValues =
   },
   attributes: {
     enabled: false,
-    data: {},
+    data: [{
+      key: 'key',
+      value: 'value',
+    }],
   },
   update: {
     enabled: false,
@@ -77,6 +83,7 @@ export interface CreateFormValues {
   collection: 'None' | 'New' | 'Existing';
   name: string;
   uri: string;
+  owner: string;
   collectionName: string;
   collectionUri: string;
   collectionAddress: string;

@@ -1,23 +1,12 @@
 'use client';
 
 import { Center, Container, Loader, Text } from '@mantine/core';
-import { publicKey } from '@metaplex-foundation/umi';
-import { useQuery } from '@tanstack/react-query';
-import { fetchAsset } from '@metaplex-foundation/mpl-core';
 import { Explorer } from '@/components/Explorer/Explorer';
-import { useUmi } from '@/providers/useUmi';
-import { useEnv } from '@/providers/useEnv';
+import { useFetchAsset } from '@/hooks/fetch';
 
 export default function ExplorerPage({ params }: { params: { mint: string } }) {
-  const env = useEnv();
-  const umi = useUmi();
   const { mint } = params;
-  const { error, isPending, data: asset } = useQuery({
-    retry: false,
-    refetchOnMount: true,
-    queryKey: ['fetch-nft', env, mint],
-    queryFn: async () => fetchAsset(umi, publicKey(mint)),
-  });
+  const { error, isPending, data: asset } = useFetchAsset(mint);
   return (
     <Container size="xl" pb="xl">
       {isPending &&

@@ -3,11 +3,11 @@ import { useCallback, useEffect, useState } from 'react';
 import { CodeHighlightTabs } from '@mantine/code-highlight';
 import { useDisclosure } from '@mantine/hooks';
 import { generateSigner, publicKey, sol, transactionBuilder } from '@metaplex-foundation/umi';
-import { create, createCollection } from '@metaplex-foundation/mpl-core';
+import { PluginAuthorityPair, RuleSet, authority, create, createCollection, getPubkeyAuthority, pluginAuthorityPair, ruleSet } from '@metaplex-foundation/mpl-core';
 import { base58 } from '@metaplex-foundation/umi/serializers';
 import { notifications } from '@mantine/notifications';
 import { useUmi } from '@/providers/useUmi';
-import { CreateFormProvider, defaultAuthorityManagedPluginValues, useCreateForm } from './CreateFormContext';
+import { AuthorityManagedPluginValues, CreateFormProvider, defaultAuthorityManagedPluginValues, useCreateForm } from './CreateFormContext';
 import { ConfigurePlugins } from './ConfigurePlugins';
 
 const validatePukey = (value: string) => {
@@ -29,6 +29,75 @@ const validateUri = (value: string) => {
   }
 };
 
+const mapPlugins = (plugins: AuthorityManagedPluginValues): PluginAuthorityPair[] => {
+  const pairs: PluginAuthorityPair[] = [];
+  if (plugins.royalties.enabled) {
+    let rs: RuleSet = ruleSet('None');
+    if (plugins.royalties.ruleSet === 'Allow list') {
+      rs = ruleSet('ProgramAllowList', [plugins.royalties.programs.map((p) => publicKey(p))]);
+    } else if (plugins.royalties.ruleSet === 'Deny list') {
+      rs = ruleSet('ProgramDenyList', [plugins.royalties.programs.map((p) => publicKey(p))]);
+    }
+    pairs.push(pluginAuthorityPair({
+      type: 'Royalties',
+      data: {
+        ruleSet: rs,
+        basisPoints: plugins.royalties.basisPoints,
+        creators: plugins.royalties.creators.map((c) => ({
+          percentage: c.percentage,
+          address: publicKey(c.address),
+        })),
+      },
+    }));
+  }
+  if (plugins.soulbound.enabled) {
+    pairs.push(pluginAuthorityPair({
+      type: 'PermanentFreeze',
+      authority: authority('None'),
+      data: {
+        frozen: true,
+      },
+    }));
+  }
+  if (plugins.permanentFreeze.enabled) {
+    pairs.push(pluginAuthorityPair({
+      type: 'PermanentFreeze',
+      authority: getPubkeyAuthority(publicKey(plugins.permanentFreeze.authority)),
+      data: {
+        frozen: false,
+      },
+    }));
+  }
+  // if (plugins.permanentTransfer.enabled) {
+  //   pairs.push(pluginAuthorityPair({
+  //     type: 'PermanentTransfer',
+  //     authority: getPubkeyAuthority(publicKey(plugins.permanentTransfer.authority)),
+  //     data: {},
+  //   }));
+  // }
+  if (plugins.attributes.enabled) {
+    pairs.push(pluginAuthorityPair({
+      type: 'Attributes',
+      data: {
+        attributeList: plugins.attributes.data,
+      },
+    }));
+  }
+  if (plugins.update.enabled) {
+    pairs.push(pluginAuthorityPair({
+      type: 'UpdateDelegate',
+      authority: getPubkeyAuthority(publicKey(plugins.permanentFreeze.authority)),
+    }));
+  }
+  // if (plugins.permanentBurn.enabled) {
+  //   pairs.push(pluginAuthorityPair({
+  //     type: 'PermanentBurn',
+  //     authority: getPubkeyAuthority(publicKey(plugins.permanentFreeze.authority)),
+  //   }));
+  // }
+  return pairs;
+};
+
 export function Create() {
   const umi = useUmi();
   const [metadataPreview, setMetadataPreview] = useState<any>(null);
@@ -37,11 +106,12 @@ export function Create() {
 
   const form = useCreateForm({
     initialValues: {
+      owner: '',
       collection: 'None',
       name: '',
       uri: 'https://arweave.net/hCW1Ty1bA-T8LoGEXDaABSP2JuTn5cSPHvkH5UHo2eU',
       collectionName: '',
-      collectionUri: '',
+      collectionUri: 'https://arweave.net/hCW1Ty1bA-T8LoGEXDaABSP2JuTn5cSPHvkH5UHo2eU',
       collectionAddress: '',
       assetPlugins: defaultAuthorityManagedPluginValues,
       collectionPlugins: defaultAuthorityManagedPluginValues,
@@ -50,6 +120,7 @@ export function Create() {
     validate: {
       name: (value) => value?.length > 0 ? null : 'Name is required',
       uri: (value) => validateUri(value) ? null : 'Invalid URI',
+      owner: (value) => !value ? null : validatePukey(value) ? null : 'Invalid public key',
       collectionAddress: (value, values) => {
         if (values.collection !== 'Existing') {
           return null;
@@ -70,6 +141,32 @@ export function Create() {
         return null;
       },
       assetPlugins: {
+        attributes: {
+          data: {
+            key: (value, values) => {
+              if (values.assetPlugins.attributes.enabled) {
+                return value?.length > 0 ? null : true;
+              }
+              return null;
+            },
+            value: (value, values) => {
+              if (values.assetPlugins.attributes.enabled) {
+                return value?.length > 0 ? null : true;
+              }
+              return null;
+            },
+          },
+        },
+        royalties: {
+          creators: {
+            address: (value, values) => {
+              if (values.assetPlugins.royalties.enabled) {
+                return validatePukey(value) ? null : true;
+              }
+              return null;
+            },
+          },
+        },
         update: {
           authority: (value, values) => {
             if (values.assetPlugins.update.enabled) {
@@ -104,6 +201,22 @@ export function Create() {
         },
       },
       collectionPlugins: {
+        attributes: {
+          data: {
+            key: (value, values) => {
+              if (values.assetPlugins.attributes.enabled) {
+                return value?.length > 0 ? null : true;
+              }
+              return null;
+            },
+            value: (value, values) => {
+              if (values.assetPlugins.attributes.enabled) {
+                return value?.length > 0 ? null : true;
+              }
+              return null;
+            },
+          },
+        },
         update: {
           authority: (value, values) => {
             if (values.collectionPlugins.update.enabled) {
@@ -182,7 +295,7 @@ export function Create() {
 
     open();
     try {
-      const { name, collectionName } = form.values;
+      const { name, collectionName, collectionPlugins, assetPlugins } = form.values;
       const collectionSigner = generateSigner(umi);
       let txBuilder = transactionBuilder();
       if (collection === 'New') {
@@ -190,6 +303,7 @@ export function Create() {
           name: collectionName,
           uri: collectionUri,
           collection: collectionSigner,
+          plugins: mapPlugins(collectionPlugins),
         }));
       }
       const assetAddress = generateSigner(umi);
@@ -198,6 +312,8 @@ export function Create() {
         uri,
         collection: collection === 'Existing' ? publicKey(form.values.collectionAddress) : collection === 'New' ? collectionSigner.publicKey : undefined,
         asset: assetAddress,
+        owner: form.values.owner ? publicKey(form.values.owner) : undefined,
+        plugins: mapPlugins(assetPlugins),
       }));
 
       const res = await txBuilder.sendAndConfirm(umi);
@@ -216,9 +332,19 @@ export function Create() {
 
   return (
     <CreateFormProvider form={form}>
-      <Stack>
+      <Stack pt="xl">
         <TextInput label="Asset name" {...form.getInputProps('name')} />
-        <TextInput label="Asset metadata URI" placeholder="https://arweave.net/hCW1Ty1bA-T8LoGEXDaABSP2JuTn5cSPHvkH5UHo2eU" description="JSON description of asset conforming to the Metaplex JSON Standard" {...form.getInputProps('uri')} />
+        <TextInput
+          label="Owner"
+          description="Optional wallet to mint the asset to. Defaults to your connected wallet."
+          {...form.getInputProps('owner')}
+        />
+        <TextInput
+          label="Asset metadata URI"
+          placeholder="https://arweave.net/hCW1Ty1bA-T8LoGEXDaABSP2JuTn5cSPHvkH5UHo2eU"
+          description="JSON description of asset conforming to the Metaplex JSON Standard"
+          {...form.getInputProps('uri')}
+        />
         {metadataPreview && (
           <>
             <Text size="sm" fw="500">Asset preview</Text>
@@ -246,7 +372,7 @@ export function Create() {
 
         <Text fw="500" size="md" mt="md">Mint-time asset plugins</Text>
         <ConfigurePlugins type="asset" />
-        <Fieldset mt="lg" legend="Collection details">
+        <Fieldset mt="md" legend="Collection details">
           <Stack>
             <Select
               w="30%"
