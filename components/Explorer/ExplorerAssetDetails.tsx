@@ -1,7 +1,7 @@
 import { Center, Image, Loader, Stack, Text, Title } from '@mantine/core';
 import { CodeHighlightTabs } from '@mantine/code-highlight';
 import { Asset } from '@metaplex-foundation/mpl-core';
-import { useAssetJson } from '../Create/hooks';
+import { useAssetJson } from '../../hooks/asset';
 import { ExplorerStat } from './ExplorerStat';
 import RetainQueryLink from '../RetainQueryLink';
 
@@ -34,20 +34,20 @@ export function ExplorerAssetDetails({ asset }: { asset: Asset }) {
       />
       <ExplorerStat
         label="Update Authority Type"
-        value={asset.updateAuthority.__kind}
+        value={asset.updateAuthority.type}
         labeled
       />
 
-      {asset.updateAuthority.__kind === 'Collection' && (
+      {asset.updateAuthority.type === 'Collection' && (
         <RetainQueryLink
-          href={`/explorer/collection/${asset.updateAuthority.fields[0]}`}
+          href={`/explorer/collection/${asset.updateAuthority.address}`}
           style={{
             textDecoration: 'none',
           }}
         >
           <ExplorerStat
             label="Collection"
-            value={asset.updateAuthority.fields[0]}
+            value={asset.updateAuthority.address || ''}
             copyable
           />
         </RetainQueryLink>

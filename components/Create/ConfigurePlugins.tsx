@@ -1,7 +1,8 @@
 import { Accordion, Alert, Button, Checkbox, CloseButton, Flex, Group, NumberInput, Select, Stack, TagsInput, Text, TextInput } from '@mantine/core';
 import { useCallback, useEffect, useState } from 'react';
 import { IconInfoCircle } from '@tabler/icons-react';
-import { AuthorityManagedPluginValues, useCreateFormContext } from './CreateFormContext';
+import { useCreateFormContext } from './CreateFormContext';
+import { AuthorityManagedPluginValues } from '@/lib/form';
 
 interface AccordionItemProps {
   id: string

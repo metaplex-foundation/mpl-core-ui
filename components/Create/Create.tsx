@@ -3,12 +3,13 @@ import { useCallback, useEffect, useState } from 'react';
 import { CodeHighlightTabs } from '@mantine/code-highlight';
 import { useDisclosure } from '@mantine/hooks';
 import { generateSigner, publicKey, sol, transactionBuilder } from '@metaplex-foundation/umi';
-import { PluginAuthorityPair, RuleSet, authority, create, createCollection, getPubkeyAuthority, pluginAuthorityPair, ruleSet } from '@metaplex-foundation/mpl-core';
+import { PluginAuthorityPair, RuleSet, create, createCollection, nonePluginAuthority, pluginAuthorityPair, pubkeyPluginAuthority, ruleSet } from '@metaplex-foundation/mpl-core';
 import { base58 } from '@metaplex-foundation/umi/serializers';
 import { notifications } from '@mantine/notifications';
 import { useUmi } from '@/providers/useUmi';
-import { AuthorityManagedPluginValues, CreateFormProvider, defaultAuthorityManagedPluginValues, useCreateForm } from './CreateFormContext';
+import { CreateFormProvider, useCreateForm } from './CreateFormContext';
 import { ConfigurePlugins } from './ConfigurePlugins';
+import { AuthorityManagedPluginValues, defaultAuthorityManagedPluginValues } from '@/lib/form';
 
 const validatePukey = (value: string) => {
   try {
@@ -53,7 +54,7 @@ const mapPlugins = (plugins: AuthorityManagedPluginValues): PluginAuthorityPair[
   if (plugins.soulbound.enabled) {
     pairs.push(pluginAuthorityPair({
       type: 'PermanentFreeze',
-      authority: authority('None'),
+      authority: nonePluginAuthority(),
       data: {
         frozen: true,
       },
@@ -62,7 +63,7 @@ const mapPlugins = (plugins: AuthorityManagedPluginValues): PluginAuthorityPair[
   if (plugins.permanentFreeze.enabled) {
     pairs.push(pluginAuthorityPair({
       type: 'PermanentFreeze',
-      authority: getPubkeyAuthority(publicKey(plugins.permanentFreeze.authority)),
+      authority: pubkeyPluginAuthority(publicKey(plugins.permanentFreeze.authority)),
       data: {
         frozen: false,
       },
@@ -86,7 +87,7 @@ const mapPlugins = (plugins: AuthorityManagedPluginValues): PluginAuthorityPair[
   if (plugins.update.enabled) {
     pairs.push(pluginAuthorityPair({
       type: 'UpdateDelegate',
-      authority: getPubkeyAuthority(publicKey(plugins.permanentFreeze.authority)),
+      authority: pubkeyPluginAuthority(publicKey(plugins.update.authority)),
     }));
   }
   // if (plugins.permanentBurn.enabled) {

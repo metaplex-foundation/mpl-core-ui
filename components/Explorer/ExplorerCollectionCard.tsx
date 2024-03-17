@@ -1,6 +1,6 @@
 import { Card, Group, Image, Skeleton, Text } from '@mantine/core';
 import { Collection } from '@metaplex-foundation/mpl-core';
-import { useAssetJson } from '../Create/hooks';
+import { useAssetJson } from '../../hooks/asset';
 
 import classes from './ExplorerCard.module.css';
 import RetainQueryLink from '../RetainQueryLink';

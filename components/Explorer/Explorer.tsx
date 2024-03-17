@@ -26,7 +26,7 @@ export function Explorer({ asset }: { asset: Asset }) {
           <ExplorerPluginDetails plugins={asset} type="asset" />
         </Paper>
 
-        {asset.updateAuthority.__kind === 'Collection' && (
+        {asset.updateAuthority.type === 'Collection' && (
         <Paper
           p="xl"
           radius="md"
@@ -35,7 +35,7 @@ export function Explorer({ asset }: { asset: Asset }) {
           flexGrow: 1,
         }}
         >
-          <CollectionPluginDetails mint={asset.updateAuthority.fields[0]} />
+          <CollectionPluginDetails mint={asset.updateAuthority.address || ''} />
         </Paper>
         )}
       </Flex>
