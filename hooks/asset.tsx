@@ -1,6 +1,6 @@
 import { PublicKey, Umi } from '@metaplex-foundation/umi';
 import { useQuery } from '@tanstack/react-query';
-import { AssetV1 } from '@metaplex-foundation/mpl-core';
+import { AssetV1 } from 'core-preview';
 
 export async function accountExists(umi: Umi, account: PublicKey) {
   const maybeAccount = await umi.rpc.getAccount(account);

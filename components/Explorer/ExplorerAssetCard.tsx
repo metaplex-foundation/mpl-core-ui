@@ -1,5 +1,5 @@
 import { Card, Group, Image, Skeleton, Text } from '@mantine/core';
-import { AssetV1 } from '@metaplex-foundation/mpl-core';
+import { AssetV1 } from 'core-preview';
 import { useAssetJson } from '../../hooks/asset';
 
 import classes from './ExplorerCard.module.css';
@@ -24,7 +24,7 @@ export function ExplorerAssetCard({ asset }: { asset: AssetV1 }) {
             <Skeleton visible={!!error}>
               <Image
                 src={json?.image}
-                height={160}
+                height={200}
               />
             </Skeleton>
           </Card.Section>

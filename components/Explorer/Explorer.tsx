@@ -1,5 +1,5 @@
 import { Flex, Loader, Paper, SimpleGrid, Text } from '@mantine/core';
-import { AssetV1 } from '@metaplex-foundation/mpl-core';
+import { AssetV1 } from 'core-preview';
 import { ExplorerAssetDetails } from './ExplorerAssetDetails';
 import { ExplorerPluginDetails } from './ExplorerPluginDetails';
 import { useFetchCollection } from '@/hooks/fetch';

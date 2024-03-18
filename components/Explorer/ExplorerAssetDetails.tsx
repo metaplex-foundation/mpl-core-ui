@@ -1,6 +1,6 @@
 import { Center, Image, Loader, Stack, Text, Title } from '@mantine/core';
 import { CodeHighlightTabs } from '@mantine/code-highlight';
-import { AssetV1 } from '@metaplex-foundation/mpl-core';
+import { AssetV1 } from 'core-preview';
 import { useAssetJson } from '../../hooks/asset';
 import { ExplorerStat } from './ExplorerStat';
 import RetainQueryLink from '../RetainQueryLink';

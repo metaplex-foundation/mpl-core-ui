@@ -1,6 +1,6 @@
 import { Center, Image, Loader, Stack, Text, Title } from '@mantine/core';
 import { CodeHighlightTabs } from '@mantine/code-highlight';
-import { CollectionV1 } from '@metaplex-foundation/mpl-core';
+import { CollectionV1 } from 'core-preview';
 import { useAssetJson } from '../../hooks/asset';
 import { ExplorerStat } from './ExplorerStat';
 
@@ -23,7 +23,11 @@ export function ExplorerCollectionDetails({ collection }: { collection: Collecti
             value={collection.publicKey}
             copyable
           />
-
+          <ExplorerStat
+            label="Update authority"
+            value={collection.updateAuthority}
+            copyable
+          />
           <Text fz="xs" tt="uppercase" fw={700} c="dimmed">JSON Metadata</Text>
           <CodeHighlightTabs
             withExpandButton

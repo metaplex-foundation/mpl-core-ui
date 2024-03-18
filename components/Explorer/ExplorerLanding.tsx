@@ -1,23 +1,10 @@
-import { useQuery } from '@tanstack/react-query';
 import { Center, Loader, SimpleGrid, Stack, Text } from '@mantine/core';
-import { Key, getAssetV1GpaBuilder } from '@metaplex-foundation/mpl-core';
-import { useUmi } from '@/providers/useUmi';
-import { useEnv } from '@/providers/useEnv';
 import { ExplorerAssetCard } from './ExplorerAssetCard';
 import { ExplorerCollectionList } from './ExplorerCollectionList';
+import { useFetchAssetsByOwner } from '@/hooks/fetch';
 
 export function ExplorerLanding() {
-  const umi = useUmi();
-  const env = useEnv();
-
-  const { error, isPending, data: assets } = useQuery({
-    queryKey: ['fetch-assets', env, umi.identity.publicKey],
-    queryFn: async () => {
-      const result = await getAssetV1GpaBuilder(umi).whereField('owner', umi.identity.publicKey).whereField('key', Key.AssetV1).getDeserialized();
-
-      return result;
-    },
-  });
+  const { error, isPending, data: assets } = useFetchAssetsByOwner();
 
   return (
     <Stack mt="lg">
