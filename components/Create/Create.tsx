@@ -424,15 +424,6 @@ export function Create() {
 
         <Flex gap="lg">
           <Button onClick={handleCreate} disabled={!form.isValid()}>Create Asset</Button>
-          <Button
-            variant="outline"
-            onClick={async () => {
-              console.log('airdropping');
-              await umi.rpc.airdrop(umi.identity.publicKey, sol(1));
-              console.log('done');
-            }}
-          >Airdrop
-          </Button>
         </Flex>
         <Modal opened={opened} onClose={() => { }} centered withCloseButton={false}>
           <Center my="xl">
