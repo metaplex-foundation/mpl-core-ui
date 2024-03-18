@@ -1,5 +1,5 @@
 import { Flex, Loader, Paper, SimpleGrid, Text } from '@mantine/core';
-import { Asset } from '@metaplex-foundation/mpl-core';
+import { AssetV1 } from '@metaplex-foundation/mpl-core';
 import { ExplorerAssetDetails } from './ExplorerAssetDetails';
 import { ExplorerPluginDetails } from './ExplorerPluginDetails';
 import { useFetchCollection } from '@/hooks/fetch';
@@ -15,7 +15,7 @@ const CollectionPluginDetails = ({ mint }: { mint: string }) => {
   );
 };
 
-export function Explorer({ asset }: { asset: Asset }) {
+export function Explorer({ asset }: { asset: AssetV1 }) {
   return (
     <SimpleGrid cols={2} mt="xl" spacing="lg" pb="xl">
       <Paper p="xl" radius="md">

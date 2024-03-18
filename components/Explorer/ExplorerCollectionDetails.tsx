@@ -1,10 +1,10 @@
 import { Center, Image, Loader, Stack, Text, Title } from '@mantine/core';
 import { CodeHighlightTabs } from '@mantine/code-highlight';
-import { Collection } from '@metaplex-foundation/mpl-core';
+import { CollectionV1 } from '@metaplex-foundation/mpl-core';
 import { useAssetJson } from '../../hooks/asset';
 import { ExplorerStat } from './ExplorerStat';
 
-export function ExplorerCollectionDetails({ collection }: { collection: Collection }) {
+export function ExplorerCollectionDetails({ collection }: { collection: CollectionV1 }) {
   const jsonInfo = useAssetJson(collection);
   return (
     <Stack>

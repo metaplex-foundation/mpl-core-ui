@@ -3,7 +3,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { CodeHighlightTabs } from '@mantine/code-highlight';
 import { useDisclosure } from '@mantine/hooks';
 import { generateSigner, publicKey, sol, transactionBuilder } from '@metaplex-foundation/umi';
-import { PluginAuthorityPair, RuleSet, create, createCollection, nonePluginAuthority, pluginAuthorityPair, pubkeyPluginAuthority, ruleSet } from '@metaplex-foundation/mpl-core';
+import { PluginAuthorityPair, RuleSet, createV1, createCollectionV1, nonePluginAuthority, pluginAuthorityPair, pubkeyPluginAuthority, ruleSet } from '@metaplex-foundation/mpl-core';
 import { base58 } from '@metaplex-foundation/umi/serializers';
 import { notifications } from '@mantine/notifications';
 import { useUmi } from '@/providers/useUmi';
@@ -53,7 +53,7 @@ const mapPlugins = (plugins: AuthorityManagedPluginValues): PluginAuthorityPair[
   }
   if (plugins.soulbound.enabled) {
     pairs.push(pluginAuthorityPair({
-      type: 'PermanentFreeze',
+      type: 'PermanentFreezeDelegate',
       authority: nonePluginAuthority(),
       data: {
         frozen: true,
@@ -62,7 +62,7 @@ const mapPlugins = (plugins: AuthorityManagedPluginValues): PluginAuthorityPair[
   }
   if (plugins.permanentFreeze.enabled) {
     pairs.push(pluginAuthorityPair({
-      type: 'PermanentFreeze',
+      type: 'PermanentFreezeDelegate',
       authority: pubkeyPluginAuthority(publicKey(plugins.permanentFreeze.authority)),
       data: {
         frozen: false,
@@ -300,7 +300,7 @@ export function Create() {
       const collectionSigner = generateSigner(umi);
       let txBuilder = transactionBuilder();
       if (collection === 'New') {
-        txBuilder = txBuilder.add(createCollection(umi, {
+        txBuilder = txBuilder.add(createCollectionV1(umi, {
           name: collectionName,
           uri: collectionUri,
           collection: collectionSigner,
@@ -308,7 +308,7 @@ export function Create() {
         }));
       }
       const assetAddress = generateSigner(umi);
-      txBuilder = txBuilder.add(create(umi, {
+      txBuilder = txBuilder.add(createV1(umi, {
         name,
         uri,
         collection: collection === 'Existing' ? publicKey(form.values.collectionAddress) : collection === 'New' ? collectionSigner.publicKey : undefined,

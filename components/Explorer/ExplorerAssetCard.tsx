@@ -1,11 +1,11 @@
 import { Card, Group, Image, Skeleton, Text } from '@mantine/core';
-import { Asset } from '@metaplex-foundation/mpl-core';
+import { AssetV1 } from '@metaplex-foundation/mpl-core';
 import { useAssetJson } from '../../hooks/asset';
 
 import classes from './ExplorerCard.module.css';
 import RetainQueryLink from '../RetainQueryLink';
 
-export function ExplorerAssetCard({ asset }: { asset: Asset }) {
+export function ExplorerAssetCard({ asset }: { asset: AssetV1 }) {
   const { error, isPending, data: json } = useAssetJson(asset);
 
   return (

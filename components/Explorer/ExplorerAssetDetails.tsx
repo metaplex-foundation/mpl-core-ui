@@ -1,11 +1,11 @@
 import { Center, Image, Loader, Stack, Text, Title } from '@mantine/core';
 import { CodeHighlightTabs } from '@mantine/code-highlight';
-import { Asset } from '@metaplex-foundation/mpl-core';
+import { AssetV1 } from '@metaplex-foundation/mpl-core';
 import { useAssetJson } from '../../hooks/asset';
 import { ExplorerStat } from './ExplorerStat';
 import RetainQueryLink from '../RetainQueryLink';
 
-export function ExplorerAssetDetails({ asset }: { asset: Asset }) {
+export function ExplorerAssetDetails({ asset }: { asset: AssetV1 }) {
   const jsonInfo = useAssetJson(asset);
   return (
     <Stack>

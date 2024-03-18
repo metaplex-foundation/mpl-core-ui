@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import { Center, Loader, SimpleGrid, Text } from '@mantine/core';
-import { Key, getCollectionGpaBuilder } from '@metaplex-foundation/mpl-core';
+import { Key, getCollectionV1GpaBuilder } from '@metaplex-foundation/mpl-core';
 import { useUmi } from '@/providers/useUmi';
 import { useEnv } from '@/providers/useEnv';
 import { ExplorerCollectionCard } from './ExplorerCollectionCard';
@@ -13,7 +13,7 @@ export function ExplorerCollectionList() {
     queryKey: ['fetch-collections', env, umi.identity.publicKey],
     queryFn: async () => {
       try {
-        const result = await getCollectionGpaBuilder(umi).whereField('updateAuthority', umi.identity.publicKey).whereField('key', Key.Collection).getDeserialized();
+        const result = await getCollectionV1GpaBuilder(umi).whereField('updateAuthority', umi.identity.publicKey).whereField('key', Key.CollectionV1).getDeserialized();
         return result;
       } catch (err) {
         console.error('Error fetching collections', err);

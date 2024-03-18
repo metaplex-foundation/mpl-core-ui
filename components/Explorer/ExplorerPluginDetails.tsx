@@ -19,11 +19,11 @@ export function ExplorerPluginDetails({ plugins, type }: { plugins: PluginsList,
   return (
     <Stack>
       <Text fz="md" tt="uppercase" fw={700} c="dimmed">{type === 'asset' ? 'Asset' : 'Collection'} Plugin Details</Text>
-      <ExplorerStat label="Frozen" value={(plugins.freeze?.frozen || plugins.permanentFreeze?.frozen) ? 'Yes' : 'No'} />
-      {plugins.freeze && <AuthorityStat authority={plugins.freeze.authority} name="Freeze" />}
-      {plugins.burn && <AuthorityStat authority={plugins.burn.authority} name="Burn" />}
-      {plugins.transfer && <AuthorityStat authority={plugins.transfer.authority} name="Transfer" />}
-      {plugins.permanentFreeze && <AuthorityStat authority={plugins.permanentFreeze.authority} name="Permanent Freeze" />}
+      <ExplorerStat label="Frozen" value={(plugins.freezeDelegate?.frozen || plugins.permanentFreezeDelegate?.frozen) ? 'Yes' : 'No'} />
+      {plugins.freezeDelegate && <AuthorityStat authority={plugins.freezeDelegate.authority} name="Freeze" />}
+      {plugins.burnDelegate && <AuthorityStat authority={plugins.burnDelegate.authority} name="Burn" />}
+      {plugins.transferDelegate && <AuthorityStat authority={plugins.transferDelegate.authority} name="Transfer" />}
+      {plugins.permanentFreezeDelegate && <AuthorityStat authority={plugins.permanentFreezeDelegate.authority} name="Permanent Freeze" />}
       {plugins.updateDelegate && <AuthorityStat authority={plugins.updateDelegate.authority} name="Update Delegate" />}
       {plugins.royalties && (
         <>

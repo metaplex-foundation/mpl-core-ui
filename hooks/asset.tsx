@@ -1,6 +1,6 @@
 import { PublicKey, Umi } from '@metaplex-foundation/umi';
 import { useQuery } from '@tanstack/react-query';
-import { Asset } from '@metaplex-foundation/mpl-core';
+import { AssetV1 } from '@metaplex-foundation/mpl-core';
 
 export async function accountExists(umi: Umi, account: PublicKey) {
   const maybeAccount = await umi.rpc.getAccount(account);
@@ -10,7 +10,7 @@ export async function accountExists(umi: Umi, account: PublicKey) {
   return false;
 }
 
-export const useAssetJson = (asset: Pick<Asset, 'publicKey' | 'uri'>) => useQuery({
+export const useAssetJson = (asset: Pick<AssetV1, 'publicKey' | 'uri'>) => useQuery({
   queryKey: ['fetch-asset-json', asset.publicKey],
   queryFn: async () => {
     const j = await (await fetch(asset.uri)).json();
@@ -29,7 +29,7 @@ export const useUriBlob = (uri: string) => useQuery({
   },
 });
 
-export const useAssetJsonWithImage = (asset: Pick<Asset, 'publicKey' | 'uri'>) => {
+export const useAssetJsonWithImage = (asset: Pick<AssetV1, 'publicKey' | 'uri'>) => {
   const { isPending: jsonPending, data: json } = useAssetJson(asset);
   const { isPending: imagePending, data: blob } = useUriBlob(json?.image);
 
