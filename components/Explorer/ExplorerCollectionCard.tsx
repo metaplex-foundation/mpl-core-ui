@@ -24,7 +24,7 @@ export function ExplorerCollectionCard({ collection }: { collection: CollectionV
             <Skeleton visible={!!error}>
               <Image
                 src={json?.image}
-                height={160}
+                height={200}
               />
             </Skeleton>
           </Card.Section>

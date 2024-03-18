@@ -2,7 +2,7 @@ import { Button, Center, Fieldset, Flex, Image, Modal, Select, Stack, Text, Text
 import { useCallback, useEffect, useState } from 'react';
 import { CodeHighlightTabs } from '@mantine/code-highlight';
 import { useDisclosure } from '@mantine/hooks';
-import { generateSigner, publicKey, sol, transactionBuilder } from '@metaplex-foundation/umi';
+import { generateSigner, publicKey, transactionBuilder } from '@metaplex-foundation/umi';
 import { PluginAuthorityPair, RuleSet, createV1, createCollectionV1, nonePluginAuthority, pluginAuthorityPair, pubkeyPluginAuthority, ruleSet } from 'core-preview';
 import { base58 } from '@metaplex-foundation/umi/serializers';
 import { notifications } from '@mantine/notifications';
@@ -69,13 +69,12 @@ const mapPlugins = (plugins: AuthorityManagedPluginValues): PluginAuthorityPair[
       },
     }));
   }
-  // if (plugins.permanentTransfer.enabled) {
-  //   pairs.push(pluginAuthorityPair({
-  //     type: 'PermanentTransfer',
-  //     authority: getPubkeyAuthority(publicKey(plugins.permanentTransfer.authority)),
-  //     data: {},
-  //   }));
-  // }
+  if (plugins.permanentTransfer.enabled) {
+    pairs.push(pluginAuthorityPair({
+      type: 'PermanentTransferDelegate',
+      authority: pubkeyPluginAuthority(publicKey(plugins.permanentTransfer.authority)),
+    }));
+  }
   if (plugins.attributes.enabled) {
     pairs.push(pluginAuthorityPair({
       type: 'Attributes',
@@ -90,12 +89,12 @@ const mapPlugins = (plugins: AuthorityManagedPluginValues): PluginAuthorityPair[
       authority: pubkeyPluginAuthority(publicKey(plugins.update.authority)),
     }));
   }
-  // if (plugins.permanentBurn.enabled) {
-  //   pairs.push(pluginAuthorityPair({
-  //     type: 'PermanentBurn',
-  //     authority: getPubkeyAuthority(publicKey(plugins.permanentFreeze.authority)),
-  //   }));
-  // }
+  if (plugins.permanentBurn.enabled) {
+    pairs.push(pluginAuthorityPair({
+      type: 'PermanentBurnDelegate',
+      authority: pubkeyPluginAuthority(publicKey(plugins.permanentFreeze.authority)),
+    }));
+  }
   return pairs;
 };
 
