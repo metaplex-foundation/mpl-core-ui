@@ -3,32 +3,13 @@ import { useCallback, useEffect, useState } from 'react';
 import { CodeHighlightTabs } from '@mantine/code-highlight';
 import { useDisclosure } from '@mantine/hooks';
 import { generateSigner, publicKey, transactionBuilder } from '@metaplex-foundation/umi';
-import { PluginAuthorityPair, RuleSet, createV1, createCollectionV1, nonePluginAuthority, pluginAuthorityPair, pubkeyPluginAuthority, ruleSet } from 'core-preview';
+import { PluginAuthorityPair, RuleSet, createV1, createCollectionV1, nonePluginAuthority, pluginAuthorityPair, addressPluginAuthority, ruleSet } from 'core-preview';
 import { base58 } from '@metaplex-foundation/umi/serializers';
 import { notifications } from '@mantine/notifications';
 import { useUmi } from '@/providers/useUmi';
 import { CreateFormProvider, useCreateForm } from './CreateFormContext';
 import { ConfigurePlugins } from './ConfigurePlugins';
-import { AuthorityManagedPluginValues, defaultAuthorityManagedPluginValues } from '@/lib/form';
-
-const validatePukey = (value: string) => {
-  try {
-    publicKey(value);
-    return true;
-  } catch {
-    return false;
-  }
-};
-
-const validateUri = (value: string) => {
-  try {
-    // eslint-disable-next-line no-new
-    new URL(value);
-    return true;
-  } catch {
-    return false;
-  }
-};
+import { AuthorityManagedPluginValues, defaultAuthorityManagedPluginValues, validatePubkey, validateUri } from '@/lib/form';
 
 const mapPlugins = (plugins: AuthorityManagedPluginValues): PluginAuthorityPair[] => {
   const pairs: PluginAuthorityPair[] = [];
@@ -63,7 +44,7 @@ const mapPlugins = (plugins: AuthorityManagedPluginValues): PluginAuthorityPair[
   if (plugins.permanentFreeze.enabled) {
     pairs.push(pluginAuthorityPair({
       type: 'PermanentFreezeDelegate',
-      authority: pubkeyPluginAuthority(publicKey(plugins.permanentFreeze.authority)),
+      authority: addressPluginAuthority(publicKey(plugins.permanentFreeze.authority)),
       data: {
         frozen: false,
       },
@@ -72,7 +53,7 @@ const mapPlugins = (plugins: AuthorityManagedPluginValues): PluginAuthorityPair[
   if (plugins.permanentTransfer.enabled) {
     pairs.push(pluginAuthorityPair({
       type: 'PermanentTransferDelegate',
-      authority: pubkeyPluginAuthority(publicKey(plugins.permanentTransfer.authority)),
+      authority: addressPluginAuthority(publicKey(plugins.permanentTransfer.authority)),
     }));
   }
   if (plugins.attributes.enabled) {
@@ -86,13 +67,13 @@ const mapPlugins = (plugins: AuthorityManagedPluginValues): PluginAuthorityPair[
   if (plugins.update.enabled) {
     pairs.push(pluginAuthorityPair({
       type: 'UpdateDelegate',
-      authority: pubkeyPluginAuthority(publicKey(plugins.update.authority)),
+      authority: addressPluginAuthority(publicKey(plugins.update.authority)),
     }));
   }
   if (plugins.permanentBurn.enabled) {
     pairs.push(pluginAuthorityPair({
       type: 'PermanentBurnDelegate',
-      authority: pubkeyPluginAuthority(publicKey(plugins.permanentFreeze.authority)),
+      authority: addressPluginAuthority(publicKey(plugins.permanentFreeze.authority)),
     }));
   }
   return pairs;
@@ -120,12 +101,12 @@ export function Create() {
     validate: {
       name: (value) => value?.length > 0 ? null : 'Name is required',
       uri: (value) => validateUri(value) ? null : 'Invalid URI',
-      owner: (value) => !value ? null : validatePukey(value) ? null : 'Invalid public key',
+      owner: (value) => !value ? null : validatePubkey(value) ? null : 'Invalid public key',
       collectionAddress: (value, values) => {
         if (values.collection !== 'Existing') {
           return null;
         }
-        if (!validatePukey(value)) {
+        if (!validatePubkey(value)) {
           return 'Invalid public key';
         }
         return null;
@@ -161,7 +142,7 @@ export function Create() {
           creators: {
             address: (value, values) => {
               if (values.assetPlugins.royalties.enabled) {
-                return validatePukey(value) ? null : true;
+                return validatePubkey(value) ? null : true;
               }
               return null;
             },
@@ -170,7 +151,7 @@ export function Create() {
         update: {
           authority: (value, values) => {
             if (values.assetPlugins.update.enabled) {
-              return validatePukey(value) ? null : 'Invalid public key';
+              return validatePubkey(value) ? null : 'Invalid public key';
             }
             return null;
           },
@@ -178,7 +159,7 @@ export function Create() {
         permanentFreeze: {
           authority: (value, values) => {
             if (values.assetPlugins.permanentFreeze.enabled) {
-              return validatePukey(value) ? null : 'Invalid public key';
+              return validatePubkey(value) ? null : 'Invalid public key';
             }
             return null;
           },
@@ -186,7 +167,7 @@ export function Create() {
         permanentTransfer: {
           authority: (value, values) => {
             if (values.assetPlugins.permanentTransfer.enabled) {
-              return validatePukey(value) ? null : 'Invalid public key';
+              return validatePubkey(value) ? null : 'Invalid public key';
             }
             return null;
           },
@@ -194,7 +175,7 @@ export function Create() {
         permanentBurn: {
           authority: (value, values) => {
             if (values.assetPlugins.permanentBurn.enabled) {
-              return validatePukey(value) ? null : 'Invalid public key';
+              return validatePubkey(value) ? null : 'Invalid public key';
             }
             return null;
           },
@@ -220,7 +201,7 @@ export function Create() {
         update: {
           authority: (value, values) => {
             if (values.collectionPlugins.update.enabled) {
-              return validatePukey(value) ? null : 'Invalid public key';
+              return validatePubkey(value) ? null : 'Invalid public key';
             }
             return null;
           },
@@ -228,7 +209,7 @@ export function Create() {
         permanentFreeze: {
           authority: (value, values) => {
             if (values.collectionPlugins.permanentFreeze.enabled) {
-              return validatePukey(value) ? null : 'Invalid public key';
+              return validatePubkey(value) ? null : 'Invalid public key';
             }
             return null;
           },
@@ -236,7 +217,7 @@ export function Create() {
         permanentTransfer: {
           authority: (value, values) => {
             if (values.collectionPlugins.permanentTransfer.enabled) {
-              return validatePukey(value) ? null : 'Invalid public key';
+              return validatePubkey(value) ? null : 'Invalid public key';
             }
             return null;
           },
@@ -244,7 +225,7 @@ export function Create() {
         permanentBurn: {
           authority: (value, values) => {
             if (values.collectionPlugins.permanentBurn.enabled) {
-              return validatePukey(value) ? null : 'Invalid public key';
+              return validatePubkey(value) ? null : 'Invalid public key';
             }
             return null;
           },
@@ -428,10 +409,10 @@ export function Create() {
           <Center my="xl">
             <Stack gap="md" align="center">
               <Title order={3}>Creating asset...</Title>
-              <Text>Be prepared to approve many transactions...</Text>
+              {/* <Text>Be prepared to approve many transactions...</Text>
               <Center w="100%">
                 <Text>Some text here</Text>
-              </Center>
+              </Center> */}
             </Stack>
           </Center>
         </Modal>

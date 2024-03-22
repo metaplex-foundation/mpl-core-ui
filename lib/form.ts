@@ -1,3 +1,5 @@
+import { publicKey } from '@metaplex-foundation/umi';
+
 export interface AuthorityManagedPluginValues {
   royalties: {
     enabled: boolean;
@@ -75,4 +77,23 @@ export const defaultAuthorityManagedPluginValues: AuthorityManagedPluginValues =
     enabled: false,
     authority: '',
   },
+};
+
+export const validatePubkey = (value: string) => {
+  try {
+    publicKey(value);
+    return true;
+  } catch {
+    return false;
+  }
+};
+
+export const validateUri = (value: string) => {
+  try {
+    // eslint-disable-next-line no-new
+    new URL(value);
+    return true;
+  } catch {
+    return false;
+  }
 };

@@ -33,17 +33,6 @@ export function ExplorerAssetCard({ asset }: { asset: AssetV1 }) {
           </Group>
 
         </Card>
-        {/* {asset?.metadata
-          && <Badge
-            variant="default"
-            style={{
-              position: 'absolute',
-              top: '1rem',
-              right: '0.5rem',
-
-            }}
-          >#{asset.metadata.inscriptionRank.toString()!}
-             </Badge>} */}
       </Skeleton>
     </RetainQueryLink>
   );

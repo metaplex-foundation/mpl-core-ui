@@ -1,12 +1,13 @@
 'use client';
 
 import { Center, Container, Loader, Text } from '@mantine/core';
-import { Explorer } from '@/components/Explorer/Explorer';
-import { useFetchAsset } from '@/hooks/fetch';
+import { ExplorerAsset } from '@/components/Explorer/ExplorerAsset';
+import { useFetchAssetWithCollection } from '@/hooks/fetch';
 
 export default function ExplorerPage({ params }: { params: { mint: string } }) {
   const { mint } = params;
-  const { error, isPending, data: asset } = useFetchAsset(mint);
+  const { error, isPending, data } = useFetchAssetWithCollection(mint);
+  const { asset, collection } = data || {};
   return (
     <Container size="xl" pb="xl">
       {isPending &&
@@ -18,6 +19,6 @@ export default function ExplorerPage({ params }: { params: { mint: string } }) {
       <Center h="20vh">
         <Text>Asset does not exist</Text>
       </Center>}
-      {asset && <Explorer asset={asset} />}
+      {asset && <ExplorerAsset asset={asset} collection={collection} />}
     </Container>);
 }

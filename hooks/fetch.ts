@@ -1,6 +1,6 @@
 import { publicKey } from '@metaplex-foundation/umi';
-import { fetchAssetV1, fetchCollectionV1, getAssetV1GpaBuilder, Key, updateAuthority } from 'core-preview';
-import { useQuery } from '@tanstack/react-query';
+import { collectionAddress, fetchAssetV1, fetchCollectionV1, getAssetV1GpaBuilder, Key, updateAuthority } from 'core-preview';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useEnv } from '@/providers/useEnv';
 import { useUmi } from '@/providers/useUmi';
 
@@ -15,14 +15,44 @@ export function useFetchAsset(mint: string) {
   });
 }
 
-export function useFetchCollection(mint: string) {
+export function useFetchCollection(mint?: string) {
   const umi = useUmi();
   const env = useEnv();
+  if (!mint) return { isPending: false, error: undefined, isLoading: false, isError: false, data: undefined };
   return useQuery({
     retry: false,
     refetchOnMount: true,
     queryKey: ['fetch-collection', env, mint],
     queryFn: async () => fetchCollectionV1(umi, publicKey(mint)),
+  });
+}
+
+export function useInvalidateFetchAssetWithCollection() {
+  const env = useEnv();
+  const queryClient = useQueryClient();
+
+  return {
+    invalidate: (mint: string) => queryClient.invalidateQueries({ queryKey: ['fetch-asset-with-collection', env, mint] }),
+  };
+}
+
+export function useFetchAssetWithCollection(mint: string) {
+  const umi = useUmi();
+  const env = useEnv();
+
+  return useQuery({
+    retry: false,
+    refetchOnMount: true,
+    queryKey: ['fetch-asset-with-collection', env, mint],
+    queryFn: async () => {
+      const asset = await fetchAssetV1(umi, publicKey(mint));
+      const colAddr = collectionAddress(asset);
+      let collection;
+      if (colAddr) {
+        collection = await fetchCollectionV1(umi, colAddr);
+      }
+      return { asset, collection };
+    },
   });
 }
 

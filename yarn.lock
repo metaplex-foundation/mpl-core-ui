@@ -9975,14 +9975,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"core-preview@npm:^0.1.0":
-  version: 0.1.0
-  resolution: "core-preview@npm:0.1.0"
+"core-preview@npm:^0.1.3":
+  version: 0.1.3
+  resolution: "core-preview@npm:0.1.3"
   peerDependencies:
     "@metaplex-foundation/mpl-toolbox": ^0.8.0
     "@metaplex-foundation/umi": ^0.8.2
     "@noble/hashes": ^1.3.1
-  checksum: 273b459314db517c0a5245a54ed6be4b3ea53c5db57382495a5e2e1afe33409f415159d0095e84d67ddc5c81ce5709465ae7c3e03b16ced23accede01d0dd55c
+  checksum: 23bb506ca0c6f5911aee08e4858188978d4278c506938a3bc2ae9cdc1cc0e4d05bbe0aeadfe0fdbcdcd6aa4e3df97abf3a30bae1c5fda0d15b3639a428b588ae
   languageName: node
   linkType: hard
 
@@ -15095,7 +15095,7 @@ __metadata:
     babel-loader: "npm:^9.1.3"
     browser-image-size: "npm:^1.1.0"
     compressorjs: "npm:^1.2.1"
-    core-preview: "npm:^0.1.0"
+    core-preview: "npm:^0.1.3"
     dayjs: "npm:^1.11.10"
     embla-carousel-react: "npm:^8.0.0-rc17"
     eslint: "npm:^8.53.0"

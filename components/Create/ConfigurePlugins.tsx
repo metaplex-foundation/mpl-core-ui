@@ -96,7 +96,7 @@ export function ConfigurePlugins({ type }: { type: 'asset' | 'collection' }) {
           <div>
             <Stack>
               {creators.map(({ address, percentage }, index) => (
-                <Flex>
+                <Flex align="center">
                   <TextInput
                     value={address}
                     label={index === 0 ? 'Creator address' : undefined}

@@ -1,15 +1,15 @@
 import { Badge, Group, Stack, Text } from '@mantine/core';
-import { BaseAuthority, PluginsList } from 'core-preview';
+import { BasePluginAuthority, PluginsList } from 'core-preview';
 import { ExplorerStat } from './ExplorerStat';
 import { CopyButton } from '../CopyButton/CopyButton';
 
-const AuthorityStat = ({ authority, name }: { authority: BaseAuthority, name: string }) => {
+const AuthorityStat = ({ authority, name }: { authority: BasePluginAuthority, name: string }) => {
   switch (authority.type) {
     case 'None':
     case 'Owner':
     case 'UpdateAuthority':
       return <ExplorerStat label={`${name} Authority`} value={authority.type} labeled />;
-    case 'Pubkey':
+    case 'Address':
     default:
       return authority.address && <ExplorerStat label={`${name} Authority`} value={authority.address} />;
   }

@@ -1,15 +1,55 @@
-import { Center, Image, Loader, Stack, Text, Title } from '@mantine/core';
+import { ActionIcon, Button, Center, Group, Image, Loader, Modal, Stack, Text, Title } from '@mantine/core';
 import { CodeHighlightTabs } from '@mantine/code-highlight';
-import { AssetV1 } from 'core-preview';
+import { IconSettings } from '@tabler/icons-react';
+import { useMemo, useState } from 'react';
+import { useDisclosure } from '@mantine/hooks';
+import { canTransfer } from 'core-preview';
 import { useAssetJson } from '../../hooks/asset';
 import { ExplorerStat } from './ExplorerStat';
 import RetainQueryLink from '../RetainQueryLink';
+import { useUmi } from '@/providers/useUmi';
+import { TransferForm } from './TransferForm';
+import { useInvalidateFetchAssetWithCollection } from '@/hooks/fetch';
+import { ManageForm } from './ManageForm/ManageForm';
+import { AssetWithCollection } from '@/lib/type';
 
-export function ExplorerAssetDetails({ asset }: { asset: AssetV1 }) {
+export function ExplorerAssetDetails({ asset, collection }: AssetWithCollection) {
+  const umi = useUmi();
   const jsonInfo = useAssetJson(asset);
+  const [opened, { open, close }] = useDisclosure(false);
+  const [actionMode, setActionMode] = useState<'transfer' | 'advanced'>('transfer');
+  const { invalidate } = useInvalidateFetchAssetWithCollection();
+
+  const isOwner = useMemo(() => asset.owner === umi.identity.publicKey, [umi.identity.publicKey, asset]);
+  const enableTransfer = useMemo(() => canTransfer(umi.identity.publicKey, asset, collection), [umi.identity.publicKey, asset, collection]);
+
   return (
     <Stack>
-      <Text fz="md" tt="uppercase" fw={700} c="dimmed">Asset Details</Text>
+      <Group justify="space-between">
+        <Text fz="md" tt="uppercase" fw={700} c="dimmed">Asset Details</Text>
+        <Group>
+          {isOwner && (
+            <Button
+              variant="outline"
+              size="sm"
+              disabled={!enableTransfer}
+              onClick={() => {
+                setActionMode('transfer');
+                open();
+              }}
+            >Transfer
+            </Button>)}
+          <ActionIcon
+            variant="subtle"
+            color="rgba(145, 145, 145, 1)"
+            onClick={() => {
+            setActionMode('advanced');
+            open();
+          }}
+          ><IconSettings />
+          </ActionIcon>
+        </Group>
+      </Group>
       <Title>{jsonInfo?.data?.name || asset.name}</Title>
 
       {jsonInfo.isPending ? <Center h="20vh"><Loader /></Center> :
@@ -68,7 +108,21 @@ export function ExplorerAssetDetails({ asset }: { asset: AssetV1 }) {
             }]}
           />
         </>)}
-
+      <Modal opened={opened} onClose={close} centered title={actionMode === 'transfer' ? 'Transfer asset' : 'Advanced Management'} size={actionMode === 'advanced' ? 'lg' : 'md'}>
+        {actionMode === 'transfer' ? (
+          <TransferForm
+            asset={asset}
+            onComplete={() => {
+              invalidate(asset.publicKey);
+              close();
+            }}
+          />) : (
+          <ManageForm
+            asset={asset}
+            collection={collection}
+          />
+        )}
+      </Modal>
     </Stack>
   );
 }

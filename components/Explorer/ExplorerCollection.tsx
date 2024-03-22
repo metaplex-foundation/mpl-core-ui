@@ -19,7 +19,7 @@ export function ExplorerCollection({ collection }: { collection: CollectionV1 })
         </Paper>
       </SimpleGrid>
       <Stack>
-        <Text fz="sm" tt="uppercase" fw={700} c="dimmed">Collection</Text>
+        <Text fz="sm" tt="uppercase" fw={700} c="dimmed">Assets</Text>
         {isPending ? <Center h="20vh"><Loader /></Center> :
           error ? <Center h="20vh" ta="center"><Text>There was an error fetching assets in this collection.</Text></Center> : assets?.length ?
             <SimpleGrid

@@ -33,7 +33,6 @@ export function Header({ env, setEnv }: { env: string; setEnv: (env: Env) => voi
         <Group>
           <HeaderLink label="Create" link="/create" />
           <HeaderLink label="Explorer" link="/explorer" />
-          <HeaderLink label="Manage" link="/manage" />
           <WalletMultiButton />
           <Menu trigger="hover" transitionProps={{ exitDuration: 0 }} withinPortal>
             <Menu.Target>
