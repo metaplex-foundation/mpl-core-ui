@@ -50,3 +50,15 @@
   border-radius: var(--mantine-radius-sm);
   padding: rem(4px) rem(12px);
 }
+
+.codeContainer {
+  position: absolute;
+  top: calc(50% - rem(125px));
+  left: calc(50% - rem(400px));
+  width: rem(800px);
+  background-color: var(--mantine-color-gray-9);
+  padding-right: 0;
+  border: rem(1px) solid light-dark(var(--mantine-color-gray-1), var(--mantine-color-dark-5));
+  border-radius: var(--mantine-radius-md);
+  overflow: hidden;
+}
