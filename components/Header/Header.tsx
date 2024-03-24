@@ -24,11 +24,11 @@ export function Header({ env, setEnv }: { env: string; setEnv: (env: Env) => voi
       pt={12}
     >
       <div className={classes.inner}>
-        <Flex justify="center" align="center" gap="md">
+        <Flex justify="center" align="center" gap="md" ml="md">
           <RetainQueryLink href="/">
             <MetaplexLogo variant={MetaplexLogoVariant.Small} />
           </RetainQueryLink>
-          <Title order={2}>Core Assets</Title>
+          <Title order={2}>Core</Title>
         </Flex>
         <Group>
           <HeaderLink label="Create" link="/create" />
@@ -48,7 +48,7 @@ export function Header({ env, setEnv }: { env: string; setEnv: (env: Env) => voi
               </a>
             </Menu.Target>
             <Menu.Dropdown>
-              <Menu.Item onClick={() => setEnv('mainnet-beta')}>Mainnet Beta</Menu.Item>
+              {/* <Menu.Item onClick={() => setEnv('mainnet-beta')}>Mainnet Beta</Menu.Item> */}
               <Menu.Item onClick={() => setEnv('devnet')}>Devnet</Menu.Item>
             </Menu.Dropdown>
           </Menu>

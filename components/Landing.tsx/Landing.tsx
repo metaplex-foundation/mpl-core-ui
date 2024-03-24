@@ -1,7 +1,7 @@
 'use client';
 
-import { Image, Container, Title, Button, Group, Text, List, ThemeIcon, rem, Box, Flex, Stack } from '@mantine/core';
-import { IconNotes } from '@tabler/icons-react';
+import { Image, Container, Title, Button, Group, Text, List, ThemeIcon, rem, Box, Flex, Stack, Alert } from '@mantine/core';
+import { IconInfoCircle, IconNotes } from '@tabler/icons-react';
 import Link from 'next/link';
 import { CodeHighlight } from '@mantine/code-highlight';
 import classes from './Landing.module.css';
@@ -35,6 +35,7 @@ await transferV1(umi, {
 export function Landing() {
   return (
     <>
+      <Alert variant="light" color="yellow" title="Core is now LIVE on devnet!" icon={<IconInfoCircle />} />
       <Container size="md">
         <div className={classes.inner}>
           <div className={classes.content}>

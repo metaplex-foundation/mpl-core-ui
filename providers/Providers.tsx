@@ -3,7 +3,7 @@
 import { ConnectionProvider, WalletProvider } from '@solana/wallet-adapter-react';
 import { PhantomWalletAdapter, SolflareWalletAdapter } from '@solana/wallet-adapter-wallets';
 import { WalletModalProvider } from '@solana/wallet-adapter-react-ui';
-import { ReactNode, useMemo, useState } from 'react';
+import { ReactNode, useEffect, useMemo, useState } from 'react';
 import { Notifications } from '@mantine/notifications';
 import { AppShell } from '@mantine/core';
 import { ReactQueryStreamedHydration } from '@tanstack/react-query-next-experimental';
@@ -20,7 +20,7 @@ export function Providers({ children }: { children: ReactNode }) {
   const pathname = usePathname();
   const queryEnv = searchParams.get('env');
   const [client] = useState(new QueryClient());
-  const [env, setEnv] = useState<Env>((queryEnv === 'mainnet-beta' || queryEnv === 'devnet') ? queryEnv : 'mainnet-beta');
+  const [env, setEnv] = useState<Env>((queryEnv === 'mainnet-beta' || queryEnv === 'devnet') ? queryEnv : 'devnet');
   const wallets = useMemo(
     () => [
       new PhantomWalletAdapter(),
@@ -36,6 +36,13 @@ export function Providers({ children }: { children: ReactNode }) {
     setEnv(e);
     router.push(`${pathname}?${params.toString()}`);
   };
+
+  // TODO remove this when enabling mainnet
+  useEffect(() => {
+    if (env === 'devnet' && queryEnv !== 'devnet') {
+      doSetEnv('devnet');
+    }
+  }, []);
 
   const endpoint = useMemo(() => {
     switch (env) {
@@ -57,20 +64,20 @@ export function Providers({ children }: { children: ReactNode }) {
             <UmiProvider>
               <QueryClientProvider client={client}>
                 <ReactQueryStreamedHydration>
-                    <Notifications />
-                    <AppShell
-                      header={{ height: 80 }}
-                      style={{
-                        backgroundColor: '#1a1a1a',
-                      }}
-                    >
-                      <AppShell.Header>
-                        <Header env={env} setEnv={doSetEnv} />
-                      </AppShell.Header>
-                      <AppShell.Main>
-                        {children}
-                      </AppShell.Main>
-                    </AppShell>
+                  <Notifications />
+                  <AppShell
+                    header={{ height: 80 }}
+                    style={{
+                      backgroundColor: '#1a1a1a',
+                    }}
+                  >
+                    <AppShell.Header>
+                      <Header env={env} setEnv={doSetEnv} />
+                    </AppShell.Header>
+                    <AppShell.Main>
+                      {children}
+                    </AppShell.Main>
+                  </AppShell>
                 </ReactQueryStreamedHydration>
               </QueryClientProvider>
             </UmiProvider>
