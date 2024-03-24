@@ -108,7 +108,7 @@ export function ExplorerAssetDetails({ asset, collection }: AssetWithCollection)
             }]}
           />
         </>)}
-      <Modal opened={opened} onClose={close} centered title={actionMode === 'transfer' ? 'Transfer asset' : 'Advanced Management'} size={actionMode === 'advanced' ? 'lg' : 'md'}>
+      <Modal opened={opened} onClose={close} centered title={actionMode === 'transfer' ? 'Transfer asset' : 'Advanced asset settings'} size={actionMode === 'advanced' ? 'xl' : 'md'}>
         {actionMode === 'transfer' ? (
           <TransferForm
             asset={asset}

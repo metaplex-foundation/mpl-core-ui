@@ -1,4 +1,4 @@
-import { Accordion, Stack, Text } from '@mantine/core';
+import { Accordion, SimpleGrid, Stack, Text } from '@mantine/core';
 import { useMemo } from 'react';
 import { canBurn, canTransfer, hasAssetUpdateAuthority } from 'core-preview';
 import { authorityManagedPlugins, getAssetPluginActions, ownerManagedPlugins, typeToLabel } from '@/lib/plugin';
@@ -22,23 +22,28 @@ export function ManageForm({ asset, collection }: AssetWithCollection) {
 
   return (
     <>
-      <Stack>
-        <LabelTitle>Actions</LabelTitle>
-        {transfer && !isOwner && <Transfer asset={asset} />}
+      <SimpleGrid
+        cols={{ base: 1, sm: 2, md: 2 }}
+      >
+        <Stack gap="xs">
+          <LabelTitle>Actions</LabelTitle>
+          {transfer && !isOwner && <Transfer asset={asset} />}
 
-        {isUpdateAuth && (
-          <Accordion variant="separated">
-            <Accordion.Item key="update" value="update">
-            <Accordion.Control><Text size="sm">Update asset</Text></Accordion.Control>
-            <Accordion.Panel><Update asset={asset} /></Accordion.Panel>
-            </Accordion.Item>
-          </Accordion>
+          {isUpdateAuth && (
+            <Accordion variant="separated">
+              <Accordion.Item key="update" value="update">
+                <Accordion.Control><Text size="sm">Update asset</Text></Accordion.Control>
+                <Accordion.Panel><Update asset={asset} /></Accordion.Panel>
+              </Accordion.Item>
+            </Accordion>
 
-        )}
-        {burn && <Burn asset={asset} />}
-        {isOwner && (
-          <Stack gap="xs">
-            <LabelTitle>Owner-managed plugins</LabelTitle>
+          )}
+          {burn && <Burn asset={asset} />}
+        </Stack>
+        <Stack gap="xs">
+          <LabelTitle>Owner-managed plugins</LabelTitle>
+          {isOwner && (
+
             <Accordion variant="separated">
               {ownerManagedPlugins.map((type) => (
                 <Accordion.Item key={type} value={type}>
@@ -57,11 +62,10 @@ export function ManageForm({ asset, collection }: AssetWithCollection) {
                 </Accordion.Item>
               ))}
             </Accordion>
-          </Stack>
-        )}
-        {isUpdateAuth && (
-          <Stack gap="xs">
-            <LabelTitle>Authority-managed plugins</LabelTitle>
+          )}
+          <LabelTitle>Authority-managed plugins</LabelTitle>
+          {isUpdateAuth && (
+
             <Accordion variant="separated">
               {authorityManagedPlugins.map((type) => (
                 <Accordion.Item key={type} value={type}>
@@ -80,10 +84,9 @@ export function ManageForm({ asset, collection }: AssetWithCollection) {
                 </Accordion.Item>
               ))}
             </Accordion>
-          </Stack>
-        )}
-
-      </Stack>
+          )}
+        </Stack>
+      </SimpleGrid>
     </>
   );
 }
