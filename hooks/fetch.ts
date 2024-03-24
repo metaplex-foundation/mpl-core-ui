@@ -1,5 +1,5 @@
 import { publicKey } from '@metaplex-foundation/umi';
-import { collectionAddress, fetchAssetV1, fetchCollectionV1, getAssetV1GpaBuilder, Key, updateAuthority } from 'core-preview';
+import { collectionAddress, fetchAssetV1, fetchCollectionV1, getAssetV1GpaBuilder, getCollectionV1GpaBuilder, Key, updateAuthority } from 'core-preview';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useEnv } from '@/providers/useEnv';
 import { useUmi } from '@/providers/useUmi';
@@ -79,6 +79,32 @@ export function useFetchAssetsByCollection(collection: string) {
       const result = await getAssetV1GpaBuilder(umi).whereField('updateAuthority', updateAuthority('Collection', [publicKey(collection)])).whereField('key', Key.AssetV1).getDeserialized();
 
       return result;
+    },
+  });
+}
+
+export function useInvalidateFetchCollectionsByUpdateAuthority() {
+  const env = useEnv();
+  const queryClient = useQueryClient();
+
+  return {
+    invalidate: (updateAuth: string) => queryClient.invalidateQueries({ queryKey: ['fetch-asset-with-collection', env, updateAuth] }),
+  };
+}
+
+export function useFetchCollectionsByUpdateAuthority(updateAuth: string) {
+  const umi = useUmi();
+  const env = useEnv();
+  return useQuery({
+    queryKey: ['fetch-collections', env, updateAuth],
+    queryFn: async () => {
+      try {
+        const result = await getCollectionV1GpaBuilder(umi).whereField('updateAuthority', publicKey(updateAuth)).whereField('key', Key.CollectionV1).getDeserialized();
+        return result;
+      } catch (err) {
+        console.error('Error fetching collections', err);
+        throw err;
+      }
     },
   });
 }

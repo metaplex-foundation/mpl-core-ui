@@ -1,14 +1,28 @@
-import { Center, Image, Loader, Stack, Text, Title } from '@mantine/core';
+import { ActionIcon, Center, Group, Image, Loader, Modal, Stack, Text, Title } from '@mantine/core';
 import { CodeHighlightTabs } from '@mantine/code-highlight';
 import { CollectionV1 } from 'core-preview';
+import { useDisclosure } from '@mantine/hooks';
+import { IconSettings } from '@tabler/icons-react';
 import { useAssetJson } from '../../hooks/asset';
 import { ExplorerStat } from './ExplorerStat';
+import { ManageCollectionForm } from './ManageCollectionForm/ManageCollectionForm';
 
 export function ExplorerCollectionDetails({ collection }: { collection: CollectionV1 }) {
   const jsonInfo = useAssetJson(collection);
+  const [opened, { open, close }] = useDisclosure(false);
   return (
     <Stack>
-      <Text fz="md" tt="uppercase" fw={700} c="dimmed">Collection Details</Text>
+      <Group justify="space-between">
+        <Text fz="md" tt="uppercase" fw={700} c="dimmed">Collection Details</Text>
+        <ActionIcon
+          variant="subtle"
+          color="rgba(145, 145, 145, 1)"
+          onClick={() => {
+            open();
+          }}
+        ><IconSettings />
+        </ActionIcon>
+      </Group>
       {jsonInfo.isPending ? <Center h="20vh"><Loader /></Center> :
         <>
           <Title>{jsonInfo.data.name}</Title>
@@ -42,7 +56,11 @@ export function ExplorerCollectionDetails({ collection }: { collection: Collecti
             }]}
           />
         </>}
-
+      <Modal opened={opened} onClose={close} centered title="Advanced collection settings" size="70%">
+        <ManageCollectionForm
+          collection={collection}
+        />
+      </Modal>
     </Stack>
   );
 }

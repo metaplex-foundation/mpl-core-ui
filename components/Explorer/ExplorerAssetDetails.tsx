@@ -10,7 +10,7 @@ import RetainQueryLink from '../RetainQueryLink';
 import { useUmi } from '@/providers/useUmi';
 import { TransferForm } from './TransferForm';
 import { useInvalidateFetchAssetWithCollection } from '@/hooks/fetch';
-import { ManageForm } from './ManageForm/ManageForm';
+import { ManageAssetForm } from './ManageAssetForm/ManageAssetForm';
 import { AssetWithCollection } from '@/lib/type';
 
 export function ExplorerAssetDetails({ asset, collection }: AssetWithCollection) {
@@ -77,6 +77,13 @@ export function ExplorerAssetDetails({ asset, collection }: AssetWithCollection)
         value={asset.updateAuthority.type}
         labeled
       />
+      {asset.updateAuthority.type === 'Address' && (
+        <ExplorerStat
+          label="Update Authority"
+          value={asset.updateAuthority.address || ''}
+          copyable
+        />
+      )}
 
       {asset.updateAuthority.type === 'Collection' && (
         <RetainQueryLink
@@ -108,7 +115,7 @@ export function ExplorerAssetDetails({ asset, collection }: AssetWithCollection)
             }]}
           />
         </>)}
-      <Modal opened={opened} onClose={close} centered title={actionMode === 'transfer' ? 'Transfer asset' : 'Advanced asset settings'} size={actionMode === 'advanced' ? 'xl' : 'md'}>
+      <Modal opened={opened} onClose={close} centered title={actionMode === 'transfer' ? 'Transfer asset' : 'Advanced asset settings'} size={actionMode === 'advanced' ? '70%' : 'md'}>
         {actionMode === 'transfer' ? (
           <TransferForm
             asset={asset}
@@ -117,7 +124,7 @@ export function ExplorerAssetDetails({ asset, collection }: AssetWithCollection)
               close();
             }}
           />) : (
-          <ManageForm
+          <ManageAssetForm
             asset={asset}
             collection={collection}
           />

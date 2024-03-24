@@ -1,5 +1,5 @@
 import { PublicKey, publicKey } from '@metaplex-foundation/umi';
-import { AssetPluginKey, AssetV1, CollectionV1, PluginType, hasAssetUpdateAuthority } from 'core-preview';
+import { AssetPluginKey, AssetV1, CollectionV1, PluginType, hasAssetUpdateAuthority, hasCollectionUpdateAuthority } from 'core-preview';
 import { capitalizeFirstLetter } from './string';
 
 export type PluginActions = {
@@ -158,6 +158,95 @@ export function getAssetPluginActions(
         });
       } else if (
         (plugin.authority.type === 'Owner' && isOwner) ||
+        (plugin.authority.type === 'Address' && plugin.authority.address === pubkey)
+      ) {
+        result.set(type, {
+          canAppove: false,
+          canRevoke: true,
+          canUpdate: true,
+          canRemove: false,
+        });
+      }
+    }
+  });
+
+  return result;
+}
+
+export function getCollectionPluginActions(
+  identity: string | PublicKey,
+  collection: CollectionV1
+): PluginActionMap {
+  const pubkey = publicKey(identity);
+  const result = new Map<AssetPluginKey, PluginActions>();
+  const isUpdateAuth = hasCollectionUpdateAuthority(identity, collection);
+
+  ownerManagedPlugins.forEach((type) => {
+    const plugin = collection[type];
+    if (plugin) {
+      if (
+        (plugin.authority.type === 'UpdateAuthority' && isUpdateAuth) ||
+        (plugin.authority.type === 'Address' && plugin.authority.address === pubkey)
+      ) {
+        result.set(type, {
+          canAppove: false,
+          canRevoke: true,
+          canUpdate: true,
+          canRemove: false,
+        });
+      }
+      // none means no authority to do anything
+    }
+  });
+
+  authorityManagedPlugins.forEach((type) => {
+    const plugin = collection[type];
+    if (plugin) {
+      if (isUpdateAuth) {
+        if (plugin.authority.type === 'UpdateAuthority') {
+          result.set(type, {
+            canAppove: true,
+            canRevoke: false,
+            canUpdate: true,
+            canRemove: true,
+          });
+        } else if (plugin.authority.type === 'Owner' || plugin.authority.type === 'Address') {
+          result.set(type, {
+            canAppove: false,
+            canRevoke: true,
+            canUpdate: false,
+            canRemove: false,
+          });
+        }
+      } else if (
+        (plugin.authority.type === 'Address' && plugin.authority.address === pubkey)
+      ) {
+        result.set(type, {
+          canAppove: false,
+          canRevoke: true,
+          canUpdate: true,
+          canRemove: false,
+        });
+      }
+      // none means no authority to do anything
+    } else if (isUpdateAuth) {
+      result.set(type, {
+        canAdd: true,
+      });
+    }
+  });
+
+  permanentPlugins.forEach((type) => {
+    const plugin = collection[type];
+    if (plugin) {
+      if ((plugin.authority.type === 'UpdateAuthority' && isUpdateAuth)) {
+        result.set(type, {
+          canAppove: true,
+          canUpdate: true,
+          canRevoke: false,
+          canRemove: true,
+        });
+      } else if (
         (plugin.authority.type === 'Address' && plugin.authority.address === pubkey)
       ) {
         result.set(type, {

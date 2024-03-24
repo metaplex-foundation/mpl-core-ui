@@ -1,4 +1,4 @@
-import { Button, Group } from '@mantine/core';
+import { Button } from '@mantine/core';
 import { burnV1, collectionAddress } from 'core-preview';
 import { useCallback, useState } from 'react';
 import { base58 } from '@metaplex-foundation/umi/serializers';
@@ -32,8 +32,6 @@ export function Burn({ asset }: AssetWithCollection) {
     }
   }, [umi, asset]);
   return (
-    <Group>
-      <Button onClick={handleBurn} loading={loading} color="red">Burn</Button>
-    </Group>
+    <Button onClick={handleBurn} loading={loading} color="red">Burn</Button>
   );
 }
