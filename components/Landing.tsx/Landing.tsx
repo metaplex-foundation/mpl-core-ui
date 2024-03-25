@@ -36,14 +36,15 @@ export function Landing() {
   return (
     <>
       <Alert variant="light" color="yellow" title="Core is now LIVE on devnet!" icon={<IconInfoCircle />} />
+      <div className={classes.heroSection}>
       <Container size="md">
         <div className={classes.inner}>
           <div className={classes.content}>
             <Title className={classes.title}>
-              Unleash the power of NFTs
+              Start building with Core
             </Title>
             <Text c="dimmed" mt="md">
-              The cheapest, most powerful Digital Asset standard on Solana, built on mpl-core.
+              Core is a next generation Solana NFT standard.
             </Text>
 
             <List
@@ -69,7 +70,7 @@ export function Landing() {
             </List>
 
           </div>
-          <Image src="./hero.webp" className={classes.image} />
+          {/* <Image src="./hero.webp" className={classes.image} /> */}
         </div>
         <Group pb={60} mt="md">
           <RetainQueryLink href="/create">
@@ -94,6 +95,7 @@ export function Landing() {
           </RetainQueryLink>
         </Group>
       </Container>
+      </div>
       <Box bg="rgb(36, 36, 36)" py="xl">
         <FeaturesCards />
         <Container size="md" py="xl" />

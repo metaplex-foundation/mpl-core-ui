@@ -6,13 +6,20 @@
 }
 
 .content {
-  max-width: rem(480px);
+  /* max-width: rem(480px);
   margin-right: calc(var(--mantine-spacing-xl) * 3);
 
   @media (max-width: $mantine-breakpoint-md) {
     max-width: 100%;
     margin-right: 0;
-  }
+  } */
+}
+
+.heroSection {
+  background-color: #000;
+  background-image: url(/hero-background.jpg);
+  background-position: 0 0;
+  background-size: cover;
 }
 
 .title {
