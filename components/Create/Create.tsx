@@ -305,7 +305,7 @@ export function Create() {
       console.log(sig);
       notifications.show({
         title: 'Asset created',
-        message: `${sig}`,
+        message: `Transaction: ${sig}`,
         color: 'green',
       });
     } finally {
