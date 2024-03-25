@@ -31,7 +31,7 @@
   &::after {
     content: '';
     display: block;
-    background-color: var(--mantine-color-blue-filled);
+    background-color: var(--mantine-color-mplxGreen-filled);
     width: rem(45px);
     height: rem(2px);
     margin-top: var(--mantine-spacing-sm);
