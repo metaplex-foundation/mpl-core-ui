@@ -10,9 +10,9 @@ import { FeaturesCards } from './FeaturesCards';
 import { FeaturesGrid } from './FeaturesGrid';
 
 const links: { label: string; href: string }[] = [
-  { label: 'Documentation', href: 'https://developers.metaplex.com' },
+  { label: 'Documentation', href: 'https://developers.metaplex.com/core' },
   { label: 'MPL Repository', href: 'https://github.com/metaplex-foundation/mpl-core' },
-  { label: 'Typedoc', href: 'https://mpl-core-js-docs.vercel.app/' },
+  // { label: 'Typedoc', href: 'https://mpl-core-js-docs.vercel.app/' },
   { label: 'Javascript SDK', href: 'https://github.com/metaplex-foundation/mpl-core/tree/main/clients/js' },
   { label: 'Rust SDK', href: 'https://github.com/metaplex-foundation/mpl-core/tree/main/clients/rust' },
 ];
@@ -68,26 +68,31 @@ export function Landing() {
               ))}
             </List>
 
-            <Group mt={30}>
-              <RetainQueryLink href="/create">
-                <Button radius="xl" size="md" className={classes.control}>
-                  Try it now
-                </Button>
-              </RetainQueryLink>
-              <Link href="https://github.com/metaplex-foundation/mpl-core">
-                <Button variant="default" radius="xl" size="md" className={classes.control}>
-                  Source code
-                </Button>
-              </Link>
-              <RetainQueryLink href="/explorer">
-                <Button variant="outline" radius="xl" size="md" className={classes.control}>
-                  Explorer
-                </Button>
-              </RetainQueryLink>
-            </Group>
           </div>
           <Image src="./hero.webp" className={classes.image} />
         </div>
+        <Group pb={60} mt="md">
+          <RetainQueryLink href="/create">
+            <Button radius="xl" size="md" className={classes.control}>
+              Try it now
+            </Button>
+          </RetainQueryLink>
+          <Link href="https://developers.metaplex.com/core">
+            <Button variant="default" radius="xl" size="md" className={classes.control}>
+              Documentation
+            </Button>
+          </Link>
+          <Link href="https://github.com/metaplex-foundation/mpl-core">
+            <Button variant="default" radius="xl" size="md" className={classes.control}>
+              Source code
+            </Button>
+          </Link>
+          <RetainQueryLink href="/explorer">
+            <Button variant="outline" radius="xl" size="md" className={classes.control}>
+              Explorer
+            </Button>
+          </RetainQueryLink>
+        </Group>
       </Container>
       <Box bg="rgb(36, 36, 36)" py="xl">
         <FeaturesCards />

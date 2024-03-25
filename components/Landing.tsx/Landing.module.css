@@ -2,7 +2,7 @@
   display: flex;
   justify-content: space-between;
   padding-top: calc(var(--mantine-spacing-xl) * 2);
-  padding-bottom: calc(var(--mantine-spacing-xl) * 2);
+  padding-bottom: calc(var(--mantine-spacing-xl));
 }
 
 .content {
