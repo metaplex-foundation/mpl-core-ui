@@ -44,7 +44,7 @@ export function Landing() {
               Start building with Core
             </Title>
             <Text c="dimmed" mt="md">
-              Core is a next generation Solana NFT standard.
+              Core is a next generation Solana NFT standard and asset program
             </Text>
 
             <List
@@ -96,7 +96,7 @@ export function Landing() {
         </Group>
       </Container>
       </div>
-      <Box bg="rgb(36, 36, 36)" py="xl">
+      <Box bg="rgb(12, 12, 12)" py="xl">
         <FeaturesCards />
         <Container size="md" py="xl" />
       </Box>

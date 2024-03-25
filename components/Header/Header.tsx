@@ -1,9 +1,8 @@
-import { Center, Container, Flex, Group, Menu, Title } from '@mantine/core';
+import { Center, Container, Flex, Group, Image, Menu } from '@mantine/core';
 import { IconChevronDown } from '@tabler/icons-react';
 import { WalletMultiButton } from '@solana/wallet-adapter-react-ui';
 
 import classes from './Header.module.css';
-import { MetaplexLogo, MetaplexLogoVariant } from '../MetaplexLogo';
 import { Env } from '@/providers/useEnv';
 import RetainQueryLink from '../RetainQueryLink';
 
@@ -22,13 +21,13 @@ export function Header({ env, setEnv }: { env: string; setEnv: (env: Env) => voi
       size="xl"
       h={80}
       pt={12}
+      bg="black"
     >
       <div className={classes.inner}>
         <Flex justify="center" align="center" gap="md" ml="md">
           <RetainQueryLink href="/">
-            <MetaplexLogo variant={MetaplexLogoVariant.Small} />
+            <Image src="/m-core-color.png" alt="Core" w="50%" />
           </RetainQueryLink>
-          <Title order={2}>Core</Title>
         </Flex>
         <Group>
           <HeaderLink label="Create" link="/create" />

@@ -68,7 +68,7 @@ export function Providers({ children }: { children: ReactNode }) {
                   <AppShell
                     header={{ height: 80 }}
                     style={{
-                      backgroundColor: '#1a1a1a',
+                      backgroundColor: '#141414',
                     }}
                   >
                     <AppShell.Header>

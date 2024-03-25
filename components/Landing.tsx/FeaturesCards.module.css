@@ -25,6 +25,7 @@
 
 .card {
   border: rem(1px) solid light-dark(var(--mantine-color-gray-1), var(--mantine-color-dark-5));
+  background-color: var(--mantine-color-dark-8);
 }
 
 .cardTitle {

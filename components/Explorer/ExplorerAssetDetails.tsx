@@ -43,9 +43,9 @@ export function ExplorerAssetDetails({ asset, collection }: AssetWithCollection)
             variant="subtle"
             color="rgba(145, 145, 145, 1)"
             onClick={() => {
-            setActionMode('advanced');
-            open();
-          }}
+              setActionMode('advanced');
+              open();
+            }}
           ><IconSettings />
           </ActionIcon>
         </Group>
@@ -55,10 +55,10 @@ export function ExplorerAssetDetails({ asset, collection }: AssetWithCollection)
       {jsonInfo.isPending ? <Center h="20vh"><Loader /></Center> :
         <>
 
-          <Image src={jsonInfo.data.image} maw={320} />
-          {jsonInfo.data.description && <ExplorerStat
+          {jsonInfo.data?.image && <Image src={jsonInfo.data.image} maw={320} />}
+          {jsonInfo.data?.description && <ExplorerStat
             label="Description"
-            value={jsonInfo.data.description}
+            value={jsonInfo.data?.description}
           />}
         </>
       }
