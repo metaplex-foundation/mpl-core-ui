@@ -4,6 +4,7 @@ import { IconSettings } from '@tabler/icons-react';
 import { useMemo, useState } from 'react';
 import { useDisclosure } from '@mantine/hooks';
 import { canTransfer } from 'core-preview';
+import { useWallet } from '@solana/wallet-adapter-react';
 import { useAssetJson } from '../../hooks/asset';
 import { ExplorerStat } from './ExplorerStat';
 import RetainQueryLink from '../RetainQueryLink';
@@ -15,6 +16,7 @@ import { AssetWithCollection } from '@/lib/type';
 
 export function ExplorerAssetDetails({ asset, collection }: AssetWithCollection) {
   const umi = useUmi();
+  const { connected } = useWallet();
   const jsonInfo = useAssetJson(asset);
   const [opened, { open, close }] = useDisclosure(false);
   const [actionMode, setActionMode] = useState<'transfer' | 'advanced'>('transfer');
@@ -32,7 +34,7 @@ export function ExplorerAssetDetails({ asset, collection }: AssetWithCollection)
             <Button
               variant="outline"
               size="sm"
-              disabled={!enableTransfer}
+              disabled={!enableTransfer || !connected}
               onClick={() => {
                 setActionMode('transfer');
                 open();
@@ -42,6 +44,7 @@ export function ExplorerAssetDetails({ asset, collection }: AssetWithCollection)
           <ActionIcon
             variant="subtle"
             color="rgba(145, 145, 145, 1)"
+            disabled={!connected}
             onClick={() => {
               setActionMode('advanced');
               open();

@@ -4,6 +4,7 @@ import { useConnection, useWallet } from '@solana/wallet-adapter-react';
 import { ReactNode, useMemo } from 'react';
 import { dasApi } from '@metaplex-foundation/digital-asset-standard-api';
 import { mplCore } from 'core-preview';
+import { generateSigner, signerIdentity } from '@metaplex-foundation/umi';
 import { UmiContext } from './useUmi';
 
 export const UmiProvider = ({
@@ -18,10 +19,18 @@ export const UmiProvider = ({
   //   console.error("Add your nft.storage Token to .env!");
   //   nftStorageToken = 'AddYourTokenHere';
   // }
-  const umi = useMemo(() => createUmi(connection)
-    .use(walletAdapterIdentity(wallet))
-    .use(mplCore())
-    .use(dasApi()), [wallet, connection]);
+
+  const umi = useMemo(() => {
+    const u = createUmi(connection)
+      .use(mplCore())
+      .use(dasApi());
+
+    if (wallet.connected) {
+      return u.use(walletAdapterIdentity(wallet));
+    }
+    const anonSigner = generateSigner(u);
+    return u.use(signerIdentity(anonSigner));
+  }, [wallet, connection]);
 
   return <UmiContext.Provider value={{ umi }}>{children}</UmiContext.Provider>;
 };

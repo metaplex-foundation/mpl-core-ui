@@ -3,11 +3,13 @@ import { CodeHighlightTabs } from '@mantine/code-highlight';
 import { CollectionV1 } from 'core-preview';
 import { useDisclosure } from '@mantine/hooks';
 import { IconSettings } from '@tabler/icons-react';
+import { useWallet } from '@solana/wallet-adapter-react';
 import { useAssetJson } from '../../hooks/asset';
 import { ExplorerStat } from './ExplorerStat';
 import { ManageCollectionForm } from './ManageCollectionForm/ManageCollectionForm';
 
 export function ExplorerCollectionDetails({ collection }: { collection: CollectionV1 }) {
+  const { connected } = useWallet();
   const jsonInfo = useAssetJson(collection);
   const [opened, { open, close }] = useDisclosure(false);
   return (
@@ -17,6 +19,7 @@ export function ExplorerCollectionDetails({ collection }: { collection: Collecti
         <ActionIcon
           variant="subtle"
           color="rgba(145, 145, 145, 1)"
+          disabled={!connected}
           onClick={() => {
             open();
           }}
