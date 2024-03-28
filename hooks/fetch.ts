@@ -1,5 +1,5 @@
 import { publicKey } from '@metaplex-foundation/umi';
-import { collectionAddress, fetchAssetV1, fetchCollectionV1, getAssetV1GpaBuilder, getCollectionV1GpaBuilder, Key, updateAuthority } from '@metaplex-foundation/mpl-core';
+import { collectionAddress, deserializeAssetV1, deserializeCollectionV1, fetchAssetV1, fetchCollectionV1, getAssetV1GpaBuilder, getCollectionV1GpaBuilder, Key, updateAuthority } from '@metaplex-foundation/mpl-core';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useEnv } from '@/providers/useEnv';
 import { useUmi } from '@/providers/useUmi';
@@ -63,9 +63,14 @@ export function useFetchAssetsByOwner(owner?: string) {
   return useQuery({
     queryKey: ['fetch-assets', env, o],
     queryFn: async () => {
-      const result = await getAssetV1GpaBuilder(umi).whereField('owner', o).whereField('key', Key.AssetV1).getDeserialized();
-
-      return result;
+      const accounts = await getAssetV1GpaBuilder(umi).whereField('owner', o).whereField('key', Key.AssetV1).get();
+      return accounts.map((account) => {
+        try {
+          return deserializeAssetV1(account);
+        } catch (e) {
+          return null;
+        }
+      }).filter((a) => a);
     },
   });
 }
@@ -76,9 +81,14 @@ export function useFetchAssetsByCollection(collection: string) {
   return useQuery({
     queryKey: ['fetch-assets-by-collection', env, collection],
     queryFn: async () => {
-      const result = await getAssetV1GpaBuilder(umi).whereField('updateAuthority', updateAuthority('Collection', [publicKey(collection)])).whereField('key', Key.AssetV1).getDeserialized();
-
-      return result;
+      const accounts = await getAssetV1GpaBuilder(umi).whereField('updateAuthority', updateAuthority('Collection', [publicKey(collection)])).whereField('key', Key.AssetV1).get();
+      return accounts.map((account) => {
+        try {
+          return deserializeAssetV1(account);
+        } catch (e) {
+          return null;
+        }
+      }).filter((a) => a);
     },
   });
 }
@@ -99,8 +109,14 @@ export function useFetchCollectionsByUpdateAuthority(updateAuth: string) {
     queryKey: ['fetch-collections', env, updateAuth],
     queryFn: async () => {
       try {
-        const result = await getCollectionV1GpaBuilder(umi).whereField('updateAuthority', publicKey(updateAuth)).whereField('key', Key.CollectionV1).getDeserialized();
-        return result;
+        const accounts = await getCollectionV1GpaBuilder(umi).whereField('updateAuthority', publicKey(updateAuth)).whereField('key', Key.CollectionV1).get();
+        return accounts.map((account) => {
+          try {
+            return deserializeCollectionV1(account);
+          } catch (e) {
+            return null;
+          }
+        }).filter((a) => a);
       } catch (err) {
         console.error('Error fetching collections', err);
         throw err;

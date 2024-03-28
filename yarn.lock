@@ -2708,14 +2708,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@metaplex-foundation/mpl-core@npm:^0.2.0":
-  version: 0.2.0
-  resolution: "@metaplex-foundation/mpl-core@npm:0.2.0"
+"@metaplex-foundation/mpl-core@npm:^0.3.0":
+  version: 0.3.0
+  resolution: "@metaplex-foundation/mpl-core@npm:0.3.0"
   peerDependencies:
     "@metaplex-foundation/mpl-toolbox": ^0.8.0
     "@metaplex-foundation/umi": ^0.8.2
     "@noble/hashes": ^1.3.1
-  checksum: ba6aabe99a884d77f83bac9a6f183acba0bdc75db64065aa557f74bce72fd7b558edaa24b783bd08ff8b520e9142f4a2f7a0157503455939bb5a49450fff140c
+  checksum: 381c236ef1bc620a38ae1a8b768b05fb948c89127a4e98b21da65f3a255bfdc89a835ea6e70bea229a2fdc78574255d3450bffdeca5d988c009dd4a46f9d109b
   languageName: node
   linkType: hard
 
@@ -15060,7 +15060,7 @@ __metadata:
     "@mantine/nprogress": "npm:^7.3.2"
     "@mantine/tiptap": "npm:^7.3.2"
     "@metaplex-foundation/digital-asset-standard-api": "npm:^1.0.0"
-    "@metaplex-foundation/mpl-core": "npm:^0.2.0"
+    "@metaplex-foundation/mpl-core": "npm:^0.3.0"
     "@metaplex-foundation/mpl-toolbox": "npm:^0.9.1"
     "@metaplex-foundation/umi": "npm:^0.8.10"
     "@metaplex-foundation/umi-bundle-defaults": "npm:^0.8.10"
