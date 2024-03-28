@@ -64,6 +64,7 @@ export function useFetchAssetsByOwner(owner?: string) {
     queryKey: ['fetch-assets', env, o],
     queryFn: async () => {
       const accounts = await getAssetV1GpaBuilder(umi).whereField('owner', o).whereField('key', Key.AssetV1).get();
+      // TODO use getDeserialized() instead of the following temporary workaround for devnet breaking changes
       return accounts.map((account) => {
         try {
           return deserializeAssetV1(account);
@@ -84,6 +85,7 @@ export function useFetchAssetsByCollection(collection: string) {
       const accounts = await getAssetV1GpaBuilder(umi).whereField('updateAuthority', updateAuthority('Collection', [publicKey(collection)])).whereField('key', Key.AssetV1).get();
       return accounts.map((account) => {
         try {
+          // TODO use getDeserialized() instead of the following temporary workaround for devnet breaking changes
           return deserializeAssetV1(account);
         } catch (e) {
           return null;
@@ -110,6 +112,7 @@ export function useFetchCollectionsByUpdateAuthority(updateAuth: string) {
     queryFn: async () => {
       try {
         const accounts = await getCollectionV1GpaBuilder(umi).whereField('updateAuthority', publicKey(updateAuth)).whereField('key', Key.CollectionV1).get();
+        // TODO use getDeserialized() instead of the following temporary workaround for devnet breaking changes
         return accounts.map((account) => {
           try {
             return deserializeCollectionV1(account);
