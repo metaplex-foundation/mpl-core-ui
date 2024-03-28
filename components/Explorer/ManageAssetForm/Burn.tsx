@@ -1,5 +1,5 @@
 import { Button } from '@mantine/core';
-import { burnV1, collectionAddress } from 'core-preview';
+import { burnV1, collectionAddress } from '@metaplex-foundation/mpl-core';
 import { useCallback, useState } from 'react';
 import { base58 } from '@metaplex-foundation/umi/serializers';
 import { notifications } from '@mantine/notifications';

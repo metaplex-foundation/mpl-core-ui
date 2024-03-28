@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import { Center, Loader, SimpleGrid, Text } from '@mantine/core';
-import { Key, getCollectionV1GpaBuilder } from 'core-preview';
+import { Key, getCollectionV1GpaBuilder } from '@metaplex-foundation/mpl-core';
 import { useUmi } from '@/providers/useUmi';
 import { useEnv } from '@/providers/useEnv';
 import { ExplorerCollectionCard } from './ExplorerCollectionCard';

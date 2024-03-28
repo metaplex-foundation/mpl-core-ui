@@ -2708,6 +2708,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@metaplex-foundation/mpl-core@npm:^0.2.0":
+  version: 0.2.0
+  resolution: "@metaplex-foundation/mpl-core@npm:0.2.0"
+  peerDependencies:
+    "@metaplex-foundation/mpl-toolbox": ^0.8.0
+    "@metaplex-foundation/umi": ^0.8.2
+    "@noble/hashes": ^1.3.1
+  checksum: ba6aabe99a884d77f83bac9a6f183acba0bdc75db64065aa557f74bce72fd7b558edaa24b783bd08ff8b520e9142f4a2f7a0157503455939bb5a49450fff140c
+  languageName: node
+  linkType: hard
+
 "@metaplex-foundation/mpl-toolbox@npm:^0.9.1":
   version: 0.9.1
   resolution: "@metaplex-foundation/mpl-toolbox@npm:0.9.1"
@@ -9975,17 +9986,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"core-preview@npm:^0.1.3":
-  version: 0.1.3
-  resolution: "core-preview@npm:0.1.3"
-  peerDependencies:
-    "@metaplex-foundation/mpl-toolbox": ^0.8.0
-    "@metaplex-foundation/umi": ^0.8.2
-    "@noble/hashes": ^1.3.1
-  checksum: 23bb506ca0c6f5911aee08e4858188978d4278c506938a3bc2ae9cdc1cc0e4d05bbe0aeadfe0fdbcdcd6aa4e3df97abf3a30bae1c5fda0d15b3639a428b588ae
-  languageName: node
-  linkType: hard
-
 "core-util-is@npm:~1.0.0":
   version: 1.0.3
   resolution: "core-util-is@npm:1.0.3"
@@ -15060,6 +15060,7 @@ __metadata:
     "@mantine/nprogress": "npm:^7.3.2"
     "@mantine/tiptap": "npm:^7.3.2"
     "@metaplex-foundation/digital-asset-standard-api": "npm:^1.0.0"
+    "@metaplex-foundation/mpl-core": "npm:^0.2.0"
     "@metaplex-foundation/mpl-toolbox": "npm:^0.9.1"
     "@metaplex-foundation/umi": "npm:^0.8.10"
     "@metaplex-foundation/umi-bundle-defaults": "npm:^0.8.10"
@@ -15095,7 +15096,6 @@ __metadata:
     babel-loader: "npm:^9.1.3"
     browser-image-size: "npm:^1.1.0"
     compressorjs: "npm:^1.2.1"
-    core-preview: "npm:^0.1.3"
     dayjs: "npm:^1.11.10"
     embla-carousel-react: "npm:^8.0.0-rc17"
     eslint: "npm:^8.53.0"

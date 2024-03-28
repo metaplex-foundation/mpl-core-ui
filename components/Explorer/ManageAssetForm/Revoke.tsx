@@ -1,5 +1,5 @@
 import { ActionIcon, TextInput } from '@mantine/core';
-import { AssetPluginKey, collectionAddress, revokePluginAuthorityV1 } from 'core-preview';
+import { AssetPluginKey, collectionAddress, revokePluginAuthorityV1 } from '@metaplex-foundation/mpl-core';
 import { useCallback, useMemo, useState } from 'react';
 import { base58 } from '@metaplex-foundation/umi/serializers';
 import { notifications } from '@mantine/notifications';

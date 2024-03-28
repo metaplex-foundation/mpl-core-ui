@@ -1,5 +1,5 @@
 import { publicKey } from '@metaplex-foundation/umi';
-import { collectionAddress, fetchAssetV1, fetchCollectionV1, getAssetV1GpaBuilder, getCollectionV1GpaBuilder, Key, updateAuthority } from 'core-preview';
+import { collectionAddress, fetchAssetV1, fetchCollectionV1, getAssetV1GpaBuilder, getCollectionV1GpaBuilder, Key, updateAuthority } from '@metaplex-foundation/mpl-core';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useEnv } from '@/providers/useEnv';
 import { useUmi } from '@/providers/useUmi';

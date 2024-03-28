@@ -1,6 +1,6 @@
 import { useCallback, useState } from 'react';
 import { useForm } from '@mantine/form';
-import { collectionAddress, updateV1 } from 'core-preview';
+import { collectionAddress, updateV1 } from '@metaplex-foundation/mpl-core';
 import { base58 } from '@metaplex-foundation/umi/serializers';
 import { notifications } from '@mantine/notifications';
 import { Button, Stack, TextInput } from '@mantine/core';

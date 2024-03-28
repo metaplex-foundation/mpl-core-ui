@@ -1,6 +1,6 @@
 import { Accordion, Grid, Stack, Text } from '@mantine/core';
 import { useMemo } from 'react';
-import { CollectionV1, hasCollectionUpdateAuthority } from 'core-preview';
+import { CollectionV1, hasCollectionUpdateAuthority } from '@metaplex-foundation/mpl-core';
 import { authorityManagedPlugins, getCollectionPluginActions, typeToLabel } from '@/lib/plugin';
 import { useUmi } from '@/providers/useUmi';
 import { LabelTitle } from '@/components/LabelTitle';

@@ -1,5 +1,5 @@
 import { PublicKey, publicKey } from '@metaplex-foundation/umi';
-import { AssetPluginKey, AssetV1, CollectionV1, PluginType, hasAssetUpdateAuthority, hasCollectionUpdateAuthority } from 'core-preview';
+import { AssetPluginKey, AssetV1, CollectionV1, PluginType, hasAssetUpdateAuthority, hasCollectionUpdateAuthority } from '@metaplex-foundation/mpl-core';
 import { capitalizeFirstLetter } from './string';
 
 export type PluginActions = {

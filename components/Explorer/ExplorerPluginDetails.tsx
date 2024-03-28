@@ -1,5 +1,5 @@
 import { Badge, Group, Stack, Text } from '@mantine/core';
-import { BasePluginAuthority, PluginsList } from 'core-preview';
+import { BasePluginAuthority, PluginsList } from '@metaplex-foundation/mpl-core';
 import { ExplorerStat } from './ExplorerStat';
 import { CopyButton } from '../CopyButton/CopyButton';
 

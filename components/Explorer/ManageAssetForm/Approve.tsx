@@ -1,7 +1,7 @@
 import { ActionIcon, TextInput } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { TransactionBuilder, publicKey, transactionBuilder } from '@metaplex-foundation/umi';
-import { addPluginV1, approvePluginAuthorityV1, createPlugin, addressPluginAuthority, collectionAddress, AssetPluginKey } from 'core-preview';
+import { addPluginV1, approvePluginAuthorityV1, createPlugin, addressPluginAuthority, collectionAddress, AssetPluginKey } from '@metaplex-foundation/mpl-core';
 import { useCallback, useMemo, useState } from 'react';
 import { base58 } from '@metaplex-foundation/umi/serializers';
 import { notifications } from '@mantine/notifications';

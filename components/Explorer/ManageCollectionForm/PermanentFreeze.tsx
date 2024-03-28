@@ -1,6 +1,6 @@
 import { Button } from '@mantine/core';
 import { TransactionBuilder, transactionBuilder } from '@metaplex-foundation/umi';
-import { createPlugin, CollectionV1, addCollectionPluginV1, updateCollectionPluginV1 } from 'core-preview';
+import { createPlugin, CollectionV1, addCollectionPluginV1, updateCollectionPluginV1 } from '@metaplex-foundation/mpl-core';
 import { useCallback, useState } from 'react';
 import { base58 } from '@metaplex-foundation/umi/serializers';
 import { notifications } from '@mantine/notifications';

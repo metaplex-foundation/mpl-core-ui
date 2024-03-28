@@ -1,6 +1,6 @@
 import { Center, Loader, Paper, SimpleGrid, Stack, Text } from '@mantine/core';
 
-import { CollectionV1 } from 'core-preview';
+import { CollectionV1 } from '@metaplex-foundation/mpl-core';
 import { ExplorerCollectionDetails } from './ExplorerCollectionDetails';
 import { ExplorerPluginDetails } from './ExplorerPluginDetails';
 import { useFetchAssetsByCollection } from '@/hooks/fetch';

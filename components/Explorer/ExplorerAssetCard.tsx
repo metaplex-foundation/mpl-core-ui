@@ -1,5 +1,5 @@
 import { Card, Group, Image, Skeleton, Text } from '@mantine/core';
-import { AssetV1 } from 'core-preview';
+import { AssetV1 } from '@metaplex-foundation/mpl-core';
 import { useAssetJson } from '../../hooks/asset';
 
 import classes from './ExplorerCard.module.css';

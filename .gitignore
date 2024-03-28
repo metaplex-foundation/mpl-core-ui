@@ -133,3 +133,5 @@ dist
 
 .env
 .env.development
+
+test.js

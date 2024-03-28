@@ -1,5 +1,5 @@
 import { Card, Flex, Group, Image, Skeleton, Text, ThemeIcon } from '@mantine/core';
-import { CollectionV1 } from 'core-preview';
+import { CollectionV1 } from '@metaplex-foundation/mpl-core';
 import { IconSnowflake } from '@tabler/icons-react';
 import { useAssetJson } from '../../hooks/asset';
 

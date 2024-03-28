@@ -1,6 +1,6 @@
 import { ActionIcon, Center, Group, Image, Loader, Modal, Stack, Text, Title } from '@mantine/core';
 import { CodeHighlightTabs } from '@mantine/code-highlight';
-import { CollectionV1 } from 'core-preview';
+import { CollectionV1 } from '@metaplex-foundation/mpl-core';
 import { useDisclosure } from '@mantine/hooks';
 import { IconSettings } from '@tabler/icons-react';
 import { useWallet } from '@solana/wallet-adapter-react';

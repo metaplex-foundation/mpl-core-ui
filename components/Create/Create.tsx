@@ -3,7 +3,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { CodeHighlightTabs } from '@mantine/code-highlight';
 import { useDisclosure } from '@mantine/hooks';
 import { generateSigner, publicKey, transactionBuilder } from '@metaplex-foundation/umi';
-import { PluginAuthorityPair, RuleSet, createV1, createCollectionV1, nonePluginAuthority, pluginAuthorityPair, addressPluginAuthority, ruleSet } from 'core-preview';
+import { PluginAuthorityPair, RuleSet, createV1, createCollectionV1, nonePluginAuthority, pluginAuthorityPair, addressPluginAuthority, ruleSet } from '@metaplex-foundation/mpl-core';
 import { base58 } from '@metaplex-foundation/umi/serializers';
 import { notifications } from '@mantine/notifications';
 import { useUmi } from '@/providers/useUmi';

@@ -3,7 +3,7 @@ import { CodeHighlightTabs } from '@mantine/code-highlight';
 import { IconSettings } from '@tabler/icons-react';
 import { useMemo, useState } from 'react';
 import { useDisclosure } from '@mantine/hooks';
-import { canTransfer } from 'core-preview';
+import { canTransfer } from '@metaplex-foundation/mpl-core';
 import { useWallet } from '@solana/wallet-adapter-react';
 import { useAssetJson } from '../../hooks/asset';
 import { ExplorerStat } from './ExplorerStat';

@@ -1,7 +1,7 @@
 import { ActionIcon, TextInput } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { publicKey } from '@metaplex-foundation/umi';
-import { collectionAddress, transferV1 } from 'core-preview';
+import { collectionAddress, transferV1 } from '@metaplex-foundation/mpl-core';
 import { useCallback, useState } from 'react';
 import { base58 } from '@metaplex-foundation/umi/serializers';
 import { notifications } from '@mantine/notifications';

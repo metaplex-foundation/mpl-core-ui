@@ -1,5 +1,5 @@
 import { useForm } from '@mantine/form';
-import { AssetV1, collectionAddress, transferV1 } from 'core-preview';
+import { AssetV1, collectionAddress, transferV1 } from '@metaplex-foundation/mpl-core';
 import { Button, Stack, TextInput } from '@mantine/core';
 import { useCallback, useState } from 'react';
 import { publicKey } from '@metaplex-foundation/umi';

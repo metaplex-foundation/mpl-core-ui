@@ -1,6 +1,6 @@
 import { Accordion, Grid, Stack, Text } from '@mantine/core';
 import { useMemo } from 'react';
-import { canBurn, canTransfer, hasAssetUpdateAuthority } from 'core-preview';
+import { canBurn, canTransfer, hasAssetUpdateAuthority } from '@metaplex-foundation/mpl-core';
 import { authorityManagedPlugins, getAssetPluginActions, ownerManagedPlugins, typeToLabel } from '@/lib/plugin';
 import { useUmi } from '@/providers/useUmi';
 import { AssetWithCollection } from '@/lib/type';
