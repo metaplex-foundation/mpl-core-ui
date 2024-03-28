@@ -45,7 +45,14 @@ export function ExplorerCollectionDetails({ collection }: { collection: Collecti
             value={collection.updateAuthority}
             copyable
           />
-          <Text fz="xs" tt="uppercase" fw={700} c="dimmed">JSON Metadata</Text>
+
+          <ExplorerStat
+            label="Metadata URI"
+            value={collection.uri}
+            copyable
+            asExternalLink={collection.uri}
+          />
+
           <CodeHighlightTabs
             withExpandButton
             expandCodeLabel="Show full JSON"

@@ -89,19 +89,20 @@ export function ExplorerAssetDetails({ asset, collection }: AssetWithCollection)
       )}
 
       {asset.updateAuthority.type === 'Collection' && (
-        <RetainQueryLink
-          href={`/explorer/collection/${asset.updateAuthority.address}`}
-          style={{
-            textDecoration: 'none',
-          }}
-        >
-          <ExplorerStat
-            label="Collection"
-            value={asset.updateAuthority.address || ''}
-            copyable
-          />
-        </RetainQueryLink>
+        <ExplorerStat
+          label="Collection"
+          value={asset.updateAuthority.address || ''}
+          copyable
+          asNativeLink={`/explorer/collection/${asset.updateAuthority.address}`}
+        />
       )}
+
+      <ExplorerStat
+        label="Metadata URI"
+        value={asset.uri}
+        copyable
+        asExternalLink={asset.uri}
+      />
       {jsonInfo.data && (
         <>
           <Text fz="xs" tt="uppercase" fw={700} c="dimmed">JSON Metadata</Text>

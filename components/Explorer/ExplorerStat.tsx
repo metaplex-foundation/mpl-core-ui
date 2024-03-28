@@ -1,7 +1,25 @@
-import { Badge, Box, Group, Text } from '@mantine/core';
+import { Anchor, Badge, Box, Group, Text } from '@mantine/core';
 import { CopyButton } from '../CopyButton/CopyButton';
+import RetainQueryLink from '../RetainQueryLink';
 
-export function ExplorerStat({ label, value, copyable, labeled }: { label: string; value: string, copyable?: boolean, labeled?: boolean }) {
+export type ExplorerStatProps = {
+  label: string
+  value: string
+  copyable?: boolean
+  labeled?: boolean
+  asExternalLink?: string
+  asNativeLink?: string
+};
+
+function LabelValue({ children }: { children: React.ReactNode }) {
+  return (
+    <Text fz="sm" fw={500}>
+      {children}
+    </Text>
+  );
+}
+
+export function ExplorerStat({ label, value, copyable, labeled, asExternalLink, asNativeLink }: ExplorerStatProps) {
   return (
     <Box>
       <Group gap="xs">
@@ -13,9 +31,31 @@ export function ExplorerStat({ label, value, copyable, labeled }: { label: strin
       {labeled ? (
         <Badge variant="light">{value}</Badge>
       ) : (
-        <Text fz="sm" fw={500}>
-          {value}
-        </Text>
+        <>
+          {asNativeLink ? (
+            <RetainQueryLink
+              href={asNativeLink}
+              style={{
+                textDecoration: 'none',
+              }}
+            >
+              <LabelValue>
+                {value}
+              </LabelValue>
+            </RetainQueryLink>
+          ) : asExternalLink ? (
+            <Anchor href={asExternalLink} target="_blank">
+              <LabelValue>
+                {value}
+              </LabelValue>
+            </Anchor>
+          ) : (
+
+            <LabelValue>
+              {value}
+            </LabelValue>
+          )}
+        </>
       )}
 
     </Box>

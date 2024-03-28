@@ -55,7 +55,7 @@ export function Update({ asset }: AssetWithCollection) {
         label="Uri"
         {...form.getInputProps('uri')}
       />
-      <Button onClick={handleUpdate} loading={loading} color="blue">Update</Button>
+      <Button onClick={handleUpdate} loading={loading}>Update</Button>
     </Stack>
   );
 }

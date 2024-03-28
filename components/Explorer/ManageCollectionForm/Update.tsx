@@ -59,7 +59,7 @@ export function Update({ collection }: { collection: CollectionV1 }) {
         label="Update authority"
         {...form.getInputProps('updateAuth')}
       />
-      <Button onClick={handleUpdate} loading={loading} color="blue">Update</Button>
+      <Button onClick={handleUpdate} loading={loading}>Update</Button>
     </Stack>
   );
 }
