@@ -1,5 +1,5 @@
 import { publicKey } from '@metaplex-foundation/umi';
-import { collectionAddress, deserializeAssetV1, deserializeCollectionV1, fetchAssetV1, fetchCollectionV1, getAssetV1GpaBuilder, getCollectionV1GpaBuilder, Key, updateAuthority } from '@metaplex-foundation/mpl-core';
+import { AssetV1, collectionAddress, CollectionV1, deserializeAssetV1, deserializeCollectionV1, fetchAssetV1, fetchCollectionV1, getAssetV1GpaBuilder, getCollectionV1GpaBuilder, Key, updateAuthority } from '@metaplex-foundation/mpl-core';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useEnv } from '@/providers/useEnv';
 import { useUmi } from '@/providers/useUmi';
@@ -71,7 +71,7 @@ export function useFetchAssetsByOwner(owner?: string) {
         } catch (e) {
           return null;
         }
-      }).filter((a) => a);
+      }).filter((a) => a) as AssetV1[];
     },
   });
 }
@@ -90,7 +90,7 @@ export function useFetchAssetsByCollection(collection: string) {
         } catch (e) {
           return null;
         }
-      }).filter((a) => a);
+      }).filter((a) => a) as AssetV1[];
     },
   });
 }
@@ -119,7 +119,7 @@ export function useFetchCollectionsByUpdateAuthority(updateAuth: string) {
           } catch (e) {
             return null;
           }
-        }).filter((a) => a);
+        }).filter((a) => a) as CollectionV1[];
       } catch (err) {
         console.error('Error fetching collections', err);
         throw err;

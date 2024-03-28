@@ -7,7 +7,6 @@ import { canTransfer } from '@metaplex-foundation/mpl-core';
 import { useWallet } from '@solana/wallet-adapter-react';
 import { useAssetJson } from '../../hooks/asset';
 import { ExplorerStat } from './ExplorerStat';
-import RetainQueryLink from '../RetainQueryLink';
 import { useUmi } from '@/providers/useUmi';
 import { TransferForm } from './TransferForm';
 import { useInvalidateFetchAssetWithCollection } from '@/hooks/fetch';

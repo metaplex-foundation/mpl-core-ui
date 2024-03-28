@@ -1,6 +1,6 @@
 'use client';
 
-import { Image, Container, Title, Button, Group, Text, List, ThemeIcon, rem, Box, Flex, Stack, Alert } from '@mantine/core';
+import { Container, Title, Button, Group, Text, List, ThemeIcon, rem, Box, Flex, Stack, Alert } from '@mantine/core';
 import { IconInfoCircle, IconNotes } from '@tabler/icons-react';
 import Link from 'next/link';
 import { CodeHighlight } from '@mantine/code-highlight';
