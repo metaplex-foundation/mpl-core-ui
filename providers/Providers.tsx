@@ -3,7 +3,7 @@
 import { ConnectionProvider, WalletProvider } from '@solana/wallet-adapter-react';
 import { PhantomWalletAdapter, SolflareWalletAdapter } from '@solana/wallet-adapter-wallets';
 import { WalletModalProvider } from '@solana/wallet-adapter-react-ui';
-import { ReactNode, useEffect, useMemo, useState } from 'react';
+import { ReactNode, useMemo, useState } from 'react';
 import { Notifications } from '@mantine/notifications';
 import { AppShell } from '@mantine/core';
 import { ReactQueryStreamedHydration } from '@tanstack/react-query-next-experimental';
