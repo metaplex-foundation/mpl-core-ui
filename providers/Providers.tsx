@@ -20,7 +20,7 @@ export function Providers({ children }: { children: ReactNode }) {
   const pathname = usePathname();
   const queryEnv = searchParams.get('env');
   const [client] = useState(new QueryClient());
-  const [env, setEnv] = useState<Env>((queryEnv === 'mainnet-beta' || queryEnv === 'devnet') ? queryEnv : 'devnet');
+  const [env, setEnv] = useState<Env>((queryEnv === 'mainnet-beta' || queryEnv === 'devnet') ? queryEnv : 'mainnet-beta');
   const wallets = useMemo(
     () => [
       new PhantomWalletAdapter(),
@@ -37,12 +37,11 @@ export function Providers({ children }: { children: ReactNode }) {
     router.push(`${pathname}?${params.toString()}`);
   };
 
-  // TODO remove this when enabling mainnet
-  useEffect(() => {
-    if (env === 'devnet' && queryEnv !== 'devnet') {
-      doSetEnv('devnet');
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (env === 'devnet' && queryEnv !== 'devnet') {
+  //     doSetEnv('devnet');
+  //   }
+  // }, []);
 
   const endpoint = useMemo(() => {
     switch (env) {
