@@ -1,6 +1,6 @@
 'use client';
 
-import { Center, Container, Paper, Stack, Text } from '@mantine/core';
+import { Center, Container, Paper, Text } from '@mantine/core';
 import { useWallet } from '@solana/wallet-adapter-react';
 import { ExplorerLanding } from '@/components/Explorer/ExplorerLanding';
 import { ExplorerSearch } from '@/components/Explorer/ExplorerSearch';
