@@ -51,12 +51,6 @@ export const data = [
     description:
       'Join top Solana collections <redacted> and <redacted> in creating the next generation of Solana NFTs. Supported by top Solana wallets and marketplaces.',
   },
-  {
-    icon: IconLock,
-    title: 'Secure by default',
-    description:
-      "Core is currently undergoing Audit by Solana's top security firms.",
-  },
 
 ];
 
