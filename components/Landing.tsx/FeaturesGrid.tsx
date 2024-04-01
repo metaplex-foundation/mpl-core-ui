@@ -55,7 +55,7 @@ export const data = [
     icon: IconLock,
     title: 'Secure by default',
     description:
-      "Audited by Solana's top security firms.",
+      "Core is currently undergoing Audit by Solana's top security firms.",
   },
 
 ];
