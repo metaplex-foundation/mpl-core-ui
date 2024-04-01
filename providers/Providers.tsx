@@ -45,7 +45,7 @@ export function Providers({ children }: { children: ReactNode }) {
 
   const endpoint = useMemo(() => {
     switch (env) {
-      case 'mainnet-beta':
+      case 'mainnet':
         return process.env.NEXT_PUBLIC_MAINNET_RPC_URL;
       case 'localhost':
         return 'http://localhost:8899';
