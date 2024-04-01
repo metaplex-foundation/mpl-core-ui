@@ -3,7 +3,7 @@
 import { ConnectionProvider, WalletProvider } from '@solana/wallet-adapter-react';
 import { PhantomWalletAdapter, SolflareWalletAdapter } from '@solana/wallet-adapter-wallets';
 import { WalletModalProvider } from '@solana/wallet-adapter-react-ui';
-import { ReactNode, useEffect, useMemo, useState } from 'react';
+import { ReactNode, useMemo, useState } from 'react';
 import { Notifications } from '@mantine/notifications';
 import { AppShell } from '@mantine/core';
 import { ReactQueryStreamedHydration } from '@tanstack/react-query-next-experimental';
@@ -20,7 +20,7 @@ export function Providers({ children }: { children: ReactNode }) {
   const pathname = usePathname();
   const queryEnv = searchParams.get('env');
   const [client] = useState(new QueryClient());
-  const [env, setEnv] = useState<Env>((queryEnv === 'mainnet-beta' || queryEnv === 'devnet') ? queryEnv : 'devnet');
+  const [env, setEnv] = useState<Env>((queryEnv === 'mainnet' || queryEnv === 'devnet') ? queryEnv : 'mainnet');
   const wallets = useMemo(
     () => [
       new PhantomWalletAdapter(),
@@ -37,15 +37,15 @@ export function Providers({ children }: { children: ReactNode }) {
     router.push(`${pathname}?${params.toString()}`);
   };
 
-  useEffect(() => {
-    if (env === 'devnet' && queryEnv !== 'devnet') {
-      doSetEnv('devnet');
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (env === 'devnet' && queryEnv !== 'devnet') {
+  //     doSetEnv('devnet');
+  //   }
+  // }, []);
 
   const endpoint = useMemo(() => {
     switch (env) {
-      case 'mainnet-beta':
+      case 'mainnet':
         return process.env.NEXT_PUBLIC_MAINNET_RPC_URL;
       case 'localhost':
         return 'http://localhost:8899';
