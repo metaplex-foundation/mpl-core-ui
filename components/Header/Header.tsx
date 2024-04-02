@@ -21,7 +21,6 @@ export function Header({ env, setEnv }: { env: string; setEnv: (env: Env) => voi
       size="xl"
       h={80}
       pt={12}
-      bg="black"
     >
       <div className={classes.inner}>
         <Flex justify="center" align="center" gap="md" ml="md">

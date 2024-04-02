@@ -70,7 +70,7 @@ export function Providers({ children }: { children: ReactNode }) {
                       backgroundColor: '#141414',
                     }}
                   >
-                    <AppShell.Header>
+                    <AppShell.Header bg="black" withBorder={false}>
                       <Header env={env} setEnv={doSetEnv} />
                     </AppShell.Header>
                     <AppShell.Main>

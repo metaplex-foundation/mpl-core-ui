@@ -1,0 +1,4 @@
+.statText {
+  text-overflow: ellipsis;
+  overflow: hidden;
+}

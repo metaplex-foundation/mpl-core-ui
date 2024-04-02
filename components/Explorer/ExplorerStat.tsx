@@ -2,6 +2,8 @@ import { Anchor, Badge, Box, Group, Text } from '@mantine/core';
 import { CopyButton } from '../CopyButton/CopyButton';
 import RetainQueryLink from '../RetainQueryLink';
 
+import classes from './ExplorerStat.module.css';
+
 export type ExplorerStatProps = {
   label: string
   value: string
@@ -13,7 +15,7 @@ export type ExplorerStatProps = {
 
 function LabelValue({ children }: { children: React.ReactNode }) {
   return (
-    <Text fz="sm" fw={500}>
+    <Text fz="sm" fw={500} className={classes.statText}>
       {children}
     </Text>
   );
