@@ -1,4 +1,6 @@
+import { ValidationResultsOffset } from '@metaplex-foundation/mpl-core';
 import { publicKey } from '@metaplex-foundation/umi';
+import { ExtraAccountWithNoneInput } from './type';
 
 export interface AuthorityManagedPluginValues {
   royalties: {
@@ -36,6 +38,15 @@ export interface AuthorityManagedPluginValues {
   update: {
     enabled: boolean;
     authority: string;
+  }
+  oracle: {
+    enabled: boolean
+    oracles: {
+      lifecycles: ('Create' | 'Transfer' | 'Burn' | 'Update')[]
+      offset: ValidationResultsOffset
+      baseAddress: string
+      pda: ExtraAccountWithNoneInput
+    }[]
   }
 }
 
@@ -76,6 +87,19 @@ export const defaultAuthorityManagedPluginValues: AuthorityManagedPluginValues =
   permanentBurn: {
     enabled: false,
     authority: '',
+  },
+  oracle: {
+    enabled: false,
+    oracles: [{
+      lifecycles: ['Transfer'],
+      offset: {
+        type: 'Anchor',
+      },
+      baseAddress: '',
+      pda: {
+        type: 'None',
+      },
+    }],
   },
 };
 

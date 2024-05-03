@@ -32,6 +32,7 @@
     "@mantine/tiptap": "^7.3.2",
     "@metaplex-foundation/digital-asset-standard-api": "^1.0.0",
     "@metaplex-foundation/mpl-core": "^0.4.3",
+    "@metaplex-foundation/mpl-core-oracle-example": "0.0.1",
     "@metaplex-foundation/mpl-toolbox": "^0.9.1",
     "@metaplex-foundation/umi": "^0.8.10",
     "@metaplex-foundation/umi-bundle-defaults": "^0.8.10",
@@ -100,5 +101,9 @@
     "ts-jest": "^29.1.1",
     "typescript": "5.2.2"
   },
-  "packageManager": "yarn@4.0.1"
+  "packageManager": "yarn@4.0.1",
+  "resolutions": {
+    "@metaplex-foundation/mpl-core": "portal:/Users/nhan/src/mpl-core/clients/js",
+    "@metaplex-foundation/mpl-core-oracle-example": "portal:/Users/nhan/src/mpl-core-oracle-example/clients/js"
+  }
 }

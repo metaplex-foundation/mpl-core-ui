@@ -18,16 +18,16 @@ const links: { label: string; href: string }[] = [
 ];
 
 const code = `
-const assetAddress = generateSigner(umi);
-const asset = await createV1(umi, {
-  asset: assetAddress,
+const asset = generateSigner(umi);
+await create(umi, {
+  asset: asset,
   name: 'My digital asset #1',
   uri: 'https://example.com/metadata.json',
 }).sendAndConfirm(umi);
 
 const recipient = generateSigner(umi);
-await transferV1(umi, {
-  asset: assetAddress.publicKey,
+await transfer(umi, {
+  asset: asset.publicKey,
   newOwner: recipient.publicKey,
 }).sendAndConfirm(umi);
 `;
@@ -35,7 +35,7 @@ await transferV1(umi, {
 export function Landing() {
   return (
     <>
-      <Alert variant="light" color="yellow" title="Core is now LIVE on mainnet!" icon={<IconInfoCircle />} />
+      <RetainQueryLink href="/oracle-demo"><Alert variant="light" color="yellow" title="Check out the new Oracle external plugin here!" icon={<IconInfoCircle />} /></RetainQueryLink>
       <div className={classes.heroSection}>
         <Container size="md" pb="xl">
           <div className={classes.inner}>

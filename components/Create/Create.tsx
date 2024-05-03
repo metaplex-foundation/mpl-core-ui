@@ -76,6 +76,7 @@ const mapPlugins = (plugins: AuthorityManagedPluginValues): PluginAuthorityPair[
       authority: addressPluginAuthority(publicKey(plugins.permanentFreeze.authority)),
     }));
   }
+
   return pairs;
 };
 

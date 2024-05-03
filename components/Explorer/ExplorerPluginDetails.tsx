@@ -1,9 +1,9 @@
 import { Badge, Group, Stack, Text } from '@mantine/core';
-import { BasePluginAuthority, PluginsList } from '@metaplex-foundation/mpl-core';
+import { PluginAuthority, PluginsList } from '@metaplex-foundation/mpl-core';
 import { ExplorerStat } from './ExplorerStat';
 import { CopyButton } from '../CopyButton/CopyButton';
 
-const AuthorityStat = ({ authority, name }: { authority: BasePluginAuthority, name: string }) => {
+const AuthorityStat = ({ authority, name }: { authority: PluginAuthority, name: string }) => {
   switch (authority.type) {
     case 'None':
     case 'Owner':
