@@ -3,7 +3,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { CodeHighlightTabs } from '@mantine/code-highlight';
 import { useDisclosure } from '@mantine/hooks';
 import { generateSigner, publicKey, transactionBuilder } from '@metaplex-foundation/umi';
-import { RuleSet, ruleSet, CreateArgsPlugin, createCollection, create, CollectionV1, fetchCollectionV1 } from '@metaplex-foundation/mpl-core';
+import { RuleSet, ruleSet, CreateArgsPlugin, createCollection, create, CollectionV1, fetchCollectionV1, OracleInitInfoArgs } from '@metaplex-foundation/mpl-core';
 import { base58 } from '@metaplex-foundation/umi/serializers';
 import { notifications } from '@mantine/notifications';
 import { useUmi } from '@/providers/useUmi';
@@ -347,13 +347,17 @@ export function Create() {
           plugins: cPlugins,
         }));
         // create a collection with the right plugin configuration to derive any extra accounts
-        collectionPartial.oracles = cPlugins.filter(p => p.type === 'Oracle').map(p => ({
-          ...p,
-          authority: { type: 'None' },
-          resultsOffset: p.resultsOffset || {
-            type: 'Anchor',
-          },
-        }));
+        collectionPartial.oracles = cPlugins.filter(p => p.type === 'Oracle').map(p => {
+          const o = p as OracleInitInfoArgs;
+          return {
+            ...o,
+            type: 'Oracle',
+            authority: { type: 'None' },
+            resultsOffset: o.resultsOffset || {
+              type: 'Anchor',
+            },
+          };
+        });
       } else if (collection === 'Existing') {
         collectionPartial = await fetchCollectionV1(umi, publicKey(form.values.collectionAddress));
       }
