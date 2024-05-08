@@ -2712,7 +2712,6 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@metaplex-foundation/mpl-core-oracle-example@portal:/Users/nhan/src/mpl-core-oracle-example/clients/js::locator=mantine-next-template%40workspace%3A."
   peerDependencies:
-    "@metaplex-foundation/mpl-core": ">=0.4.5 < 2"
     "@metaplex-foundation/umi": ">=0.8.2 < 1"
     "@noble/hashes": ^1.3.1
   languageName: node
@@ -15068,7 +15067,7 @@ __metadata:
     "@mantine/nprogress": "npm:^7.3.2"
     "@mantine/tiptap": "npm:^7.3.2"
     "@metaplex-foundation/digital-asset-standard-api": "npm:^1.0.0"
-    "@metaplex-foundation/mpl-core": "npm:^0.4.3"
+    "@metaplex-foundation/mpl-core": "npm:^0.4.6"
     "@metaplex-foundation/mpl-core-oracle-example": "npm:0.0.1"
     "@metaplex-foundation/mpl-toolbox": "npm:^0.9.1"
     "@metaplex-foundation/umi": "npm:^0.8.10"
