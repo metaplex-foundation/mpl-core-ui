@@ -2,7 +2,7 @@ import { Button, CloseButton, Group, Select, Stack, TextInput } from '@mantine/c
 import { ExtraAccountWithNoneInput, SeedInput } from '@/lib/type';
 import { ExtraAccountSelector } from './ExtraAccountSelector';
 
-export function ExtraAccountConfigurator({ label, extraAccount, setExtraAccount }: { label: string, extraAccount: ExtraAccountWithNoneInput, setExtraAccount: (extraAccount: ExtraAccountWithNoneInput) => void }) {
+export function ExtraAccountConfigurator({ label, extraAccount, setExtraAccount, error }: { label: string, extraAccount: ExtraAccountWithNoneInput, error?: string, setExtraAccount: (extraAccount: ExtraAccountWithNoneInput) => void }) {
   return (
     <>
       <ExtraAccountSelector
@@ -22,13 +22,14 @@ export function ExtraAccountConfigurator({ label, extraAccount, setExtraAccount 
             setExtraAccount({ type } as ExtraAccountWithNoneInput);
           }
         }}
+        error={error}
       />
       {extraAccount.type === 'Address' && <TextInput label="Address" value={extraAccount.address} onChange={(e) => setExtraAccount({ type: 'Address', address: e.currentTarget.value })} />}
       {extraAccount.type === 'CustomPda' && (
         <Stack ml="lg">
           {extraAccount.seeds?.map((seed, idx) => (
             <>
-              <Group>
+              <Group key={`cpda-${idx}`}>
                 <Select
                   data={['Asset', 'Address', 'Bytes', 'Collection', 'Owner', 'Recipient']}
                   value={seed.type}

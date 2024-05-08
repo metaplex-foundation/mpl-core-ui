@@ -1,83 +1,104 @@
-import { Button, Center, Fieldset, Flex, Image, Modal, Select, Stack, Text, TextInput, Title } from '@mantine/core';
+import { Button, Center, Fieldset, Flex, Image, Loader, Modal, Select, Stack, Text, TextInput } from '@mantine/core';
 import { useCallback, useEffect, useState } from 'react';
 import { CodeHighlightTabs } from '@mantine/code-highlight';
 import { useDisclosure } from '@mantine/hooks';
 import { generateSigner, publicKey, transactionBuilder } from '@metaplex-foundation/umi';
-import { PluginAuthorityPair, RuleSet, createV1, createCollectionV1, nonePluginAuthority, pluginAuthorityPair, addressPluginAuthority, ruleSet } from '@metaplex-foundation/mpl-core';
+import { RuleSet, ruleSet, CreateArgsPlugin, createCollection, create, CollectionV1, fetchCollectionV1 } from '@metaplex-foundation/mpl-core';
 import { base58 } from '@metaplex-foundation/umi/serializers';
 import { notifications } from '@mantine/notifications';
 import { useUmi } from '@/providers/useUmi';
 import { CreateFormProvider, useCreateForm } from './CreateFormContext';
 import { ConfigurePlugins } from './ConfigurePlugins';
-import { AuthorityManagedPluginValues, defaultAuthorityManagedPluginValues, validatePubkey, validateUri } from '@/lib/form';
+import { AuthorityManagedPluginValues, createOracleFromInput, defaultAuthorityManagedPluginValues, validatePubkey, validateUri } from '@/lib/form';
 
-const mapPlugins = (plugins: AuthorityManagedPluginValues): PluginAuthorityPair[] => {
-  const pairs: PluginAuthorityPair[] = [];
+const mapPlugins = (plugins: AuthorityManagedPluginValues): CreateArgsPlugin[] => {
+  const mappedPlugins: CreateArgsPlugin[] = [];
   if (plugins.royalties.enabled) {
     let rs: RuleSet = ruleSet('None');
     if (plugins.royalties.ruleSet === 'Allow list') {
-      rs = ruleSet('ProgramAllowList', [plugins.royalties.programs.map((p) => publicKey(p))]);
+      rs = {
+        type: 'ProgramAllowList',
+        addresses: plugins.royalties.programs.map((p) => publicKey(p)),
+      };
     } else if (plugins.royalties.ruleSet === 'Deny list') {
-      rs = ruleSet('ProgramDenyList', [plugins.royalties.programs.map((p) => publicKey(p))]);
+      rs = {
+        type: 'ProgramDenyList',
+        addresses: plugins.royalties.programs.map((p) => publicKey(p)),
+      };
     }
-    pairs.push(pluginAuthorityPair({
+    mappedPlugins.push({
       type: 'Royalties',
-      data: {
-        ruleSet: rs,
-        basisPoints: plugins.royalties.basisPoints,
-        creators: plugins.royalties.creators.map((c) => ({
-          percentage: c.percentage,
-          address: publicKey(c.address),
-        })),
-      },
-    }));
+      ruleSet: rs,
+      basisPoints: plugins.royalties.basisPoints,
+      creators: plugins.royalties.creators.map((c) => ({
+        percentage: c.percentage,
+        address: publicKey(c.address),
+      })),
+    });
   }
   if (plugins.soulbound.enabled) {
-    pairs.push(pluginAuthorityPair({
+    mappedPlugins.push({
       type: 'PermanentFreezeDelegate',
-      authority: nonePluginAuthority(),
-      data: {
-        frozen: true,
+      authority: {
+        type: 'None',
       },
-    }));
-  }
-  if (plugins.permanentFreeze.enabled) {
-    pairs.push(pluginAuthorityPair({
-      type: 'PermanentFreezeDelegate',
-      authority: addressPluginAuthority(publicKey(plugins.permanentFreeze.authority)),
-      data: {
-        frozen: false,
-      },
-    }));
-  }
-  if (plugins.permanentTransfer.enabled) {
-    pairs.push(pluginAuthorityPair({
-      type: 'PermanentTransferDelegate',
-      authority: addressPluginAuthority(publicKey(plugins.permanentTransfer.authority)),
-    }));
-  }
-  if (plugins.attributes.enabled) {
-    pairs.push(pluginAuthorityPair({
-      type: 'Attributes',
-      data: {
-        attributeList: plugins.attributes.data,
-      },
-    }));
-  }
-  if (plugins.update.enabled) {
-    pairs.push(pluginAuthorityPair({
-      type: 'UpdateDelegate',
-      authority: addressPluginAuthority(publicKey(plugins.update.authority)),
-    }));
-  }
-  if (plugins.permanentBurn.enabled) {
-    pairs.push(pluginAuthorityPair({
-      type: 'PermanentBurnDelegate',
-      authority: addressPluginAuthority(publicKey(plugins.permanentFreeze.authority)),
-    }));
+      frozen: true,
+    });
   }
 
-  return pairs;
+  if (plugins.permanentFreeze.enabled) {
+    mappedPlugins.push({
+      type: 'PermanentFreezeDelegate',
+      authority: {
+        type: 'Address',
+        address: publicKey(plugins.permanentFreeze.authority),
+      },
+      frozen: false,
+
+    });
+  }
+  if (plugins.permanentTransfer.enabled) {
+    mappedPlugins.push({
+      type: 'PermanentTransferDelegate',
+      authority: {
+        type: 'Address',
+        address: publicKey(plugins.permanentTransfer.authority),
+      },
+    });
+  }
+  if (plugins.attributes.enabled) {
+    mappedPlugins.push({
+      type: 'Attributes',
+      attributeList: plugins.attributes.data,
+    });
+  }
+  if (plugins.update.enabled) {
+    mappedPlugins.push({
+      type: 'UpdateDelegate',
+      authority: {
+        type: 'Address',
+        address: publicKey(plugins.update.authority),
+      },
+      additionalDelegates: [],
+    });
+  }
+  if (plugins.permanentBurn.enabled) {
+    mappedPlugins.push({
+      type: 'PermanentBurnDelegate',
+      authority: {
+        type: 'Address',
+        address: publicKey(plugins.update.authority),
+      },
+    });
+  }
+
+  if (plugins.oracle.enabled) {
+    plugins.oracle.oracles.forEach((oracle) => {
+      mappedPlugins.push(createOracleFromInput(oracle));
+    });
+  }
+
+  return mappedPlugins;
 };
 
 export function Create() {
@@ -183,6 +204,22 @@ export function Create() {
             return null;
           },
         },
+        oracle: {
+          oracles: {
+            baseAddress: (value, values) => {
+              if (values.assetPlugins.oracle.enabled) {
+                return validatePubkey(value) ? null : 'Invalid public key';
+              }
+              return null;
+            },
+            lifecycles: (value, values) => {
+              if (values.assetPlugins.oracle.enabled) {
+                return value?.length > 0 ? null : 'Oracle must have at least one lifecycle';
+              }
+              return null;
+            },
+          },
+        },
       },
       collectionPlugins: {
         attributes: {
@@ -231,6 +268,22 @@ export function Create() {
               return validatePubkey(value) ? null : 'Invalid public key';
             }
             return null;
+          },
+        },
+        oracle: {
+          oracles: {
+            baseAddress: (value, values) => {
+              if (values.collectionPlugins.oracle.enabled) {
+                return validatePubkey(value) ? null : 'Invalid public key';
+              }
+              return null;
+            },
+            lifecycles: (value, values) => {
+              if (values.collectionPlugins.oracle.enabled) {
+                return value?.length > 0 ? null : 'Oracle must have at least one lifecycle';
+              }
+              return null;
+            },
           },
         },
       },
@@ -282,19 +335,34 @@ export function Create() {
       const { name, collectionName, collectionPlugins, assetPlugins } = form.values;
       const collectionSigner = generateSigner(umi);
       let txBuilder = transactionBuilder();
+      let collectionPartial: Partial<CollectionV1> = {
+        publicKey: collectionSigner.publicKey,
+      };
       if (collection === 'New') {
-        txBuilder = txBuilder.add(createCollectionV1(umi, {
+        const cPlugins = mapPlugins(collectionPlugins);
+        txBuilder = txBuilder.add(createCollection(umi, {
           name: collectionName,
           uri: collectionUri,
           collection: collectionSigner,
-          plugins: mapPlugins(collectionPlugins),
+          plugins: cPlugins,
         }));
+        // create a collection with the right plugin configuration to derive any extra accounts
+        collectionPartial.oracles = cPlugins.filter(p => p.type === 'Oracle').map(p => ({
+          ...p,
+          authority: { type: 'None' },
+          resultsOffset: p.resultsOffset || {
+            type: 'Anchor',
+          },
+        }));
+      } else if (collection === 'Existing') {
+        collectionPartial = await fetchCollectionV1(umi, publicKey(form.values.collectionAddress));
       }
+
       const assetAddress = generateSigner(umi);
-      txBuilder = txBuilder.add(createV1(umi, {
+      txBuilder = txBuilder.add(create(umi, {
         name,
         uri,
-        collection: collection === 'Existing' ? publicKey(form.values.collectionAddress) : collection === 'New' ? collectionSigner.publicKey : undefined,
+        collection: collection === 'None' ? undefined : collectionPartial as CollectionV1,
         asset: assetAddress,
         owner: form.values.owner ? publicKey(form.values.owner) : undefined,
         plugins: mapPlugins(assetPlugins),
@@ -411,11 +479,8 @@ export function Create() {
         <Modal opened={opened} onClose={() => { }} centered withCloseButton={false}>
           <Center my="xl">
             <Stack gap="md" align="center">
-              <Title order={3}>Creating asset...</Title>
-              {/* <Text>Be prepared to approve many transactions...</Text>
-              <Center w="100%">
-                <Text>Some text here</Text>
-              </Center> */}
+              <Text>Creating asset...</Text>
+              <Loader size="md" my="lg" />
             </Stack>
           </Center>
         </Modal>

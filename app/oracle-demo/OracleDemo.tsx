@@ -1,4 +1,4 @@
-import { Button, Code, Container, Group, List, Select, SimpleGrid, Stack, Stepper, Text, TextInput, Title } from '@mantine/core';
+import { Button, Center, Code, Container, Group, List, Loader, Modal, Paper, Select, SimpleGrid, Stack, Stepper, Text, TextInput, Title } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { useState } from 'react';
 import { generateSigner, PublicKey } from '@metaplex-foundation/umi';
@@ -7,6 +7,8 @@ import { fetchValidation, fixedAccountInit, fixedAccountSet, Validation } from '
 import { CodeHighlightTabs } from '@mantine/code-highlight';
 import { ExternalValidationResult } from '@metaplex-foundation/mpl-core-oracle-example/dist/src/hooked';
 import { notifications } from '@mantine/notifications';
+import { base58 } from '@metaplex-foundation/umi/serializers';
+import { useDisclosure } from '@mantine/hooks';
 import { useUmi } from '@/providers/useUmi';
 import { ExplorerStat } from '@/components/Explorer/ExplorerStat';
 
@@ -27,6 +29,8 @@ export const OracleDemo = () => {
       validation: null,
     },
   });
+  const [opened, { open, close }] = useDisclosure(false);
+  const [modalMessage, setModalMessage] = useState('');
   const [active, setActive] = useState(0);
   const nextStep = () => setActive((current) => (current < 3 ? current + 1 : current));
   const prevStep = () => setActive((current) => (current > 0 ? current - 1 : current));
@@ -106,9 +110,11 @@ pub enum ExternalValidationResult {
 
               <Text>See the <a target="_blank" href="https://developers.metaplex.com/core" rel="noreferrer">documentation</a> for more configuration options.</Text>
               <Button onClick={async () => {
+                setModalMessage('Creating Oracle account...');
+                open();
                 try {
                   const oracleSigner = generateSigner(umi);
-                  await fixedAccountInit(umi, {
+                  const res = await fixedAccountInit(umi, {
                     signer: umi.identity,
                     account: oracleSigner,
                     args: {
@@ -124,6 +130,13 @@ pub enum ExternalValidationResult {
                   form.setFieldValue('oracleAccount', oracleSigner.publicKey);
 
                   form.setFieldValue('validation', await fetchValidation(umi, oracleSigner.publicKey));
+                  const sig = base58.deserialize(res.signature)[0];
+                  notifications.show({
+                    title: 'Oracle account created',
+                    message: sig,
+                    color: 'green',
+                  });
+                  console.log('Oracle account created', sig);
                 } catch (e: any) {
                   console.error(e);
                   notifications.show({
@@ -131,6 +144,8 @@ pub enum ExternalValidationResult {
                     message: e.toString(),
                     color: 'red',
                   });
+                } finally {
+                  close();
                 }
               }}
               >Create Oracle account
@@ -189,10 +204,21 @@ await create(umi, {
                   ` }]}
               />
 
+              {form.values.asset && (
+                <ExplorerStat
+                  label="Asset mint"
+                  value={form.values.asset.publicKey}
+                  copyable
+                />
+
+              )}
+
               <Button onClick={async () => {
+                setModalMessage('Creating Asset...');
+                open();
                 try {
                   const asset = generateSigner(umi);
-                  await create(umi, {
+                  const res = await create(umi, {
                     asset,
                     name: 'Test name',
                     uri: 'https://example.com',
@@ -211,6 +237,13 @@ await create(umi, {
                   }).sendAndConfirm(umi);
 
                   form.setFieldValue('asset', await fetchAssetV1(umi, asset.publicKey));
+                  const sig = base58.deserialize(res.signature)[0];
+                  notifications.show({
+                    title: 'Asset created',
+                    message: sig,
+                    color: 'green',
+                  });
+                  console.log('Asset created', sig);
                 } catch (e: any) {
                   console.error(e);
                   notifications.show({
@@ -218,6 +251,8 @@ await create(umi, {
                     message: e.toString(),
                     color: 'red',
                   });
+                } finally {
+                  close();
                 }
               }}
               >Create Asset
@@ -235,7 +270,14 @@ await create(umi, {
               <Title order={2}>Control the Asset</Title>
               <Text>Update the Oracle to control whether updating the Asset name will succeed.</Text>
               <SimpleGrid cols={2}>
+                <Paper p="lg">
                 <Stack>
+                  <Title order={4}>Update Asset</Title>
+                  <ExplorerStat
+                    label="Asset address"
+                    value={form.values.asset?.publicKey || ''}
+                    copyable
+                  />
                   <ExplorerStat
                     label="Current name"
                     value={form.values.asset?.name || ''}
@@ -246,28 +288,61 @@ await create(umi, {
                     {...form.getInputProps('name')}
                   />
                   <Button onClick={async () => {
-                    await update(umi, {
-                      asset: form.values.asset!,
-                      name: form.values.name,
-                    }).sendAndConfirm(umi);
+                    setModalMessage('Updating Asset name...');
+                    open();
+                    try {
+                      const res = await update(umi, {
+                        asset: form.values.asset!,
+                        name: form.values.name,
+                      }).sendAndConfirm(umi);
+
+                      form.setFieldValue('asset', await fetchAssetV1(umi, form.values.asset!.publicKey));
+                      const sig = base58.deserialize(res.signature)[0];
+                      notifications.show({
+                        title: 'Asset name updated',
+                        message: sig,
+                        color: 'green',
+                      });
+                      console.log('Asset name updated', sig);
+                    } catch (e: any) {
+                      console.error(e);
+                      notifications.show({
+                        title: 'Failed to update Asset name',
+                        message: e.toString(),
+                        color: 'red',
+                      });
+                    } finally {
+                      close();
+                    }
                   }}
                   >Update name
                   </Button>
+                  {form.values.validation?.validation.update === ExternalValidationResult.Rejected && <Text c="red" fz="xs">Oracle is currently blocking this update, we expect the transaction to fail.</Text>}
                 </Stack>
+                </Paper>
+                <Paper p="lg">
                 <Stack>
+                <Title order={4}>Update Oracle</Title>
+                  <ExplorerStat
+                    label="Oracle account"
+                    value={form.values.oracleAccount || ''}
+                    copyable
+                  />
                   <ExplorerStat
                     label="Current oracle 'update' value"
                     value={form.values.validation ? (form.values.validation.validation.update === ExternalValidationResult.Rejected ? 'Rejected' : 'Pass') : ''}
                   />
                   <Select
-                    label="Your favorite library"
-                    description="Choose 'Reject' to block an update and 'Pass' to defer to regular update checks."
+                    label="New Oracle 'update' value"
+                    description="Choose 'Reject' to block an update and 'Pass' to allow updates."
                     data={['Rejected', 'Pass']}
                     {...form.getInputProps('oracleData')}
                   />
                   <Button onClick={async () => {
+                    setModalMessage('Updating Oracle account...');
+                    open();
                     try {
-                      await fixedAccountSet(umi, {
+                      const res = await fixedAccountSet(umi, {
                         signer: umi.identity,
                         account: form.values.oracleAccount!,
                         args: {
@@ -282,6 +357,13 @@ await create(umi, {
                       }).sendAndConfirm(umi);
 
                       form.setFieldValue('validation', await fetchValidation(umi, form.values.oracleAccount!));
+                      const sig = base58.deserialize(res.signature)[0];
+                      notifications.show({
+                        title: 'Oracle account updated',
+                        message: sig,
+                        color: 'green',
+                      });
+                      console.log('Oracle account updated', sig);
                     } catch (e: any) {
                       console.error(e);
                       notifications.show({
@@ -289,21 +371,32 @@ await create(umi, {
                         message: e.toString(),
                         color: 'red',
                       });
+                    } finally {
+                      close();
                     }
                   }}
                   >Update Oracle
                   </Button>
                 </Stack>
+                </Paper>
               </SimpleGrid>
-              <Title order={2}>Start Building</Title>
+              <Title order={2} mt="xl">Start Building</Title>
               <Text>See how to configure a single Oracle plugin for a whole Collection <a target="_blank" href="https://developers.metaplex.com/core" rel="noreferrer">here</a> using the <i>pre-configured Asset PDA</i> accounts.</Text>
               <Text>See the <a target="_blank" href="https://developers.metaplex.com/core" rel="noreferrer">documentation</a> for more Oracle plugin configuration options.</Text>
-              <Text>View or fork the example oracle program source code <a target="_blank" href="https://github.com/metaplex-foundation/mpl-core-oracle-exmple" rel="noreferrer">here</a>.</Text>
+              <Text>View or fork the example oracle program source code <a target="_blank" href="https://github.com/metaplex-foundation/mpl-core-oracle-example" rel="noreferrer">here</a>.</Text>
 
             </Stack>
           </Container>
         </Stepper.Step>
       </Stepper>
+      <Modal opened={opened} onClose={() => { }} centered withCloseButton={false}>
+        <Center my="xl">
+          <Stack gap="md" align="center">
+            <Text>{modalMessage}</Text>
+            <Loader size="md" my="lg" />
+          </Stack>
+        </Center>
+      </Modal>
     </>
 
   );

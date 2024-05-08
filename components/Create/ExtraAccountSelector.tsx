@@ -32,7 +32,7 @@ function SelectOption({ description, title }: Item) {
   );
 }
 
-export function ExtraAccountSelector({ value, setValue, label }: { label: string, value: string, setValue: (value: string) => void }) {
+export function ExtraAccountSelector({ value, setValue, label, error }: { label: string, value: string, error?: string, setValue: (value: string) => void }) {
   const combobox = useCombobox({
     onDropdownClose: () => combobox.resetSelectedOption(),
   });
@@ -46,36 +46,40 @@ export function ExtraAccountSelector({ value, setValue, label }: { label: string
   ));
 
   return (
-    <Combobox
-      store={combobox}
-      withinPortal={false}
-      onOptionSubmit={(val) => {
-        setValue(val);
-        combobox.closeDropdown();
-      }}
-    >
-      <Combobox.Target>
-        <InputBase
-          label={label}
-          component="button"
-          type="button"
-          pointer
-          rightSection={<Combobox.Chevron />}
-          onClick={() => combobox.toggleDropdown()}
-          rightSectionPointerEvents="none"
-          multiline
-        >
-          {selectedOption ? (
-            <SelectOption {...selectedOption} />
-          ) : (
-            <Input.Placeholder>Pick value</Input.Placeholder>
-          )}
-        </InputBase>
-      </Combobox.Target>
+    <>
+      <Combobox
+        store={combobox}
+        withinPortal={false}
+        onOptionSubmit={(val) => {
+          setValue(val);
+          combobox.closeDropdown();
+        }}
 
-      <Combobox.Dropdown>
-        <Combobox.Options>{options}</Combobox.Options>
-      </Combobox.Dropdown>
-    </Combobox>
+      >
+        <Combobox.Target>
+          <InputBase
+            label={label}
+            component="button"
+            type="button"
+            pointer
+            rightSection={<Combobox.Chevron />}
+            onClick={() => combobox.toggleDropdown()}
+            rightSectionPointerEvents="none"
+            multiline
+          >
+            {selectedOption ? (
+              <SelectOption {...selectedOption} />
+            ) : (
+              <Input.Placeholder>Pick value</Input.Placeholder>
+            )}
+          </InputBase>
+        </Combobox.Target>
+
+        <Combobox.Dropdown>
+          <Combobox.Options>{options}</Combobox.Options>
+        </Combobox.Dropdown>
+      </Combobox>
+      {error && <Text c="red">{error}</Text>}
+    </>
   );
 }

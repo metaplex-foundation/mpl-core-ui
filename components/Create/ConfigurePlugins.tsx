@@ -343,7 +343,6 @@ export function ConfigurePlugins({ type }: { type: 'asset' | 'collection' }) {
                 </Flex>
                 <TextInput
                   label="Base address"
-                  defaultValue=""
                   description="A static address or an oracle program address if using PDA's"
                   {...getInputProps('baseAddress')}
                 />
@@ -370,6 +369,7 @@ export function ConfigurePlugins({ type }: { type: 'asset' | 'collection' }) {
                 <ExtraAccountConfigurator
                   label="PDA type"
                   extraAccount={pda}
+                  error={form.errors[`${getPrefix('oracle')}.oracles.${index}.pda`] as string}
                   setExtraAccount={(value) => form.setFieldValue(`${getPrefix('oracle')}.oracles.${index}.pda`, value)}
                 />
 
