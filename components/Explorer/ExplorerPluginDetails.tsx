@@ -21,6 +21,12 @@ export function ExplorerPluginDetails({ plugins, type }: { plugins: PluginsList 
   return (
     <Stack>
       <LabelTitle fz="md">{type === 'asset' ? 'Asset' : 'Collection'} Plugin Details</LabelTitle>
+      {plugins.edition && (
+        <>
+          <ExplorerStat label="Edition Number" value={plugins.edition.number.toString()} />
+          <AuthorityStat authority={plugins.edition.authority} name="Edition" />
+        </>
+      )}
       <ExplorerStat label="Frozen" value={(plugins.freezeDelegate?.frozen || plugins.permanentFreezeDelegate?.frozen) ? 'Yes' : 'No'} />
       {plugins.freezeDelegate && <AuthorityStat authority={plugins.freezeDelegate.authority} name="Freeze" />}
       {plugins.burnDelegate && <AuthorityStat authority={plugins.burnDelegate.authority} name="Burn" />}

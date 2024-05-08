@@ -2,24 +2,6 @@ import { ThemeIcon, Text, Container, SimpleGrid, rem } from '@mantine/core';
 import { IconLock, IconStack2, IconCode, IconConfetti, IconSitemap, IconLink } from '@tabler/icons-react';
 import classes from './FeaturesGrid.module.css';
 
-/*
-hings to market:
-lowest cost of minting
-scoped immutability support: e.g. you can make metadata immutable but royalties mutable
-plugin support
-compatible with t22 transfer hooks
-probably more stuff we think of over time
-
-first class support for collections
-minimal accounts 1
-less compute, fit more in a single tx
-plugins support
-liquid hybrids
-tensor trading plugged in
-inbuilt staking
-lifecycle hooks for advanced plugins
-(edited)*/
-
 export const data = [
   {
     icon: IconStack2,
@@ -51,7 +33,12 @@ export const data = [
     description:
       'Join top Solana collections Claynosaurz and <redacted> in creating the next generation of Solana NFTs. Supported by top Solana wallets and marketplaces.',
   },
-
+  {
+    icon: IconLock,
+    title: 'Secure by default',
+    description:
+      "Core has been audited by one of Solana's most trusted security firms, Mad Shield.",
+  },
 ];
 
 interface FeatureProps {
