@@ -326,7 +326,7 @@ export function ConfigurePlugins({ type }: { type: 'asset' | 'collection' }) {
           <Alert variant="light" color="yellow" title="" icon={alertIcon}>
             Only add oracles you trust or you have built yourself as they may limit or break the functionality of your collection!
           </Alert>
-          {oracles.map(({ offset, pda }, index) => {
+          {oracles.map(({ offset, baseAddressConfig }, index) => {
             const getInputProps = (key: string) => form.getInputProps(`${getPrefix('oracle')}.oracles.${index}.${key}`);
             return (
               <Stack>
@@ -367,10 +367,10 @@ export function ConfigurePlugins({ type }: { type: 'asset' | 'collection' }) {
                 )}
 
                 <ExtraAccountConfigurator
-                  label="PDA type"
-                  extraAccount={pda}
-                  error={form.errors[`${getPrefix('oracle')}.oracles.${index}.pda`] as string}
-                  setExtraAccount={(value) => form.setFieldValue(`${getPrefix('oracle')}.oracles.${index}.pda`, value)}
+                  label="Oracle account derivation"
+                  extraAccount={baseAddressConfig}
+                  error={form.errors[`${getPrefix('oracle')}.oracles.${index}.baseAddressConfig`] as string}
+                  setExtraAccount={(value) => form.setFieldValue(`${getPrefix('oracle')}.oracles.${index}.baseAddressConfig`, value)}
                 />
 
               </Stack>);

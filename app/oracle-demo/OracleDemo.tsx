@@ -317,7 +317,7 @@ await create(umi, {
                   }}
                   >Update name
                   </Button>
-                  {form.values.validation?.validation.update === ExternalValidationResult.Rejected && <Text c="red" fz="xs">Oracle is currently blocking this update, we expect the transaction to fail.</Text>}
+                  {(form.values.validation?.validation as Extract<Validation['validation'], { __kind: 'V1' }>).update === ExternalValidationResult.Rejected && <Text c="red" fz="xs">Oracle is currently blocking this update, we expect the transaction to fail.</Text>}
                 </Stack>
                 </Paper>
                 <Paper p="lg">
@@ -330,7 +330,7 @@ await create(umi, {
                   />
                   <ExplorerStat
                     label="Current oracle 'update' value"
-                    value={form.values.validation ? (form.values.validation.validation.update === ExternalValidationResult.Rejected ? 'Rejected' : 'Pass') : ''}
+                    value={form.values.validation ? ((form.values.validation.validation as Extract<Validation['validation'], { __kind: 'V1' }>).update === ExternalValidationResult.Rejected ? 'Rejected' : 'Pass') : ''}
                   />
                   <Select
                     label="New Oracle 'update' value"

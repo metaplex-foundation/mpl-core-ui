@@ -2708,23 +2708,23 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@metaplex-foundation/mpl-core-oracle-example@npm:0.0.1":
-  version: 0.0.1
-  resolution: "@metaplex-foundation/mpl-core-oracle-example@npm:0.0.1"
+"@metaplex-foundation/mpl-core-oracle-example@npm:0.0.2":
+  version: 0.0.2
+  resolution: "@metaplex-foundation/mpl-core-oracle-example@npm:0.0.2"
   peerDependencies:
     "@metaplex-foundation/umi": ">=0.8.2 < 1"
     "@noble/hashes": ^1.3.1
-  checksum: 2f07fa2cfcb26fb3055068c33b39850d08b184bfebe3f43962a1323f881bf3a2290beab5def8f55701ff68e548fb1f2acab88e6a20806b64ae2780325c1964ec
+  checksum: ce88eb7fac64221f5fb631709c170fc10c92807068d25b4228afc1426a197038d31795cc24cc068ad9f405a4c40afff6ee96ffe04f038098f98665a43f3f1be8
   languageName: node
   linkType: hard
 
-"@metaplex-foundation/mpl-core@npm:^1.0.0-alpha.1":
-  version: 1.0.0-alpha.1
-  resolution: "@metaplex-foundation/mpl-core@npm:1.0.0-alpha.1"
+"@metaplex-foundation/mpl-core@npm:1.0.0-alpha.2":
+  version: 1.0.0-alpha.2
+  resolution: "@metaplex-foundation/mpl-core@npm:1.0.0-alpha.2"
   peerDependencies:
     "@metaplex-foundation/umi": ">=0.8.2 < 1"
     "@noble/hashes": ^1.3.1
-  checksum: 2c536b737fa36e113177e488d5560b5164e49c58c01be3c5662d4f86e44384ed050bbc0252bfea2e9f00d982d83e004ca90ce30ceb6686f78d039aa64ba56b73
+  checksum: 0e418fe36e1b7f3bf75aef7c9f6530c66f53495ea1298cbef401bed8f1bd05d309305a9eafe7c00061cdff90e7390efc31745a7662863d45e1631938e9fb57f1
   languageName: node
   linkType: hard
 
@@ -15069,8 +15069,8 @@ __metadata:
     "@mantine/nprogress": "npm:^7.3.2"
     "@mantine/tiptap": "npm:^7.3.2"
     "@metaplex-foundation/digital-asset-standard-api": "npm:^1.0.0"
-    "@metaplex-foundation/mpl-core": "npm:^1.0.0-alpha.1"
-    "@metaplex-foundation/mpl-core-oracle-example": "npm:0.0.1"
+    "@metaplex-foundation/mpl-core": "npm:1.0.0-alpha.2"
+    "@metaplex-foundation/mpl-core-oracle-example": "npm:0.0.2"
     "@metaplex-foundation/mpl-toolbox": "npm:^0.9.1"
     "@metaplex-foundation/umi": "npm:^0.8.10"
     "@metaplex-foundation/umi-bundle-defaults": "npm:^0.8.10"

@@ -1,6 +1,6 @@
 import {
   CheckResult,
-  ExternalPluginInitInfoArgs,
+  ExternalPluginAdapterInitInfoArgs,
   LifecycleChecks,
   Seed,
   ValidationResultsOffset,
@@ -12,7 +12,7 @@ export interface OracleInput {
   lifecycles: ('Create' | 'Transfer' | 'Burn' | 'Update')[];
   offset: ValidationResultsOffset;
   baseAddress: string;
-  pda: ExtraAccountWithNoneInput;
+  baseAddressConfig: ExtraAccountWithNoneInput;
 }
 
 export interface AuthorityManagedPluginValues {
@@ -109,7 +109,7 @@ export const defaultAuthorityManagedPluginValues: AuthorityManagedPluginValues =
           type: 'Anchor',
         },
         baseAddress: '',
-        pda: {
+        baseAddressConfig: {
           type: 'None',
         },
       },
@@ -178,7 +178,7 @@ export const createExtraAccountFromInput = (input: ExtraAccountWithNoneInput) =>
 
 export const createOracleFromInput = (
   input: OracleInput
-): Extract<ExternalPluginInitInfoArgs, { type: 'Oracle' }> => ({
+): Extract<ExternalPluginAdapterInitInfoArgs, { type: 'Oracle' }> => ({
     type: 'Oracle',
     baseAddress: publicKey(input.baseAddress),
     lifecycleChecks: input.lifecycles.reduce((acc, curr) => {
@@ -186,5 +186,5 @@ export const createOracleFromInput = (
       return acc;
     }, {} as LifecycleChecks),
     resultsOffset: input.offset,
-    pda: createExtraAccountFromInput(input.pda),
+    baseAddressConfig: createExtraAccountFromInput(input.baseAddressConfig),
   });

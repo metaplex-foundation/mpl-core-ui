@@ -1,5 +1,5 @@
 import { Badge, Fieldset, Flex, Group, Stack, Text } from '@mantine/core';
-import { ExternalPluginsList, PluginAuthority, PluginsList } from '@metaplex-foundation/mpl-core';
+import { ExternalPluginAdaptersList, PluginAuthority, PluginsList } from '@metaplex-foundation/mpl-core';
 import { ExplorerStat } from './ExplorerStat';
 import { CopyButton } from '../CopyButton/CopyButton';
 import { LabelTitle } from '../LabelTitle';
@@ -17,7 +17,7 @@ const AuthorityStat = ({ authority, name }: { authority: PluginAuthority, name: 
   }
 };
 
-export function ExplorerPluginDetails({ plugins, type }: { plugins: PluginsList & ExternalPluginsList, type: 'asset' | 'collection' }) {
+export function ExplorerPluginDetails({ plugins, type }: { plugins: PluginsList & ExternalPluginAdaptersList, type: 'asset' | 'collection' }) {
   return (
     <Stack>
       <LabelTitle fz="md">{type === 'asset' ? 'Asset' : 'Collection'} Plugin Details</LabelTitle>
@@ -70,13 +70,13 @@ export function ExplorerPluginDetails({ plugins, type }: { plugins: PluginsList 
               {oracle.lifecycleChecks && Object.keys(oracle.lifecycleChecks).map((key) => <Badge size="sm" variant="outline">{capitalizeFirstLetter(key)}</Badge>)}
             </div>
             <ExplorerStat label="Results offset" value={oracle.resultsOffset.type === 'Custom' ? oracle.resultsOffset.offset.toString() : oracle.resultsOffset.type} />
-            {oracle.pda && (
+            {oracle.baseAddressConfig && (
               <div>
-                <LabelTitle>PDA</LabelTitle>
-                {oracle.pda.type === 'Address' ? <Text fz="sm">{oracle.pda.address}</Text> :
-                  oracle.pda.type === 'CustomPda' ? (
+                <LabelTitle>Oracle account derivation</LabelTitle>
+                {oracle.baseAddressConfig.type === 'Address' ? <Text fz="sm">{oracle.baseAddressConfig.address}</Text> :
+                  oracle.baseAddressConfig.type === 'CustomPda' ? (
                     <Flex gap="sm">
-                      {oracle.pda.seeds.map((seed, i) => {
+                      {oracle.baseAddressConfig.seeds.map((seed, i) => {
                         if (seed.type === 'Address') {
                           return <Badge key={i} size="sm" variant="default">{seed.pubkey}</Badge>;
                         }
@@ -86,7 +86,7 @@ export function ExplorerPluginDetails({ plugins, type }: { plugins: PluginsList 
                         return <Badge key={i} size="sm" variant="outline">{seed.type}</Badge>;
                       })}
                     </Flex>
-                  ) : <Badge size="sm" variant="outline">{oracle.pda.type}</Badge>}
+                  ) : <Badge size="sm" variant="outline">{oracle.baseAddressConfig.type}</Badge>}
 
               </div>
 
