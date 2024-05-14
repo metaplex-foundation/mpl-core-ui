@@ -3,7 +3,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { CodeHighlightTabs } from '@mantine/code-highlight';
 import { useDisclosure } from '@mantine/hooks';
 import { generateSigner, publicKey, transactionBuilder } from '@metaplex-foundation/umi';
-import { RuleSet, ruleSet, CreateArgsPlugin, createCollection, create, CollectionV1, fetchCollectionV1, OracleInitInfoArgs } from '@metaplex-foundation/mpl-core';
+import { RuleSet, ruleSet, CreateArgsPlugin, createCollection, create, CollectionV1, fetchCollectionV1, OracleInitInfoArgs, CreateCollectionArgsPlugin } from '@metaplex-foundation/mpl-core';
 import { base58 } from '@metaplex-foundation/umi/serializers';
 import { notifications } from '@mantine/notifications';
 import { useUmi } from '@/providers/useUmi';
@@ -339,7 +339,7 @@ export function Create() {
         publicKey: collectionSigner.publicKey,
       };
       if (collection === 'New') {
-        const cPlugins = mapPlugins(collectionPlugins);
+        const cPlugins = mapPlugins(collectionPlugins) as CreateCollectionArgsPlugin[];
         txBuilder = txBuilder.add(createCollection(umi, {
           name: collectionName,
           uri: collectionUri,
