@@ -317,7 +317,7 @@ await create(umi, {
                   }}
                   >Update name
                   </Button>
-                  {(form.values.validation?.validation as Extract<Validation['validation'], { __kind: 'V1' }>).update === ExternalValidationResult.Rejected && <Text c="red" fz="xs">Oracle is currently blocking this update, we expect the transaction to fail.</Text>}
+                  {(form.values.validation?.validation as Extract<Validation['validation'], { __kind: 'V1' }>)?.update === ExternalValidationResult.Rejected && <Text c="red" fz="xs">Oracle is currently blocking this update, we expect the transaction to fail.</Text>}
                 </Stack>
                 </Paper>
                 <Paper p="lg">
