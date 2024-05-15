@@ -1,14 +1,14 @@
 import { ActionIcon, TextInput } from '@mantine/core';
-import { AssetPluginKey, CollectionV1, revokeCollectionPluginAuthorityV1 } from '@metaplex-foundation/mpl-core';
+import { CollectionPluginsList, CollectionV1, revokeCollectionPluginAuthority } from '@metaplex-foundation/mpl-core';
 import { useCallback, useMemo, useState } from 'react';
 import { base58 } from '@metaplex-foundation/umi/serializers';
 import { notifications } from '@mantine/notifications';
 import { IconSettingsCancel } from '@tabler/icons-react';
 import { useUmi } from '@/providers/useUmi';
 import { useInvalidateFetchCollectionsByUpdateAuthority } from '@/hooks/fetch';
-import { pluginTypeFromAssetPluginKey, typeToLabel } from '@/lib/plugin';
+import { pluginTypeNameFromPluginKey, typeToLabel } from '@/lib/plugin';
 
-export function Revoke({ collection, type }: { collection: CollectionV1, type: AssetPluginKey }) {
+export function Revoke({ collection, type }: { collection: CollectionV1, type: keyof CollectionPluginsList }) {
   const umi = useUmi();
   const [loading, setLoading] = useState(false);
   const { invalidate } = useInvalidateFetchCollectionsByUpdateAuthority();
@@ -30,9 +30,11 @@ export function Revoke({ collection, type }: { collection: CollectionV1, type: A
   const handleRevoke = useCallback(async () => {
     try {
       setLoading(true);
-      const res = await revokeCollectionPluginAuthorityV1(umi, {
+      const res = await revokeCollectionPluginAuthority(umi, {
         collection: collection.publicKey,
-        pluginType: pluginTypeFromAssetPluginKey(type),
+        plugin: {
+          type: pluginTypeNameFromPluginKey(type),
+        },
       }).sendAndConfirm(umi);
 
       const sig = base58.deserialize(res.signature);

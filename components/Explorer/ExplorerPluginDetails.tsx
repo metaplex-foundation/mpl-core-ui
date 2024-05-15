@@ -49,6 +49,8 @@ export function ExplorerPluginDetails({ plugins, type }: { plugins: PluginsList 
           </div>
         </>
       )}
+      <ExplorerStat label="Immutable Metadata" value={plugins.immutableMetadata ? 'Yes' : 'No'} />
+      {plugins.immutableMetadata && <AuthorityStat authority={plugins.immutableMetadata.authority} name="Immutable Metadata" />}
 
       {plugins.attributes && (
         <>

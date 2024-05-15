@@ -1,6 +1,6 @@
 import { Button } from '@mantine/core';
 import { TransactionBuilder, transactionBuilder } from '@metaplex-foundation/umi';
-import { createPlugin, CollectionV1, addCollectionPluginV1, updateCollectionPluginV1 } from '@metaplex-foundation/mpl-core';
+import { createPlugin, CollectionV1, updateCollectionPluginV1 } from '@metaplex-foundation/mpl-core';
 import { useCallback, useState } from 'react';
 import { base58 } from '@metaplex-foundation/umi/serializers';
 import { notifications } from '@mantine/notifications';
@@ -18,27 +18,19 @@ export function PermanentFreeze({ collection }: { collection: CollectionV1 }) {
       setLoading(true);
       let tx: TransactionBuilder = transactionBuilder();
 
-      if (!collection.freezeDelegate) {
-        tx = addCollectionPluginV1(umi, {
-          collection: collection.publicKey,
-          plugin: createPlugin({
-            type: 'PermanentFreezeDelegate',
-            data: {
-              frozen: true,
-            },
-          }),
-        });
-      } else {
-        tx = updateCollectionPluginV1(umi, {
-          collection: collection.publicKey,
-          plugin: createPlugin({
-            type: 'PermanentFreezeDelegate',
-            data: {
-              frozen: !frozen,
-            },
-          }),
-        });
+      if (!collection.permanentFreezeDelegate) {
+        return;
       }
+
+      tx = updateCollectionPluginV1(umi, {
+        collection: collection.publicKey,
+        plugin: createPlugin({
+          type: 'PermanentFreezeDelegate',
+          data: {
+            frozen: !frozen,
+          },
+        }),
+      });
 
       const res = await tx.sendAndConfirm(umi);
 
@@ -54,6 +46,6 @@ export function PermanentFreeze({ collection }: { collection: CollectionV1 }) {
     }
   }, [umi, collection]);
   return (
-    <Button onClick={handleFreeze} loading={loading}>{frozen ? 'Unfreeze' : 'Freeze'} collection</Button>
+    <Button onClick={handleFreeze} loading={loading} disabled={!collection.permanentFreezeDelegate}>{frozen ? 'Unfreeze' : 'Freeze'} collection</Button>
   );
 }

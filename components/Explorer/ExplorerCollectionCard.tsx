@@ -32,7 +32,7 @@ export function ExplorerCollectionCard({ collection }: { collection: CollectionV
           <Group justify="space-between" mt="md">
             <Text fw={500}>{collection.name}</Text>
             <Flex>
-              {(collection.permanentFreezeDelegate?.frozen || collection.freezeDelegate?.frozen)
+              {(collection.permanentFreezeDelegate?.frozen)
                 && (
                   <ThemeIcon>
                     <IconSnowflake />
