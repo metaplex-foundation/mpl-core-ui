@@ -48,6 +48,7 @@ export function Header({ env, setEnv }: { env: string; setEnv: (env: Env) => voi
             <Menu.Dropdown>
               <Menu.Item onClick={() => setEnv('mainnet')}>Mainnet</Menu.Item>
               <Menu.Item onClick={() => setEnv('devnet')}>Devnet</Menu.Item>
+              <Menu.Item onClick={() => setEnv('localhost')}>Localhost</Menu.Item>
             </Menu.Dropdown>
           </Menu>
         </Group>
