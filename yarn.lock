@@ -2708,13 +2708,23 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@metaplex-foundation/mpl-core@npm:^0.4.6":
-  version: 0.4.6
-  resolution: "@metaplex-foundation/mpl-core@npm:0.4.6"
+"@metaplex-foundation/mpl-core-oracle-example@npm:0.0.2":
+  version: 0.0.2
+  resolution: "@metaplex-foundation/mpl-core-oracle-example@npm:0.0.2"
   peerDependencies:
     "@metaplex-foundation/umi": ">=0.8.2 < 1"
     "@noble/hashes": ^1.3.1
-  checksum: 15c559ad1568dd6410904cff780e0e3790edbc7e8015f65e1b5982cb9970cd6f5b12a4d18e227272f0a6d98eeba06308c93ac9a3653e9568a556fcd38baa7b78
+  checksum: ce88eb7fac64221f5fb631709c170fc10c92807068d25b4228afc1426a197038d31795cc24cc068ad9f405a4c40afff6ee96ffe04f038098f98665a43f3f1be8
+  languageName: node
+  linkType: hard
+
+"@metaplex-foundation/mpl-core@npm:1.0.0-alpha.6":
+  version: 1.0.0-alpha.6
+  resolution: "@metaplex-foundation/mpl-core@npm:1.0.0-alpha.6"
+  peerDependencies:
+    "@metaplex-foundation/umi": ">=0.8.2 < 1"
+    "@noble/hashes": ^1.3.1
+  checksum: f3cf4175ca7034927862a3a7d9a296263ad7ef35cd9afd888d8130cfbb4735f161a2d3665c587af8397f1afd207c6214aa8dd53d3c7e89e870fd167ddc641a02
   languageName: node
   linkType: hard
 
@@ -15059,7 +15069,8 @@ __metadata:
     "@mantine/nprogress": "npm:^7.3.2"
     "@mantine/tiptap": "npm:^7.3.2"
     "@metaplex-foundation/digital-asset-standard-api": "npm:^1.0.0"
-    "@metaplex-foundation/mpl-core": "npm:^0.4.6"
+    "@metaplex-foundation/mpl-core": "npm:1.0.0-alpha.6"
+    "@metaplex-foundation/mpl-core-oracle-example": "npm:0.0.2"
     "@metaplex-foundation/mpl-toolbox": "npm:^0.9.1"
     "@metaplex-foundation/umi": "npm:^0.8.10"
     "@metaplex-foundation/umi-bundle-defaults": "npm:^0.8.10"

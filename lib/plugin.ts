@@ -1,7 +1,17 @@
 import { PublicKey, publicKey } from '@metaplex-foundation/umi';
-import { AssetPluginKey, AssetV1, CollectionV1, PluginType, hasAssetUpdateAuthority, hasCollectionUpdateAuthority } from '@metaplex-foundation/mpl-core';
+import {
+  AssetPluginKey,
+  AssetV1,
+  CollectionPluginsList,
+  CollectionV1,
+  CommonPluginsList,
+  PluginType,
+  hasAssetUpdateAuthority,
+  hasCollectionUpdateAuthority,
+} from '@metaplex-foundation/mpl-core';
 import { capitalizeFirstLetter } from './string';
 
+export type PluginKey = AssetPluginKey | keyof CollectionPluginsList;
 export type PluginActions = {
   canAppove?: boolean;
   canRevoke?: boolean;
@@ -17,11 +27,18 @@ export const ownerManagedPlugins: AssetPluginKey[] = [
   'burnDelegate',
 ];
 
-export const authorityManagedPlugins: AssetPluginKey[] = ['royalties', 'updateDelegate', 'attributes'];
+export const authorityManagedPlugins: (keyof CommonPluginsList)[] = [
+  'royalties',
+  'updateDelegate',
+  'attributes',
+  'addBlocker',
+  'immutableMetadata',
+];
 
-export const permanentPlugins: AssetPluginKey[] = [
+export const permanentPlugins: (keyof CommonPluginsList)[] = [
   'permanentFreezeDelegate',
   'permanentTransferDelegate',
+  'permanentBurnDelegate',
 ];
 
 export const pluginTypes: AssetPluginKey[] = [
@@ -30,11 +47,15 @@ export const pluginTypes: AssetPluginKey[] = [
   ...permanentPlugins,
 ];
 
-export function pluginTypeFromAssetPluginKey(key: AssetPluginKey): PluginType {
+export function pluginTypeFromAssetPluginKey(key: PluginKey): PluginType {
   return PluginType[capitalizeFirstLetter(key) as keyof typeof PluginType];
 }
 
-export function typeToLabel(type: AssetPluginKey) {
+export function pluginTypeNameFromPluginKey(key: PluginKey): keyof typeof PluginType {
+  return capitalizeFirstLetter(key) as keyof typeof PluginType;
+}
+
+export function typeToLabel(type: PluginKey) {
   switch (type) {
     case 'transferDelegate':
       return 'Transfer';
@@ -51,8 +72,18 @@ export function typeToLabel(type: AssetPluginKey) {
     case 'permanentFreezeDelegate':
       return 'Permanent Freeze';
     case 'permanentTransferDelegate':
-    default:
       return 'Permanent Transfer';
+    case 'permanentBurnDelegate':
+      return 'Permanent Burn';
+    case 'edition':
+      return 'Edition';
+    case 'masterEdition':
+      return 'Master Edition';
+    case 'addBlocker':
+      return 'Add Blocker';
+    case 'immutableMetadata':
+    default:
+      return 'Immutable Metadata';
   }
 }
 
@@ -149,7 +180,7 @@ export function getAssetPluginActions(
   permanentPlugins.forEach((type) => {
     const plugin = asset[type];
     if (plugin) {
-      if ((plugin.authority.type === 'UpdateAuthority' && isUpdateAuth)) {
+      if (plugin.authority.type === 'UpdateAuthority' && isUpdateAuth) {
         result.set(type, {
           canAppove: true,
           canUpdate: true,
@@ -181,24 +212,6 @@ export function getCollectionPluginActions(
   const result = new Map<AssetPluginKey, PluginActions>();
   const isUpdateAuth = hasCollectionUpdateAuthority(identity, collection);
 
-  ownerManagedPlugins.forEach((type) => {
-    const plugin = collection[type];
-    if (plugin) {
-      if (
-        (plugin.authority.type === 'UpdateAuthority' && isUpdateAuth) ||
-        (plugin.authority.type === 'Address' && plugin.authority.address === pubkey)
-      ) {
-        result.set(type, {
-          canAppove: false,
-          canRevoke: true,
-          canUpdate: true,
-          canRemove: false,
-        });
-      }
-      // none means no authority to do anything
-    }
-  });
-
   authorityManagedPlugins.forEach((type) => {
     const plugin = collection[type];
     if (plugin) {
@@ -218,9 +231,7 @@ export function getCollectionPluginActions(
             canRemove: false,
           });
         }
-      } else if (
-        (plugin.authority.type === 'Address' && plugin.authority.address === pubkey)
-      ) {
+      } else if (plugin.authority.type === 'Address' && plugin.authority.address === pubkey) {
         result.set(type, {
           canAppove: false,
           canRevoke: true,
@@ -239,16 +250,14 @@ export function getCollectionPluginActions(
   permanentPlugins.forEach((type) => {
     const plugin = collection[type];
     if (plugin) {
-      if ((plugin.authority.type === 'UpdateAuthority' && isUpdateAuth)) {
+      if (plugin.authority.type === 'UpdateAuthority' && isUpdateAuth) {
         result.set(type, {
           canAppove: true,
           canUpdate: true,
           canRevoke: false,
           canRemove: true,
         });
-      } else if (
-        (plugin.authority.type === 'Address' && plugin.authority.address === pubkey)
-      ) {
+      } else if (plugin.authority.type === 'Address' && plugin.authority.address === pubkey) {
         result.set(type, {
           canAppove: false,
           canRevoke: true,

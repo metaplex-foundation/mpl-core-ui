@@ -31,7 +31,7 @@ export const data = [
     icon: IconConfetti,
     title: 'Ecosystem ready',
     description:
-      'Join top Solana collections <redacted> and <redacted> in creating the next generation of Solana NFTs. Supported by top Solana wallets and marketplaces.',
+      'Join top Solana collections Claynosaurz and <redacted> in creating the next generation of Solana NFTs. Supported by top Solana wallets and marketplaces.',
   },
   {
     icon: IconLock,

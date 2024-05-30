@@ -1,8 +1,9 @@
-import { Accordion, Alert, Button, Checkbox, CloseButton, Flex, Group, NumberInput, Select, Stack, TagsInput, Text, TextInput } from '@mantine/core';
+import { Accordion, Alert, Button, Checkbox, CloseButton, Flex, Group, MultiSelect, NumberInput, Select, Stack, TagsInput, Text, TextInput, Title } from '@mantine/core';
 import { useCallback, useEffect, useState } from 'react';
 import { IconInfoCircle } from '@tabler/icons-react';
 import { useCreateFormContext } from './CreateFormContext';
-import { AuthorityManagedPluginValues } from '@/lib/form';
+import { AuthorityManagedPluginValues, defaultAuthorityManagedPluginValues } from '@/lib/form';
+import { ExtraAccountConfigurator } from './ExtraAccountConfigurator';
 
 interface AccordionItemProps {
   id: string
@@ -58,6 +59,7 @@ export function ConfigurePlugins({ type }: { type: 'asset' | 'collection' }) {
 
   const getPrefix = useCallback((pluginName: keyof AuthorityManagedPluginValues) => `${type}Plugins.${pluginName}`, [type]);
   const attributes = form.values[`${type}Plugins`].attributes.data;
+  const { oracles } = form.values[`${type}Plugins`].oracle;
   const { creators, ruleSet, enabled: royaltiesEnabled } = form.values[`${type}Plugins`].royalties;
   const alertIcon = <IconInfoCircle />;
 
@@ -315,13 +317,88 @@ export function ConfigurePlugins({ type }: { type: 'asset' | 'collection' }) {
         </Stack>
       </AccordionItem>
       <AccordionItem
-        label="3rd party plugins"
+        label="Oracle"
+        description={`Allow one more oracles to control your ${type}`}
+        {...createAccordianInputHelper('oracle')}
+      >
+        <Stack>
+          <Text size="sm">Oracles can register for and block specific lifecycle events on your asset(s) asynchronously.</Text>
+          <Alert variant="light" color="yellow" title="" icon={alertIcon}>
+            Only add oracles you trust or you have built yourself as they may limit or break the functionality of your collection!
+          </Alert>
+          {oracles.map(({ offset, baseAddressConfig }, index) => {
+            const getInputProps = (key: string) => form.getInputProps(`${getPrefix('oracle')}.oracles.${index}.${key}`);
+            return (
+              <Stack>
+                <Flex align="center">
+                  <Title order={4} size="sm">Oracle {index + 1}</Title>
+                  <CloseButton
+                    onClick={() => {
+                      const newOracles = [...oracles];
+                      newOracles.splice(index, 1);
+                      form.setFieldValue(`${type}Plugins.oracle.oracles`, newOracles);
+                    }}
+                  />
+
+                </Flex>
+                <TextInput
+                  label="Base address"
+                  description="A static address or an oracle program address if using PDA's"
+                  {...getInputProps('baseAddress')}
+                />
+                <MultiSelect
+                  label="Registered lifecycles"
+                  data={['Create', 'Transfer', 'Burn', 'Update']}
+                  {...getInputProps('lifecycles')}
+                />
+
+                <Select
+                  label="Offset type"
+                  defaultValue="Anchor"
+                  data={['NoOffset', 'Anchor', 'Custom']}
+                  {...getInputProps('offset.type')}
+                />
+
+                {offset.type === 'Custom' && (
+                  <NumberInput
+                    label="Offset"
+                    {...getInputProps('offset.offset')}
+                  />
+                )}
+
+                <ExtraAccountConfigurator
+                  label="Oracle account derivation"
+                  extraAccount={baseAddressConfig}
+                  error={form.errors[`${getPrefix('oracle')}.oracles.${index}.baseAddressConfig`] as string}
+                  setExtraAccount={(value) => form.setFieldValue(`${getPrefix('oracle')}.oracles.${index}.baseAddressConfig`, value)}
+                />
+
+              </Stack>);
+          })}
+          <span>
+            <Button
+              variant="subtle"
+              onClick={() => {
+                form.setFieldValue(`${type}Plugins.oracle.oracles`, [
+                  ...oracles,
+                  defaultAuthorityManagedPluginValues.oracle.oracles[0],
+                ]);
+              }}
+            >
+              + Add oracle
+            </Button>
+          </span>
+        </Stack>
+      </AccordionItem>
+
+      <AccordionItem
+        label="Community external plugins"
         description={`Add custom functionality to your ${type}`}
-        id="3rd-party"
+        id="external"
         disabled
       >
         <Stack>
-          <Text size="sm">Create your own plugins or use existing community plugins.</Text>
+          <Text size="sm">Pick from a library of existing community plugins.</Text>
           <Text size="sm">Coming soon...</Text>
         </Stack>
       </AccordionItem>
