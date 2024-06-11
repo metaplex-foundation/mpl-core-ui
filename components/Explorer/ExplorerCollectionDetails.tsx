@@ -28,12 +28,12 @@ export function ExplorerCollectionDetails({ collection }: { collection: Collecti
       </Group>
       {jsonInfo.isPending ? <Center h="20vh"><Loader /></Center> :
         <>
-          <Title>{jsonInfo.data.name}</Title>
+          <Title>{jsonInfo?.data?.name || collection.name}</Title>
 
-          <Image src={jsonInfo.data.image} maw={320} />
-          {jsonInfo.data.description && <ExplorerStat
+          {jsonInfo.data?.image && <Image src={jsonInfo.data.image} maw={320} />}
+          {jsonInfo.data?.description && <ExplorerStat
             label="Description"
-            value={jsonInfo.data.description}
+            value={jsonInfo.data?.description}
           />}
           <ExplorerStat
             label="Mint"
@@ -53,18 +53,20 @@ export function ExplorerCollectionDetails({ collection }: { collection: Collecti
             asExternalLink={collection.uri}
           />
 
-          <CodeHighlightTabs
-            withExpandButton
-            expandCodeLabel="Show full JSON"
-            collapseCodeLabel="Show less"
-            defaultExpanded={false}
-            mb="lg"
-            code={[{
-              fileName: 'metadata.json',
-              language: 'json',
-              code: JSON.stringify(jsonInfo.data, null, 2),
-            }]}
-          />
+          {jsonInfo.data && (
+            <CodeHighlightTabs
+              withExpandButton
+              expandCodeLabel="Show full JSON"
+              collapseCodeLabel="Show less"
+              defaultExpanded={false}
+              mb="lg"
+              code={[{
+                fileName: 'metadata.json',
+                language: 'json',
+                code: JSON.stringify(jsonInfo.data, null, 2),
+              }]}
+            />
+          )}
         </>}
       <Modal opened={opened} onClose={close} centered title="Advanced collection settings" size="70%">
         <ManageCollectionForm
