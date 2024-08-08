@@ -92,6 +92,22 @@ const mapPlugins = (plugins: AuthorityManagedPluginValues): CreateArgsPlugin[] =
     });
   }
 
+  if (plugins.edition.enabled) {
+    mappedPlugins.push({
+      type: 'Edition',
+      number: plugins.edition.number,
+    });
+  }
+
+  if (plugins.masterEdition.enabled) {
+    mappedPlugins.push({
+      type: 'MasterEdition',
+      name: plugins.masterEdition.name,
+      uri: plugins.masterEdition.uri,
+      maxSupply: plugins.masterEdition.maxSupply
+    });
+  }
+
   if (plugins.oracle.enabled) {
     plugins.oracle.oracles.forEach((oracle) => {
       mappedPlugins.push(createOracleFromInput(oracle));
@@ -269,6 +285,8 @@ export function Create() {
             }
             return null;
           },
+        },
+        masterEdition: {
         },
         oracle: {
           oracles: {

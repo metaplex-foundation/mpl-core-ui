@@ -56,6 +56,17 @@ export interface AuthorityManagedPluginValues {
     enabled: boolean;
     oracles: OracleInput[];
   };
+  edition: {
+    enabled: boolean;
+    number: number;
+  }
+  masterEdition: {
+    enabled: boolean;
+    //authority: string;
+    maxSupply?: number;
+    name: string;
+    uri: string;
+  }
 }
 
 export const defaultAuthorityManagedPluginValues: AuthorityManagedPluginValues = {
@@ -99,6 +110,16 @@ export const defaultAuthorityManagedPluginValues: AuthorityManagedPluginValues =
   permanentBurn: {
     enabled: false,
     authority: '',
+  },
+  edition: {
+    enabled: false,
+    number: 0
+  },
+  masterEdition: {
+    enabled: false,
+    maxSupply: undefined,
+    name: '',
+    uri: '',
   },
   oracle: {
     enabled: false,

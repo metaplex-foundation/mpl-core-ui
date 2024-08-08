@@ -390,6 +390,43 @@ export function ConfigurePlugins({ type }: { type: 'asset' | 'collection' }) {
           </span>
         </Stack>
       </AccordionItem>
+      {type === "asset" && <AccordionItem
+        label="Edition Plugin"
+        description={`Make your asset an Edition`}
+        {...createAccordianInputHelper('edition')}
+      >
+        <Stack>
+          <NumberInput
+            label="number"
+            placeholder="The Number of the Edition"
+            required={form.values[`${type}Plugins`].edition.enabled}
+            {...form.getInputProps(`${getPrefix('edition')}.number`)}
+          />
+        </Stack>
+      </AccordionItem>}
+      {type === "collection" && <AccordionItem
+        label="Master Edition Plugin"
+        description={`group Editions, provide provenance and store the maximum edition supply`}
+        {...createAccordianInputHelper('masterEdition')}
+      >
+        <Stack>
+          <TextInput
+            label="Name"
+            placeholder="Enter the Name of your Master Edition (if different to the Collection Name)"
+            {...form.getInputProps(`${getPrefix('masterEdition')}.name`)}
+          />
+          <TextInput
+            label="URI"
+            placeholder="URI of the Editions (if different to the Collection URI)"
+            {...form.getInputProps(`${getPrefix('masterEdition')}.uri`)}
+          />
+          <NumberInput
+            label="maxSupply"
+            placeholder="Indicate how many prints will exist as maximum. Optional to allow Open Editions"
+            {...form.getInputProps(`${getPrefix('masterEdition')}.maxSupply`)}
+          />
+        </Stack>
+      </AccordionItem>}
 
       <AccordionItem
         label="Community external plugins"

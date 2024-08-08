@@ -9,6 +9,7 @@ import { Revoke } from './Revoke';
 import { Update } from './Update';
 import { PermanentFreeze } from './PermanentFreeze';
 import { Attributes } from './Attributes';
+import { MasterEdition } from './MasterEdition';
 
 export function ManageCollectionForm({ collection }: { collection: CollectionV1 }) {
   const umi = useUmi();
@@ -37,6 +38,14 @@ export function ManageCollectionForm({ collection }: { collection: CollectionV1 
               <Accordion.Item key="update" value="update">
                 <Accordion.Control><Text size="sm">Update attributes</Text></Accordion.Control>
                 <Accordion.Panel><Attributes collection={collection} /></Accordion.Panel>
+              </Accordion.Item>
+            </Accordion>
+          )}
+          {actions.get('masterEdition')?.canUpdate && (
+            <Accordion variant="separated">
+              <Accordion.Item key="update" value="update">
+                <Accordion.Control><Text size="sm">Update MasterEdition</Text></Accordion.Control>
+                <Accordion.Panel><MasterEdition collection={collection} /></Accordion.Panel>
               </Accordion.Item>
             </Accordion>
           )}
