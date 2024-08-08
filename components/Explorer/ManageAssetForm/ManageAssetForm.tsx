@@ -13,6 +13,7 @@ import { Update } from './Update';
 import { Freeze } from './Freeze';
 import { PermanentFreeze } from './PermanentFreeze';
 import { Attributes } from './Attributes';
+import { Edition } from './Edition';
 
 export function ManageAssetForm({ asset, collection }: AssetWithCollection) {
   const umi = useUmi();
@@ -48,6 +49,14 @@ export function ManageAssetForm({ asset, collection }: AssetWithCollection) {
               </Accordion.Item>
             </Accordion>
           )}
+          {actions.get('edition')?.canUpdate &&
+            <Accordion variant="separated">
+              <Accordion.Item key="update" value="update">
+              <Accordion.Control><Text size="sm">Update Edition</Text></Accordion.Control>
+              <Accordion.Panel><Edition asset={asset} /></Accordion.Panel>
+              </Accordion.Item>
+            </Accordion>
+          }
         </Stack>
       </Grid.Col>
       <Grid.Col span={5}>

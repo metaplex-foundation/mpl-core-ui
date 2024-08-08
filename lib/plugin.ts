@@ -150,7 +150,7 @@ export function getAssetPluginActions(
     }
   });
 
-  authorityManagedPlugins.forEach((type) => {
+  authorityManagedAssetPlugins.forEach((type) => {
     const plugin = asset[type];
     if (plugin) {
       if (isUpdateAuth) {
