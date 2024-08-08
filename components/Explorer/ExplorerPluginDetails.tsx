@@ -96,6 +96,16 @@ export function ExplorerPluginDetails({ plugins, type }: { plugins: PluginsList 
           </Stack>
         </Fieldset>
       ))}
+      {plugins.masterEdition && (
+        <>
+          <div>
+            <AuthorityStat authority={plugins.masterEdition.authority} name="Master Edition" />
+            {plugins.masterEdition.name && <ExplorerStat label="Master Edition Name" value={plugins.masterEdition.name} />}
+            {plugins.masterEdition.maxSupply && plugins.masterEdition.maxSupply > 0 && <ExplorerStat label="Master Edition May Supply" value={plugins.masterEdition.maxSupply.toString()} />}
+            {plugins.masterEdition.uri && <ExplorerStat label="Master Edition URI" value={plugins.masterEdition.uri} />}
+          </div>
+        </>
+      )}
 
     </Stack>
   );

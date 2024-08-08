@@ -14,11 +14,6 @@ export const UmiProvider = ({
 }) => {
   const wallet = useWallet();
   const { connection } = useConnection();
-  // let nftStorageToken = process.env.NFTSTORAGE_TOKEN;
-  // if (!nftStorageToken || nftStorageToken === 'AddYourTokenHere'){
-  //   console.error("Add your nft.storage Token to .env!");
-  //   nftStorageToken = 'AddYourTokenHere';
-  // }
 
   const umi = useMemo(() => {
     const u = createUmi(connection)

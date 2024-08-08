@@ -1,6 +1,7 @@
 import { PublicKey, publicKey } from '@metaplex-foundation/umi';
 import {
   AssetPluginKey,
+  AssetPluginsList,
   AssetV1,
   CollectionPluginsList,
   CollectionV1,
@@ -20,7 +21,7 @@ export type PluginActions = {
   canRemove?: boolean;
 };
 
-export type PluginActionMap = Map<AssetPluginKey, PluginActions>;
+export type PluginActionMap = Map<AssetPluginKey | keyof CollectionPluginsList, PluginActions>;
 export const ownerManagedPlugins: AssetPluginKey[] = [
   'transferDelegate',
   'freezeDelegate',
@@ -33,6 +34,16 @@ export const authorityManagedPlugins: (keyof CommonPluginsList)[] = [
   'attributes',
   'addBlocker',
   'immutableMetadata',
+];
+
+export const authorityManagedAssetPlugins: (keyof CommonPluginsList | AssetPluginKey)[] = [
+  ...authorityManagedPlugins,
+  'edition'
+];
+
+export const authorityManagedCollectionPlugins: (keyof CommonPluginsList | keyof CollectionPluginsList)[] = [
+  ...authorityManagedPlugins,
+  'masterEdition'
 ];
 
 export const permanentPlugins: (keyof CommonPluginsList)[] = [
@@ -209,10 +220,11 @@ export function getCollectionPluginActions(
   collection: CollectionV1
 ): PluginActionMap {
   const pubkey = publicKey(identity);
-  const result = new Map<AssetPluginKey, PluginActions>();
+  const result = new Map<AssetPluginKey | keyof CollectionPluginsList, PluginActions>();
   const isUpdateAuth = hasCollectionUpdateAuthority(identity, collection);
-
-  authorityManagedPlugins.forEach((type) => {
+console.log(authorityManagedCollectionPlugins)
+console.log(collection)
+  authorityManagedCollectionPlugins.forEach((type) => {
     const plugin = collection[type];
     if (plugin) {
       if (isUpdateAuth) {
