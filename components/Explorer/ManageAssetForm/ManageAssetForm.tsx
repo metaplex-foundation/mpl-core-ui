@@ -1,4 +1,4 @@
-import { Accordion, Grid, Stack, Text } from '@mantine/core';
+import { Accordion, Button, Grid, Stack, Text } from '@mantine/core';
 import { useMemo } from 'react';
 import { canBurn, canTransfer, hasAssetUpdateAuthority } from '@metaplex-foundation/mpl-core';
 import { authorityManagedPlugins, getAssetPluginActions, ownerManagedPlugins, typeToLabel } from '@/lib/plugin';
@@ -33,6 +33,13 @@ export function ManageAssetForm({ asset, collection }: AssetWithCollection) {
           {burn && <Burn asset={asset} />}
           {(actions.get('freezeDelegate')?.canAdd || actions.get('freezeDelegate')?.canUpdate) && <Freeze asset={asset} />}
           {actions.get('permanentFreezeDelegate')?.canUpdate && <PermanentFreeze asset={asset} />}
+          {isOwner &&
+            <Button
+              component="a"
+              href={`/autograph/${asset.publicKey}`}
+            >
+              Get Autographs
+            </Button>}
           {isUpdateAuth && (
             <Accordion variant="separated">
               <Accordion.Item key="update" value="update">
@@ -52,8 +59,8 @@ export function ManageAssetForm({ asset, collection }: AssetWithCollection) {
           {actions.get('edition')?.canUpdate &&
             <Accordion variant="separated">
               <Accordion.Item key="update" value="update">
-              <Accordion.Control><Text size="sm">Update Edition</Text></Accordion.Control>
-              <Accordion.Panel><Edition asset={asset} /></Accordion.Panel>
+                <Accordion.Control><Text size="sm">Update Edition</Text></Accordion.Control>
+                <Accordion.Panel><Edition asset={asset} /></Accordion.Panel>
               </Accordion.Item>
             </Accordion>
           }

@@ -2718,13 +2718,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@metaplex-foundation/mpl-core@npm:1.0.0-alpha.6":
-  version: 1.0.0-alpha.6
-  resolution: "@metaplex-foundation/mpl-core@npm:1.0.0-alpha.6"
+"@metaplex-foundation/mpl-core@npm:1.0.2":
+  version: 1.0.2
+  resolution: "@metaplex-foundation/mpl-core@npm:1.0.2"
   peerDependencies:
     "@metaplex-foundation/umi": ">=0.8.2 < 1"
     "@noble/hashes": ^1.3.1
-  checksum: f3cf4175ca7034927862a3a7d9a296263ad7ef35cd9afd888d8130cfbb4735f161a2d3665c587af8397f1afd207c6214aa8dd53d3c7e89e870fd167ddc641a02
+  checksum: f3ed8dde425e1c59de64ce8f3c8f771285c4bf2b23d3edd61ed37d5c2f2ab05e3d4914bbe0e3c1dc4aa89d82bd8abec757e211cf63969f96a2f6d660a6c74d8d
   languageName: node
   linkType: hard
 
@@ -15069,7 +15069,7 @@ __metadata:
     "@mantine/nprogress": "npm:^7.3.2"
     "@mantine/tiptap": "npm:^7.3.2"
     "@metaplex-foundation/digital-asset-standard-api": "npm:^1.0.0"
-    "@metaplex-foundation/mpl-core": "npm:1.0.0-alpha.6"
+    "@metaplex-foundation/mpl-core": "npm:1.0.2"
     "@metaplex-foundation/mpl-core-oracle-example": "npm:0.0.2"
     "@metaplex-foundation/mpl-toolbox": "npm:^0.9.1"
     "@metaplex-foundation/umi": "npm:^0.8.10"
@@ -15127,6 +15127,7 @@ __metadata:
     postcss-simple-vars: "npm:^7.0.1"
     prettier: "npm:^3.0.3"
     pretty-bytes: "npm:^6.1.1"
+    qrcode.react: "npm:^3.1.0"
     react: "npm:18.2.0"
     react-dom: "npm:18.2.0"
     storybook: "npm:^7.5.2"
@@ -17169,6 +17170,15 @@ __metadata:
   peerDependencies:
     react: ^15.5.3 || ^16.0.0 || ^17.0.0
   checksum: adf488690634883cafaa0688723b8a7eb6297fe3cb99468a72bf62cdf0ca2a19e42df803b31930d0b814e6e0d98e042ee0be05d4c8d5aef5377db08f848eab2a
+  languageName: node
+  linkType: hard
+
+"qrcode.react@npm:^3.1.0":
+  version: 3.1.0
+  resolution: "qrcode.react@npm:3.1.0"
+  peerDependencies:
+    react: ^16.8.0 || ^17.0.0 || ^18.0.0
+  checksum: af183e99ecaad90f7ef14bd027510ae7866935693c53ccf81b172438abbbf7f29c283c5dc7c2141b420d2413960b8f8dca8d9949646475afe669ed638e8fb722
   languageName: node
   linkType: hard
 
