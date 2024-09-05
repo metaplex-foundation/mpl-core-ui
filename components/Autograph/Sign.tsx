@@ -33,7 +33,7 @@ export function Sign({ asset }: AssetWithCollection) {
         }));
       }
 
-      const res = await tx.sendAndConfirm(umi);
+      const res = await tx.sendAndConfirm(umi, {send: { skipPreflight: true}});
 
       const sig = base58.deserialize(res.signature);
       console.log('Autograph plugin added', sig);

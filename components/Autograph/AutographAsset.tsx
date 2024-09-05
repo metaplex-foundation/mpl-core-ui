@@ -28,8 +28,8 @@ export function AutographAsset({ asset, collection }: AssetWithCollection) {
             {asset.autograph.signatures.length === 0 && <Text>No signatures yet</Text>}
           </Paper>
         }
-        {!isOwner && <Sign asset={asset} />}
-        {isOwner && <QRCode />}
+        {!isOwner && asset.autograph && <Sign asset={asset} />}
+        {isOwner && asset.autograph && <QRCode />}
       </Flex>
     </SimpleGrid>
   );
