@@ -2718,13 +2718,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@metaplex-foundation/mpl-core@npm:1.0.0-alpha.6":
-  version: 1.0.0-alpha.6
-  resolution: "@metaplex-foundation/mpl-core@npm:1.0.0-alpha.6"
+"@metaplex-foundation/mpl-core@npm:^1.1":
+  version: 1.1.1
+  resolution: "@metaplex-foundation/mpl-core@npm:1.1.1"
+  dependencies:
+    "@msgpack/msgpack": "npm:^3.0.0-beta2"
   peerDependencies:
     "@metaplex-foundation/umi": ">=0.8.2 < 1"
     "@noble/hashes": ^1.3.1
-  checksum: f3cf4175ca7034927862a3a7d9a296263ad7ef35cd9afd888d8130cfbb4735f161a2d3665c587af8397f1afd207c6214aa8dd53d3c7e89e870fd167ddc641a02
+  checksum: cfc6ce473db5aa08a86e3f8d49db319b2751d862d2ec5899d12b4f1e2ce0c3c7f2f4e48bf5d8fb5dbbcbcfd474ac3c53223d7455d45cde9712200356cd261f43
   languageName: node
   linkType: hard
 
@@ -2933,6 +2935,13 @@ __metadata:
   version: 3.13.1
   resolution: "@mobily/ts-belt@npm:3.13.1"
   checksum: f988afcf61299861105b52fa2abda62356d3f40ca19ad05667b990774e380dadafd758bacc02b075df9c4b8eab5b910078f28775780ebb137844121968035270
+  languageName: node
+  linkType: hard
+
+"@msgpack/msgpack@npm:^3.0.0-beta2":
+  version: 3.0.0-beta2
+  resolution: "@msgpack/msgpack@npm:3.0.0-beta2"
+  checksum: f4dc4c210bb722f0f7407214334dda728263cce8eb0d3f9af1a40a48e13ce175b599de35a757dce5f1d92a74d3ce4d0242feb67516f308a626058d0f98f01c70
   languageName: node
   linkType: hard
 
@@ -15069,7 +15078,7 @@ __metadata:
     "@mantine/nprogress": "npm:^7.3.2"
     "@mantine/tiptap": "npm:^7.3.2"
     "@metaplex-foundation/digital-asset-standard-api": "npm:^1.0.0"
-    "@metaplex-foundation/mpl-core": "npm:1.0.0-alpha.6"
+    "@metaplex-foundation/mpl-core": "npm:^1.1"
     "@metaplex-foundation/mpl-core-oracle-example": "npm:0.0.2"
     "@metaplex-foundation/mpl-toolbox": "npm:^0.9.1"
     "@metaplex-foundation/umi": "npm:^0.8.10"
