@@ -1,6 +1,6 @@
 import { createContext, useContext } from 'react';
 
-export type Env = 'devnet' | 'testnet' | 'mainnet' | 'localhost';
+export type Env = 'devnet' | 'testnet' | 'mainnet' | 'localhost' | 'eclipse-devnet' | 'eclipse-mainnet' | 'sonic-devnet';
 
 type EnvContext = {
   env: Env;
