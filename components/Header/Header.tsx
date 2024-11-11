@@ -46,8 +46,11 @@ export function Header({ env, setEnv }: { env: string; setEnv: (env: Env) => voi
               </a>
             </Menu.Target>
             <Menu.Dropdown>
-              <Menu.Item onClick={() => setEnv('mainnet')}>Mainnet</Menu.Item>
-              <Menu.Item onClick={() => setEnv('devnet')}>Devnet</Menu.Item>
+              <Menu.Item onClick={() => setEnv('mainnet')}>Solana Mainnet</Menu.Item>
+              <Menu.Item onClick={() => setEnv('devnet')}>Solana Devnet</Menu.Item>
+              <Menu.Item onClick={() => setEnv('eclipse-mainnet')}>Eclipse Mainnet</Menu.Item>
+              <Menu.Item onClick={() => setEnv('eclipse-devnet')}>Eclipse Devnet</Menu.Item>
+              <Menu.Item onClick={() => setEnv('sonic-devnet')}>Sonic Devnet</Menu.Item>
               <Menu.Item onClick={() => setEnv('localhost')}>Localhost</Menu.Item>
             </Menu.Dropdown>
           </Menu>
