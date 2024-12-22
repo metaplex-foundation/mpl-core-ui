@@ -3,7 +3,7 @@ import { IconChevronDown } from '@tabler/icons-react';
 import { WalletMultiButton } from '@solana/wallet-adapter-react-ui';
 
 import classes from './Header.module.css';
-import { Env } from '@/providers/useEnv';
+import { Env, EnvOption } from '@/providers/useEnv';
 import RetainQueryLink from '../RetainQueryLink';
 
 const HeaderLink = ({ label, link, disabled }: { label: string, link: string, disabled?: boolean }) => {
@@ -15,7 +15,7 @@ const HeaderLink = ({ label, link, disabled }: { label: string, link: string, di
   );
 };
 
-export function Header({ env, setEnv }: { env: string; setEnv: (env: Env) => void }) {
+export function Header({ env, envOptions, setEnv }: { env: string; envOptions: EnvOption[], setEnv: (env: Env) => void }) {
   return (
     <Container size="xl" pt={12}>
       <div className={classes.inner}>
@@ -42,12 +42,9 @@ export function Header({ env, setEnv }: { env: string; setEnv: (env: Env) => voi
               </a>
             </Menu.Target>
             <Menu.Dropdown>
-              <Menu.Item onClick={() => setEnv('mainnet')}>Solana Mainnet</Menu.Item>
-              <Menu.Item onClick={() => setEnv('devnet')}>Solana Devnet</Menu.Item>
-              <Menu.Item onClick={() => setEnv('eclipse-mainnet')}>Eclipse Mainnet</Menu.Item>
-              <Menu.Item onClick={() => setEnv('eclipse-devnet')}>Eclipse Devnet</Menu.Item>
-              <Menu.Item onClick={() => setEnv('sonic-devnet')}>Sonic Devnet</Menu.Item>
-              <Menu.Item onClick={() => setEnv('localhost')}>Localhost</Menu.Item>
+              {envOptions.map(({ env: e, label }) => (
+                <Menu.Item key={e} onClick={() => setEnv(e)}>{label}</Menu.Item>
+              ))}
             </Menu.Dropdown>
           </Menu>
         </Group>
