@@ -9,7 +9,6 @@ import '@mantine/dropzone/styles.css';
 import '@mantine/carousel/styles.css';
 import '@mantine/notifications/styles.css';
 import '@mantine/code-highlight/styles.css';
-import '@solana/wallet-adapter-react-ui/styles.css';
 import { Providers } from '@/providers/Providers';
 
 export const metadata = {
