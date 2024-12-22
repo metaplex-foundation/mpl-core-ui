@@ -1,8 +1,7 @@
 'use client';
 
 import { ConnectionProvider, WalletProvider } from '@solana/wallet-adapter-react';
-import { PhantomWalletAdapter, SolflareWalletAdapter } from '@solana/wallet-adapter-wallets';
-import { WalletModalProvider } from '@solana/wallet-adapter-react-ui';
+import { WalletModalProvider } from '@pubkeyapp/wallet-adapter-mantine-ui';
 import { ReactNode, useMemo, useState } from 'react';
 import { Notifications } from '@mantine/notifications';
 import { AppShell } from '@mantine/core';
