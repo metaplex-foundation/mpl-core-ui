@@ -71,7 +71,7 @@ export function Providers({ children }: { children: ReactNode }) {
                 <ReactQueryStreamedHydration>
                   <Notifications />
                   <AppShell
-                    header={{ height: 80 }}
+                    header={{ height: { base: 140, md: 80 } }}
                     style={{
                       backgroundColor: '#141414',
                     }}

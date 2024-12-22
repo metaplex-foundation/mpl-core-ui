@@ -10,7 +10,7 @@ export function ExplorerCollection({ collection }: { collection: CollectionV1 })
   const { data: assets, error, isPending } = useFetchAssetsByCollection(collection.publicKey);
   return (
     <>
-      <SimpleGrid cols={2} mt="xl" spacing="lg" pb="xl">
+      <SimpleGrid cols={{ base: 1, md: 2 }} mt="xl" spacing="lg" pb="xl">
         <Paper p="xl" radius="md">
           <ExplorerCollectionDetails collection={collection} />
         </Paper>
