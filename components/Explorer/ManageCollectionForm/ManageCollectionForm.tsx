@@ -10,6 +10,7 @@ import { Update } from './Update';
 import { PermanentFreeze } from './PermanentFreeze';
 import { Attributes } from './Attributes';
 import { MasterEdition } from './MasterEdition';
+import { Burn } from './Burn';
 
 export function ManageCollectionForm({ collection }: { collection: CollectionV1 }) {
   const umi = useUmi();
@@ -23,6 +24,7 @@ export function ManageCollectionForm({ collection }: { collection: CollectionV1 
         <Stack gap="xs">
           <LabelTitle>Actions</LabelTitle>
 
+          {isUpdateAuth && <Burn collection={collection} />}
           {isUpdateAuth && (
             <Accordion variant="separated">
               <Accordion.Item key="update" value="update">

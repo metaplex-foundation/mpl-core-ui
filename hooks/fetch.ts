@@ -27,6 +27,16 @@ export function useFetchCollection(mint?: string) {
   });
 }
 
+export function useInvalidateFetchCollection() {
+  const env = useEnv();
+  const queryClient = useQueryClient();
+
+  return {
+    invalidate: (mint: string) =>
+      queryClient.invalidateQueries({ queryKey: ['fetch-collection', env, mint] }),
+  };
+}
+
 export function useInvalidateFetchAssetWithCollection() {
   const env = useEnv();
   const queryClient = useQueryClient();
