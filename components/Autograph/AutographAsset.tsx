@@ -10,7 +10,7 @@ export function AutographAsset({ asset, collection }: AssetWithCollection) {
   const umi = useUmi();
   const isOwner = asset.owner === umi.identity.publicKey;
   return (
-    <SimpleGrid cols={2} mt="xl" spacing="lg" pb="xl">
+    <SimpleGrid cols={{ base: 1, md: 2 }} mt="xl" spacing="lg" pb="xl">
       <Paper p="xl" radius="md">
         <AutographAssetDetails asset={asset} collection={collection} />
       </Paper>

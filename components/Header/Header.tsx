@@ -17,18 +17,14 @@ const HeaderLink = ({ label, link, disabled }: { label: string, link: string, di
 
 export function Header({ env, setEnv }: { env: string; setEnv: (env: Env) => void }) {
   return (
-    <Container
-      size="xl"
-      h={80}
-      pt={12}
-    >
+    <Container size="xl" pt={12}>
       <div className={classes.inner}>
         <Flex justify="center" align="center" gap="md" ml="md">
           <RetainQueryLink href="/">
-            <Image src="/m-core-color.png" alt="Core" w="50%" />
+            <Image src="/m-core-color.png" alt="Core" h={28} />
           </RetainQueryLink>
         </Flex>
-        <Group>
+        <Group wrap="nowrap">
           <HeaderLink label="Create" link="/create" />
           <HeaderLink label="Explorer" link="/explorer" />
           <WalletMultiButton />

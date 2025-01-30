@@ -5,7 +5,7 @@ import { AssetWithCollection } from '@/lib/type';
 
 export function ExplorerAsset({ asset, collection }: AssetWithCollection) {
   return (
-    <SimpleGrid cols={2} mt="xl" spacing="lg" pb="xl">
+    <SimpleGrid cols={{ base: 1, md: 2 }} mt="xl" spacing="lg" pb="xl">
       <Paper p="xl" radius="md">
         <ExplorerAssetDetails asset={asset} collection={collection} />
       </Paper>

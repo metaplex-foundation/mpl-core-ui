@@ -1,16 +1,17 @@
-.header {
-  height: rem(56px);
-  margin-bottom: rem(120px);
-  background-color: var(--mantine-color-body);
-  /* border-bottom: rem(1px) solid light-dark(var(--mantine-color-gray-3), var(--mantine-color-dark-4)); */
-}
-
 .inner {
   height: rem(56px);
   display: flex;
   justify-content: space-between;
   align-items: center;
   align-content: center;
+
+  @media (max-width: $mantine-breakpoint-md) {
+    height: rem(112px);
+    padding-top: rem(12px);
+    gap: rem(24px);
+    justify-content: center;
+    flex-direction: column;
+  }
 }
 
 .link {
