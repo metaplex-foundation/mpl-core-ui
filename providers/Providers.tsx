@@ -1,7 +1,6 @@
 'use client';
 
 import { ConnectionProvider, WalletProvider } from '@solana/wallet-adapter-react';
-import { PhantomWalletAdapter, SolflareWalletAdapter } from '@solana/wallet-adapter-wallets';
 import { WalletModalProvider } from '@solana/wallet-adapter-react-ui';
 import { ReactNode, useMemo, useState } from 'react';
 import { Notifications } from '@mantine/notifications';
@@ -21,13 +20,6 @@ export function Providers({ children }: { children: ReactNode }) {
   const queryEnv = searchParams.get('env');
   const [client] = useState(new QueryClient());
   const [env, setEnv] = useState<Env>((queryEnv === 'mainnet' || queryEnv === 'devnet') ? queryEnv : 'mainnet');
-  const wallets = useMemo(
-    () => [
-      new PhantomWalletAdapter(),
-      new SolflareWalletAdapter(),
-    ],
-    []
-  );
 
   const doSetEnv = (e: Env) => {
     const params = new URLSearchParams(window.location.search);
@@ -64,7 +56,7 @@ export function Providers({ children }: { children: ReactNode }) {
   return (
     <EnvProvider env={env!}>
       <ConnectionProvider endpoint={endpoint!}>
-        <WalletProvider wallets={wallets} autoConnect>
+        <WalletProvider wallets={[]} autoConnect>
           <WalletModalProvider>
             <UmiProvider>
               <QueryClientProvider client={client}>
