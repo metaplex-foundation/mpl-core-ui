@@ -11,7 +11,7 @@ import { useSearchParams, useRouter, usePathname } from 'next/navigation';
 import { Header } from '@/components/Header/Header';
 import { UmiProvider } from './UmiProvider';
 import { EnvProvider } from './EnvProvider';
-import { Env, envOptions } from './useEnv';
+import { Env, EnvOption, envOptions } from './useEnv';
 
 export function Providers({ children }: { children: ReactNode }) {
   const router = useRouter();
@@ -19,13 +19,21 @@ export function Providers({ children }: { children: ReactNode }) {
   const pathname = usePathname();
   const queryEnv = searchParams.get('env');
   const [client] = useState(new QueryClient());
-  const [env, setEnv] = useState<Env>((queryEnv === 'mainnet' || queryEnv === 'devnet') ? queryEnv : 'mainnet');
+  const [envOption, setEnvOption] = useState<EnvOption>(() => {
+    const found = envOptions.find(({ env: e }) => e === queryEnv);
+
+    return found || envOptions[0];
+  });
+  const endpoint = useMemo(() => envOption.endpoint, [envOption]);
 
   const doSetEnv = (e: Env) => {
     const params = new URLSearchParams(window.location.search);
     params.set('env', e);
-
-    setEnv(e);
+    const found = envOptions.find((option) => option.env === e);
+    if (!found) {
+      return;
+    }
+    setEnvOption(found);
     router.push(`${pathname}?${params.toString()}`);
   };
 
@@ -35,10 +43,8 @@ export function Providers({ children }: { children: ReactNode }) {
   //   }
   // }, []);
 
-  const endpoint = useMemo(() => envOptions.find(({ env: e }) => e === env)?.endpoint, [env]);
-
   return (
-    <EnvProvider env={env!}>
+    <EnvProvider env={envOption.env!}>
       <ConnectionProvider endpoint={endpoint!}>
         <WalletProvider wallets={[]} autoConnect>
           <WalletModalProvider>
@@ -53,7 +59,7 @@ export function Providers({ children }: { children: ReactNode }) {
                     }}
                   >
                     <AppShell.Header bg="black" withBorder={false}>
-                      <Header env={env} envOptions={envOptions} setEnv={doSetEnv} />
+                      <Header envOption={envOption} envOptions={envOptions} setEnv={doSetEnv} />
                     </AppShell.Header>
                     <AppShell.Main>
                       {children}

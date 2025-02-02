@@ -15,7 +15,7 @@ const HeaderLink = ({ label, link, disabled }: { label: string, link: string, di
   );
 };
 
-export function Header({ env, envOptions, setEnv }: { env: string; envOptions: EnvOption[], setEnv: (env: Env) => void }) {
+export function Header({ envOption, envOptions, setEnv }: { envOption: EnvOption; envOptions: EnvOption[], setEnv: (env: Env) => void }) {
   return (
     <Container size="xl" pt={12}>
       <div className={classes.inner}>
@@ -36,7 +36,7 @@ export function Header({ env, envOptions, setEnv }: { env: string; envOptions: E
                 onClick={(event) => event.preventDefault()}
               >
                 <Center>
-                  <span className={classes.linkLabel}>{env}</span>
+                  <span className={classes.linkLabel}>{envOption.env}</span>
                   <IconChevronDown size="0.9rem" stroke={1.5} />
                 </Center>
               </a>
