@@ -11,6 +11,7 @@ import '@mantine/notifications/styles.css';
 import '@mantine/code-highlight/styles.css';
 import '@solana/wallet-adapter-react-ui/styles.css';
 import { Providers } from '@/providers/Providers';
+import { Footer } from '@/components/Footer';
 
 export const metadata = {
   title: 'Metaplex Core UI',
@@ -32,6 +33,7 @@ export default function RootLayout({ children }: { children: any }) {
         <MantineProvider theme={theme} defaultColorScheme="dark">
           <NavigationProgress />
           <Providers>{children}</Providers>
+          <Footer />
         </MantineProvider>
       </body>
     </html>
