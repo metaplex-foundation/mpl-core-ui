@@ -45,6 +45,16 @@ export function ExplorerCollectionDetails({ collection }: { collection: Collecti
             value={collection.updateAuthority}
             copyable
           />
+          <ExplorerStat
+            label="Number Minted"
+            value={collection.numMinted.toString()}
+            copyable
+          />
+          <ExplorerStat
+            label="Current size"
+            value={collection.currentSize.toString()}
+            copyable
+          />
 
           <ExplorerStat
             label="Metadata URI"
