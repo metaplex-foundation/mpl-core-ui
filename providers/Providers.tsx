@@ -41,10 +41,12 @@ export function Providers({ children }: { children: ReactNode }) {
         return process.env.NEXT_PUBLIC_MAINNET_RPC_URL;
       case 'eclipse-mainnet':
         return process.env.NEXT_PUBLIC_ECLIPSE_MAINNET_RPC_URL;
-      case 'sonic-devnet':
-        return process.env.NEXT_PUBLIC_SONIC_DEVNET_RPC_URL;
+      case 'sonic-mainnet':
+        return process.env.NEXT_PUBLIC_SONIC_MAINNET_RPC_URL;
       case 'eclipse-devnet':
         return process.env.NEXT_PUBLIC_ECLIPSE_DEVNET_RPC_URL;
+      case 'sonic-devnet':
+        return process.env.NEXT_PUBLIC_SONIC_DEVNET_RPC_URL;
       case 'localhost':
         return 'http://localhost:8899';
       case 'devnet':
