@@ -51,7 +51,7 @@ export function ExplorerCollectionDetails({ collection }: { collection: Collecti
             copyable
           />
           <ExplorerStat
-            label="Current size"
+            label="Current Size"
             value={collection.currentSize.toString()}
             copyable
           />
