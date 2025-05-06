@@ -18,6 +18,7 @@ const AuthorityStat = ({ authority, name }: { authority: PluginAuthority, name: 
 };
 
 export function ExplorerPluginDetails({ plugins, type }: { plugins: PluginsList & ExternalPluginAdaptersList, type: 'asset' | 'collection' }) {
+  console.log(plugins);
   return (
     <Stack>
       <LabelTitle fz="md">{type === 'asset' ? 'Asset' : 'Collection'} Plugin Details</LabelTitle>
@@ -61,6 +62,53 @@ export function ExplorerPluginDetails({ plugins, type }: { plugins: PluginsList 
           </div>
         </>
       )}
+
+      {plugins.appDatas && plugins.appDatas.map((appData, idx) => (
+        <Fieldset key={idx} legend={<LabelTitle>App Data</LabelTitle>}>
+          <Stack>
+            <AuthorityStat authority={appData.authority} name="Plugin" />
+            <AuthorityStat authority={appData.dataAuthority} name="Data" />
+            <div>
+              <LabelTitle>Raw Bytes</LabelTitle>
+              <Text fz="sm" style={{ wordBreak: 'break-all', fontFamily: 'monospace' }}>
+                {appData.data instanceof Uint8Array
+                  ? Array.from(appData.data)
+                    .map(b => b.toString(16).padStart(2, '0'))
+                    .join(' ')
+                  : appData.data}
+              </Text>
+            </div>
+          </Stack>
+        </Fieldset>
+      ))}
+
+      {plugins.linkedAppDatas && plugins.linkedAppDatas.map((linkedAppData, idx) => (
+        <Fieldset key={idx} legend={<LabelTitle>Linked App Data</LabelTitle>}>
+          <Stack>
+            <AuthorityStat authority={linkedAppData.authority} name="Plugin" />
+            <AuthorityStat authority={linkedAppData.dataAuthority} name="Data" />
+          </Stack>
+        </Fieldset>
+      ))}
+
+      {plugins.dataSections && plugins.dataSections.map((dataSection, idx) => (
+        <Fieldset key={idx} legend={<LabelTitle>Data Section</LabelTitle>}>
+          <Stack>
+            <ExplorerStat label="Parent Type" value={dataSection.parentKey.type} />
+            {dataSection.parentKey.type === 'LinkedAppData' && <AuthorityStat authority={dataSection.dataAuthority!} name="Data" />}
+            <div>
+              <LabelTitle>Raw Bytes</LabelTitle>
+              <Text fz="sm" style={{ wordBreak: 'break-all', fontFamily: 'monospace' }}>
+                {dataSection.data instanceof Uint8Array
+                  ? Array.from(dataSection.data)
+                    .map(b => b.toString(16).padStart(2, '0'))
+                    .join(' ')
+                  : dataSection.data}
+              </Text>
+            </div>
+          </Stack>
+        </Fieldset>
+      ))}
 
       {plugins.oracles && plugins.oracles.map((oracle, idx) => (
         <Fieldset key={idx} legend={<LabelTitle>{`Oracle ${idx + 1}`}</LabelTitle>}>
