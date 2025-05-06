@@ -18,7 +18,6 @@ const AuthorityStat = ({ authority, name }: { authority: PluginAuthority, name: 
 };
 
 export function ExplorerPluginDetails({ plugins, type }: { plugins: PluginsList & ExternalPluginAdaptersList, type: 'asset' | 'collection' }) {
-  console.log(plugins);
   return (
     <Stack>
       <LabelTitle fz="md">{type === 'asset' ? 'Asset' : 'Collection'} Plugin Details</LabelTitle>
