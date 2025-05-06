@@ -62,7 +62,7 @@ export function ExplorerPluginDetails({ plugins, type }: { plugins: PluginsList 
         </>
       )}
 
-      {plugins.appDatas && plugins.appDatas.map((appData, idx) => (
+      {plugins.appDatas?.map((appData, idx) => (
         <Fieldset key={idx} legend={<LabelTitle>App Data</LabelTitle>}>
           <Stack>
             <AuthorityStat authority={appData.authority} name="Plugin" />
@@ -72,8 +72,8 @@ export function ExplorerPluginDetails({ plugins, type }: { plugins: PluginsList 
               <Text fz="sm" style={{ wordBreak: 'break-all', fontFamily: 'monospace' }}>
                 {appData.data instanceof Uint8Array
                   ? Array.from(appData.data)
-                    .map(b => b.toString(16).padStart(2, '0'))
-                    .join(' ')
+                      .map(b => b.toString(16).padStart(2, '0'))
+                      .join(' ')
                   : appData.data}
               </Text>
             </div>
@@ -81,7 +81,7 @@ export function ExplorerPluginDetails({ plugins, type }: { plugins: PluginsList 
         </Fieldset>
       ))}
 
-      {plugins.linkedAppDatas && plugins.linkedAppDatas.map((linkedAppData, idx) => (
+      {plugins.linkedAppDatas?.map((linkedAppData, idx) => (
         <Fieldset key={idx} legend={<LabelTitle>Linked App Data</LabelTitle>}>
           <Stack>
             <AuthorityStat authority={linkedAppData.authority} name="Plugin" />
@@ -90,18 +90,20 @@ export function ExplorerPluginDetails({ plugins, type }: { plugins: PluginsList 
         </Fieldset>
       ))}
 
-      {plugins.dataSections && plugins.dataSections.map((dataSection, idx) => (
+      {plugins.dataSections?.map((dataSection, idx) => (
         <Fieldset key={idx} legend={<LabelTitle>Data Section</LabelTitle>}>
           <Stack>
             <ExplorerStat label="Parent Type" value={dataSection.parentKey.type} />
-            {dataSection.parentKey.type === 'LinkedAppData' && <AuthorityStat authority={dataSection.dataAuthority!} name="Data" />}
+            {dataSection.parentKey.type === 'LinkedAppData' && dataSection.dataAuthority && (
+              <AuthorityStat authority={dataSection.dataAuthority} name="Data" />
+            )}
             <div>
               <LabelTitle>Raw Bytes</LabelTitle>
               <Text fz="sm" style={{ wordBreak: 'break-all', fontFamily: 'monospace' }}>
                 {dataSection.data instanceof Uint8Array
                   ? Array.from(dataSection.data)
-                    .map(b => b.toString(16).padStart(2, '0'))
-                    .join(' ')
+                      .map(b => b.toString(16).padStart(2, '0'))
+                      .join(' ')
                   : dataSection.data}
               </Text>
             </div>
