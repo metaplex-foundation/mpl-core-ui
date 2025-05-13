@@ -45,7 +45,7 @@ export function Update({ collection }: { collection: CollectionV1 }) {
     } finally {
       setLoading(false);
     }
-  }, [umi, form.values.name, form.values.uri, collection]);
+  }, [umi, form.values.name, form.values.uri, form.values.updateAuth, collection]);
   return (
     <Stack gap="xs">
       <TextInput
