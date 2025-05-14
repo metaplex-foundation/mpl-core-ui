@@ -6,7 +6,7 @@ import { notifications } from '@mantine/notifications';
 import { Button, Stack, TextInput } from '@mantine/core';
 import { useUmi } from '@/providers/useUmi';
 import { useInvalidateFetchCollectionsByUpdateAuthority } from '@/hooks/fetch';
-import { validateUri } from '@/lib/form';
+import { validateUri, validatePubkey } from '@/lib/form';
 
 export function Update({ collection }: { collection: CollectionV1 }) {
   const umi = useUmi();
@@ -21,7 +21,7 @@ export function Update({ collection }: { collection: CollectionV1 }) {
     validateInputOnBlur: true,
     validate: {
       uri: (value) => validateUri(value) ? null : 'Invalid URI',
-      updateAuth: (value) => validateUri(value) ? null : 'Invalid URI',
+      updateAuth: (value) => validatePubkey(value) ? null : 'Invalid update authority',
     },
   });
 
@@ -32,6 +32,7 @@ export function Update({ collection }: { collection: CollectionV1 }) {
         collection: collection.publicKey,
         newName: form.values.name,
         newUri: form.values.uri,
+        newUpdateAuthority: form.values.updateAuth,
       }).sendAndConfirm(umi);
 
       const sig = base58.deserialize(res.signature);
@@ -44,7 +45,7 @@ export function Update({ collection }: { collection: CollectionV1 }) {
     } finally {
       setLoading(false);
     }
-  }, [umi, form.values.name, form.values.uri, collection]);
+  }, [umi, form.values.name, form.values.uri, form.values.updateAuth, collection]);
   return (
     <Stack gap="xs">
       <TextInput
