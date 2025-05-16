@@ -17,6 +17,19 @@ const AuthorityStat = ({ authority, name }: { authority: PluginAuthority, name: 
   }
 };
 
+const RawBytesDisplay = ({ data }: { data: any }) => (
+  <div>
+    <LabelTitle>Raw Bytes</LabelTitle>
+    <Text fz="sm" style={{ wordBreak: 'break-all', fontFamily: 'monospace' }}>
+      {data instanceof Uint8Array
+        ? Array.from(data)
+          .map(b => b.toString(16).padStart(2, '0'))
+          .join(' ')
+        : data}
+    </Text>
+  </div>
+);
+
 export function ExplorerPluginDetails({ plugins, type }: { plugins: PluginsList & ExternalPluginAdaptersList, type: 'asset' | 'collection' }) {
   return (
     <Stack>
@@ -62,50 +75,89 @@ export function ExplorerPluginDetails({ plugins, type }: { plugins: PluginsList 
         </>
       )}
 
-      {plugins.oracles && plugins.oracles.map((oracle, idx) => (
-        <Fieldset key={idx} legend={<LabelTitle>{`Oracle ${idx + 1}`}</LabelTitle>}>
+      {plugins.appDatas?.map((appData, idx) => (
+        <Fieldset key={idx} legend={<LabelTitle>App Data</LabelTitle>}>
           <Stack>
-            <ExplorerStat label="Base Address" value={oracle.baseAddress} copyable />
-            <AuthorityStat authority={oracle.authority} name="" />
-            <div>
-              <LabelTitle>Lifecycles</LabelTitle>
-              {oracle.lifecycleChecks && Object.keys(oracle.lifecycleChecks).map((key) => <Badge size="sm" variant="outline">{capitalizeFirstLetter(key)}</Badge>)}
-            </div>
-            <ExplorerStat label="Results offset" value={oracle.resultsOffset.type === 'Custom' ? oracle.resultsOffset.offset.toString() : oracle.resultsOffset.type} />
-            {oracle.baseAddressConfig && (
-              <div>
-                <LabelTitle>Oracle account derivation</LabelTitle>
-                {oracle.baseAddressConfig.type === 'Address' ? <Text fz="sm">{oracle.baseAddressConfig.address}</Text> :
-                  oracle.baseAddressConfig.type === 'CustomPda' ? (
-                    <Flex gap="sm">
-                      {oracle.baseAddressConfig.seeds.map((seed, i) => {
-                        if (seed.type === 'Address') {
-                          return <Badge key={i} size="sm" variant="default">{seed.pubkey}</Badge>;
-                        }
-                        if (seed.type === 'Bytes') {
-                          return <Badge key={i} size="sm" variant="outline">{seed.bytes.toString()}</Badge>;
-                        }
-                        return <Badge key={i} size="sm" variant="outline">{seed.type}</Badge>;
-                      })}
-                    </Flex>
-                  ) : <Badge size="sm" variant="outline">{oracle.baseAddressConfig.type}</Badge>}
-
-              </div>
-
-            )}
+            <AuthorityStat authority={appData.authority} name="Plugin" />
+            <AuthorityStat authority={appData.dataAuthority} name="Data" />
+            <RawBytesDisplay data={appData.data} />
           </Stack>
         </Fieldset>
       ))}
-      {plugins.masterEdition && (
-        <>
-          <div>
-            <AuthorityStat authority={plugins.masterEdition.authority} name="Master Edition" />
-            {plugins.masterEdition.name && <ExplorerStat label="Master Edition Name" value={plugins.masterEdition.name} />}
-            {plugins.masterEdition.maxSupply && plugins.masterEdition.maxSupply > 0 && <ExplorerStat label="Master Edition May Supply" value={plugins.masterEdition.maxSupply.toString()} />}
-            {plugins.masterEdition.uri && <ExplorerStat label="Master Edition URI" value={plugins.masterEdition.uri} />}
-          </div>
-        </>
-      )}
+
+      {
+        plugins.linkedAppDatas?.map((linkedAppData, idx) => (
+          <Fieldset key={idx} legend={<LabelTitle>Linked App Data</LabelTitle>}>
+            <Stack>
+              <AuthorityStat authority={linkedAppData.authority} name="Plugin" />
+              <AuthorityStat authority={linkedAppData.dataAuthority} name="Data" />
+            </Stack>
+          </Fieldset>
+        ))
+      }
+
+      {
+        plugins.dataSections?.map((dataSection, idx) => (
+          <Fieldset key={idx} legend={<LabelTitle>Data Section</LabelTitle>}>
+            <Stack>
+              <ExplorerStat label="Parent Type" value={dataSection.parentKey.type} />
+              {dataSection.parentKey.type === 'LinkedAppData' && dataSection.dataAuthority && (
+                <AuthorityStat authority={dataSection.dataAuthority} name="Data" />
+              )}
+              <RawBytesDisplay data={dataSection.data} />
+            </Stack>
+          </Fieldset>
+        ))
+      }
+
+      {
+        plugins.oracles && plugins.oracles.map((oracle, idx) => (
+          <Fieldset key={idx} legend={<LabelTitle>{`Oracle ${idx + 1}`}</LabelTitle>}>
+            <Stack>
+              <ExplorerStat label="Base Address" value={oracle.baseAddress} copyable />
+              <AuthorityStat authority={oracle.authority} name="" />
+              <div>
+                <LabelTitle>Lifecycles</LabelTitle>
+                {oracle.lifecycleChecks && Object.keys(oracle.lifecycleChecks).map((key) => <Badge size="sm" variant="outline">{capitalizeFirstLetter(key)}</Badge>)}
+              </div>
+              <ExplorerStat label="Results offset" value={oracle.resultsOffset.type === 'Custom' ? oracle.resultsOffset.offset.toString() : oracle.resultsOffset.type} />
+              {oracle.baseAddressConfig && (
+                <div>
+                  <LabelTitle>Oracle account derivation</LabelTitle>
+                  {oracle.baseAddressConfig.type === 'Address' ? <Text fz="sm">{oracle.baseAddressConfig.address}</Text> :
+                    oracle.baseAddressConfig.type === 'CustomPda' ? (
+                      <Flex gap="sm">
+                        {oracle.baseAddressConfig.seeds.map((seed, i) => {
+                          if (seed.type === 'Address') {
+                            return <Badge key={i} size="sm" variant="default">{seed.pubkey}</Badge>;
+                          }
+                          if (seed.type === 'Bytes') {
+                            return <Badge key={i} size="sm" variant="outline">{seed.bytes.toString()}</Badge>;
+                          }
+                          return <Badge key={i} size="sm" variant="outline">{seed.type}</Badge>;
+                        })}
+                      </Flex>
+                    ) : <Badge size="sm" variant="outline">{oracle.baseAddressConfig.type}</Badge>}
+
+                </div>
+
+              )}
+            </Stack>
+          </Fieldset>
+        ))
+      }
+      {
+        plugins.masterEdition && (
+          <>
+            <div>
+              <AuthorityStat authority={plugins.masterEdition.authority} name="Master Edition" />
+              {plugins.masterEdition.name && <ExplorerStat label="Master Edition Name" value={plugins.masterEdition.name} />}
+              {plugins.masterEdition.maxSupply && plugins.masterEdition.maxSupply > 0 && <ExplorerStat label="Master Edition May Supply" value={plugins.masterEdition.maxSupply.toString()} />}
+              {plugins.masterEdition.uri && <ExplorerStat label="Master Edition URI" value={plugins.masterEdition.uri} />}
+            </div>
+          </>
+        )
+      }
 
     </Stack>
   );
