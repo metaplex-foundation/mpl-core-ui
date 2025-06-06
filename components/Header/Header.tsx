@@ -1,6 +1,6 @@
 import { Center, Container, Flex, Group, Image, Menu } from '@mantine/core';
 import { IconChevronDown } from '@tabler/icons-react';
-import { WalletMultiButton } from '@solana/wallet-adapter-react-ui';
+import { WalletMultiButton } from '@pubkeyapp/wallet-adapter-mantine-ui';
 
 import classes from './Header.module.css';
 import { Env } from '@/providers/useEnv';
