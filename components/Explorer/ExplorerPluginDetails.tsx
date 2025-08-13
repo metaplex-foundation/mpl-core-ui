@@ -1,109 +1,11 @@
-import { Badge, Button, Collapse, Fieldset, Flex, Group, Stack, Text } from '@mantine/core';
-import { ExternalPluginAdaptersList, ExternalPluginAdapterSchema, PluginAuthority, PluginsList } from '@metaplex-foundation/mpl-core';
-import { useState } from 'react';
+import { Badge, Fieldset, Flex, Group, Stack, Text } from '@mantine/core';
+import { ExternalPluginAdaptersList, PluginsList } from '@metaplex-foundation/mpl-core';
 import { ExplorerStat } from './ExplorerStat';
 import { CopyButton } from '../CopyButton/CopyButton';
 import { LabelTitle } from '../LabelTitle';
 import { capitalizeFirstLetter } from '@/lib/string';
-
-const AuthorityStat = ({ authority, name }: { authority: PluginAuthority, name: string }) => {
-  switch (authority.type) {
-    case 'None':
-    case 'Owner':
-    case 'UpdateAuthority':
-      return <ExplorerStat label={`${name} Authority`} value={authority.type} labeled />;
-    case 'Address':
-    default:
-      return authority.address && <ExplorerStat label={`${name} Authority`} value={authority.address} copyable />;
-  }
-};
-
-// Helper function to get schema label
-const getSchemaLabel = (schema?: ExternalPluginAdapterSchema): string => {
-  if (schema === undefined || schema === null) return 'Unknown';
-  switch (schema) {
-    case ExternalPluginAdapterSchema.Binary:
-      return 'Binary';
-    case ExternalPluginAdapterSchema.Json:
-      return 'JSON';
-    case ExternalPluginAdapterSchema.MsgPack:
-      return 'MsgPack';
-    default:
-      return 'Unknown';
-  }
-};
-
-// Helper function to format data based on schema
-const formatDataBySchema = (data: any, schema?: ExternalPluginAdapterSchema): string => {
-  if (!data) return 'No data';
-
-  try {
-    if (schema === ExternalPluginAdapterSchema.MsgPack || schema === ExternalPluginAdapterSchema.Json) {
-      return JSON.stringify(data, null, 2);
-    }
-
-    // For binary/msgpack or unknown schema, display as hex
-    if (data instanceof Uint8Array) {
-      return Array.from(data)
-        .map(b => b.toString(16).padStart(2, '0'))
-        .join(' ');
-    }
-
-    // Fallback to string representation
-    return typeof data === 'object' ? JSON.stringify(data, null, 2) : String(data);
-  } catch (error) {
-    return 'Error formatting data';
-  }
-};
-
-// Collapsible data display component
-const CollapsibleDataDisplay = ({
-  data,
-  schema,
-  title = 'Data',
-}: {
-  data: any;
-  schema?: ExternalPluginAdapterSchema;
-  title?: string;
-}) => {
-  const [opened, setOpened] = useState(false);
-
-  if (!data) return null;
-
-  const formattedData = formatDataBySchema(data, schema);
-
-  return (
-    <div>
-      <Group justify="space-between" mb="xs">
-        <LabelTitle>{title}</LabelTitle>
-        <Button
-          size="xs"
-          variant="subtle"
-          onClick={() => setOpened(!opened)}
-        >
-          {opened ? 'Hide' : 'Show'} Data
-        </Button>
-      </Group>
-      <Collapse in={opened}>
-        <Text
-          fz="sm"
-          style={{
-            wordBreak: 'break-all',
-            fontFamily: 'monospace',
-            whiteSpace: 'pre-wrap',
-            backgroundColor: '#202020',
-            padding: '8px',
-            borderRadius: '4px',
-            maxHeight: '300px',
-            overflowY: 'auto',
-          }}
-        >
-          {formattedData}
-        </Text>
-      </Collapse>
-    </div>
-  );
-};
+import { AuthorityStat } from '../AuthorityStat';
+import { CollapsibleDataDisplay, getSchemaLabel } from '../PluginDataDisplay';
 
 export function ExplorerPluginDetails({ plugins, type }: { plugins: PluginsList & ExternalPluginAdaptersList, type: 'asset' | 'collection' }) {
   return (
