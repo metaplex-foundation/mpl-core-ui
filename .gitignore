@@ -135,3 +135,5 @@ dist
 .env.development
 
 test.js
+
+.claude/
