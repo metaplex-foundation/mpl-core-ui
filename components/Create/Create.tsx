@@ -87,7 +87,7 @@ const mapPlugins = (plugins: AuthorityManagedPluginValues): CreateArgsPlugin[] =
       type: 'PermanentBurnDelegate',
       authority: {
         type: 'Address',
-        address: publicKey(plugins.update.authority),
+        address: publicKey(plugins.permanentBurn.authority),
       },
     });
   }
