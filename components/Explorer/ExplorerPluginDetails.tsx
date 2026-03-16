@@ -188,6 +188,28 @@ export function ExplorerPluginDetails({ plugins, type }: { plugins: PluginsList 
           </Fieldset>
         ))
       }
+      {plugins.agentIdentities?.map((agentIdentity, idx) => (
+        <Fieldset key={idx} legend={<LabelTitle>{`Agent Identity ${plugins.agentIdentities!.length > 1 ? idx + 1 : ''}`}</LabelTitle>}>
+          <Stack>
+            <AuthorityStat authority={agentIdentity.authority} name="Plugin" />
+            {agentIdentity.uri && (
+              <ExplorerStat
+                label="URI"
+                value={agentIdentity.uri}
+                copyable
+                asExternalLink={agentIdentity.uri}
+              />
+            )}
+            {agentIdentity.lifecycleChecks && (
+              <div>
+                <LabelTitle>Lifecycles</LabelTitle>
+                {Object.keys(agentIdentity.lifecycleChecks).map((key) => <Badge key={key} size="sm" variant="outline">{capitalizeFirstLetter(key)}</Badge>)}
+              </div>
+            )}
+          </Stack>
+        </Fieldset>
+      ))}
+
       {
         plugins.masterEdition && (
           <>
