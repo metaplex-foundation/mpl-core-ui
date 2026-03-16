@@ -1,6 +1,6 @@
-import { ActionIcon, Button, Center, Group, Image, Loader, Modal, Stack, Text, Title } from '@mantine/core';
+import { ActionIcon, Anchor, Button, Center, Group, Image, Loader, Modal, Paper, Stack, Text, ThemeIcon, Title } from '@mantine/core';
 import { CodeHighlightTabs } from '@mantine/code-highlight';
-import { IconSettings } from '@tabler/icons-react';
+import { IconExternalLink, IconRobot, IconSettings } from '@tabler/icons-react';
 import { useMemo, useState } from 'react';
 import { useDisclosure } from '@mantine/hooks';
 import { canTransfer } from '@metaplex-foundation/mpl-core';
@@ -8,6 +8,7 @@ import { useWallet } from '@solana/wallet-adapter-react';
 import { useAssetJson } from '../../hooks/asset';
 import { ExplorerStat } from './ExplorerStat';
 import { useUmi } from '@/providers/useUmi';
+import { useEnv } from '@/providers/useEnv';
 import { TransferForm } from './TransferForm';
 import { useInvalidateFetchAssetWithCollection } from '@/hooks/fetch';
 import { ManageAssetForm } from './ManageAssetForm/ManageAssetForm';
@@ -15,11 +16,13 @@ import { AssetWithCollection } from '@/lib/type';
 
 export function ExplorerAssetDetails({ asset, collection }: AssetWithCollection) {
   const umi = useUmi();
+  const env = useEnv();
   const { connected } = useWallet();
   const jsonInfo = useAssetJson(asset);
   const [opened, { open, close }] = useDisclosure(false);
   const [actionMode, setActionMode] = useState<'transfer' | 'advanced'>('transfer');
   const { invalidate } = useInvalidateFetchAssetWithCollection();
+  const hasAgentIdentity = asset.agentIdentities && asset.agentIdentities.length > 0;
 
   const isOwner = useMemo(() => asset.owner === umi.identity.publicKey, [umi.identity.publicKey, asset]);
   const enableTransfer = useMemo(() => canTransfer(umi.identity.publicKey, asset, collection), [umi.identity.publicKey, asset, collection]);
@@ -53,6 +56,27 @@ export function ExplorerAssetDetails({ asset, collection }: AssetWithCollection)
         </Group>
       </Group>
       <Title>{jsonInfo?.data?.name || asset.name}</Title>
+
+      {hasAgentIdentity && (
+        <Anchor
+          href={`https://www.metaplex.com/agents/${asset.publicKey}${env === 'devnet' ? '?network=solana-devnet' : ''}`}
+          target="_blank"
+          underline="never"
+        >
+          <Paper p="md" radius="md" withBorder style={{ borderColor: 'var(--mantine-color-violet-6)' }}>
+            <Group>
+              <ThemeIcon size="lg" radius="md" variant="gradient" gradient={{ from: 'violet', to: 'grape' }}>
+                <IconRobot size={20} />
+              </ThemeIcon>
+              <div style={{ flex: 1 }}>
+                <Text fw={600} size="sm">Agent Identity</Text>
+                <Text size="xs" c="dimmed">View this agent on Metaplex</Text>
+              </div>
+              <IconExternalLink size={16} color="var(--mantine-color-dimmed)" />
+            </Group>
+          </Paper>
+        </Anchor>
+      )}
 
       {jsonInfo.isPending ? <Center h="20vh"><Loader /></Center> :
         <>

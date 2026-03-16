@@ -2404,15 +2404,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@metaplex-foundation/mpl-core@npm:^1.1":
-  version: 1.1.1
-  resolution: "@metaplex-foundation/mpl-core@npm:1.1.1"
+"@metaplex-foundation/mpl-core@npm:^1.8":
+  version: 1.8.0
+  resolution: "@metaplex-foundation/mpl-core@npm:1.8.0"
   dependencies:
     "@msgpack/msgpack": "npm:^3.0.0-beta2"
   peerDependencies:
-    "@metaplex-foundation/umi": ">=0.8.2 < 1"
+    "@metaplex-foundation/umi": ">=0.8.2 <2.0.0"
     "@noble/hashes": ^1.3.1
-  checksum: cfc6ce473db5aa08a86e3f8d49db319b2751d862d2ec5899d12b4f1e2ce0c3c7f2f4e48bf5d8fb5dbbcbcfd474ac3c53223d7455d45cde9712200356cd261f43
+  checksum: 9d66d5a461c38d85c27a74d1c932697a145121a0459d09dcbc8fb8340211ce546d71124880777063ef8c7e7431547059ccce793b28c8ecba3d260ca67998ecab
   languageName: node
   linkType: hard
 
@@ -12433,7 +12433,7 @@ __metadata:
     "@mantine/nprogress": "npm:^7.3.2"
     "@mantine/tiptap": "npm:^7.3.2"
     "@metaplex-foundation/digital-asset-standard-api": "npm:^1.0.0"
-    "@metaplex-foundation/mpl-core": "npm:^1.1"
+    "@metaplex-foundation/mpl-core": "npm:^1.8"
     "@metaplex-foundation/mpl-core-oracle-example": "npm:0.0.2"
     "@metaplex-foundation/mpl-toolbox": "npm:^0.9.1"
     "@metaplex-foundation/umi": "npm:^0.8.10"
