@@ -11,7 +11,7 @@ import { useSearchParams, useRouter, usePathname } from 'next/navigation';
 import { Header } from '@/components/Header/Header';
 import { UmiProvider } from './UmiProvider';
 import { EnvProvider } from './EnvProvider';
-import { Env } from './useEnv';
+import { Env, getEnvOptions, getEnvOption } from './useEnv';
 
 export function Providers({ children }: { children: ReactNode }) {
   const router = useRouter();
@@ -19,7 +19,14 @@ export function Providers({ children }: { children: ReactNode }) {
   const pathname = usePathname();
   const queryEnv = searchParams.get('env');
   const [client] = useState(new QueryClient());
-  const [env, setEnv] = useState<Env>((queryEnv === 'mainnet' || queryEnv === 'devnet') ? queryEnv : 'mainnet');
+  const envOptions = useMemo(() => getEnvOptions(), []);
+  const [env, setEnv] = useState<Env>(() => {
+    if (queryEnv) {
+      const match = getEnvOption(queryEnv as Env);
+      if (match) return match.env;
+    }
+    return envOptions[0]?.env ?? 'mainnet';
+  });
 
   const doSetEnv = (e: Env) => {
     const params = new URLSearchParams(window.location.search);
@@ -29,32 +36,9 @@ export function Providers({ children }: { children: ReactNode }) {
     router.push(`${pathname}?${params.toString()}`);
   };
 
-  // useEffect(() => {
-  //   if (env === 'devnet' && queryEnv !== 'devnet') {
-  //     doSetEnv('devnet');
-  //   }
-  // }, []);
-
   const endpoint = useMemo(() => {
-    switch (env) {
-      case 'mainnet':
-        return process.env.NEXT_PUBLIC_MAINNET_RPC_URL;
-      case 'eclipse-mainnet':
-        return process.env.NEXT_PUBLIC_ECLIPSE_MAINNET_RPC_URL;
-      case 'sonic-mainnet':
-        return process.env.NEXT_PUBLIC_SONIC_MAINNET_RPC_URL;
-      case 'eclipse-testnet':
-        return process.env.NEXT_PUBLIC_ECLIPSE_TESTNET_RPC_URL;
-      case 'eclipse-devnet':
-        return process.env.NEXT_PUBLIC_ECLIPSE_DEVNET_RPC_URL;
-      case 'sonic-devnet':
-        return process.env.NEXT_PUBLIC_SONIC_DEVNET_RPC_URL;
-      case 'localhost':
-        return 'http://localhost:8899';
-      case 'devnet':
-      default:
-        return process.env.NEXT_PUBLIC_DEVNET_RPC_URL;
-    }
+    const option = getEnvOption(env);
+    return option?.endpoint ?? getEnvOption('mainnet')?.endpoint;
   }, [env]);
 
   return (
