@@ -3,7 +3,7 @@ import { IconChevronDown } from '@tabler/icons-react';
 import { WalletMultiButton } from '@solana/wallet-adapter-react-ui';
 
 import classes from './Header.module.css';
-import { Env, EnvOption, getEnvOptions } from '@/providers/useEnv';
+import { Env, getEnvOptions } from '@/providers/useEnv';
 import RetainQueryLink from '../RetainQueryLink';
 
 const HeaderLink = ({ label, link, disabled }: { label: string, link: string, disabled?: boolean }) => {
