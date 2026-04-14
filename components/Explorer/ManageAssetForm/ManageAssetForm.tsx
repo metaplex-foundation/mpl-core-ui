@@ -14,6 +14,7 @@ import { Freeze } from './Freeze';
 import { PermanentFreeze } from './PermanentFreeze';
 import { Attributes } from './Attributes';
 import { Edition } from './Edition';
+import { AddToCollection } from './AddToCollection';
 
 export function ManageAssetForm({ asset, collection }: AssetWithCollection) {
   const umi = useUmi();
@@ -45,6 +46,14 @@ export function ManageAssetForm({ asset, collection }: AssetWithCollection) {
               <Accordion.Item key="update" value="update">
                 <Accordion.Control><Text size="sm">Update asset</Text></Accordion.Control>
                 <Accordion.Panel><Update asset={asset} /></Accordion.Panel>
+              </Accordion.Item>
+            </Accordion>
+          )}
+          {isUpdateAuth && asset.updateAuthority.type === 'Address' && (
+            <Accordion variant="separated">
+              <Accordion.Item key="add-to-collection" value="add-to-collection">
+                <Accordion.Control><Text size="sm">Add to collection</Text></Accordion.Control>
+                <Accordion.Panel><AddToCollection asset={asset} /></Accordion.Panel>
               </Accordion.Item>
             </Accordion>
           )}
