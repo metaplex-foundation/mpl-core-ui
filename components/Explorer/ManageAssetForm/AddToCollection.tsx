@@ -36,7 +36,7 @@ export function AddToCollection({ asset }: AssetWithCollection) {
         newUpdateAuthority: baseUpdateAuthority('Collection', [collection.publicKey]),
       }).sendAndConfirm(umi);
 
-      const sig = base58.deserialize(res.signature);
+      const [sig] = base58.deserialize(res.signature);
       console.log('Added to collection', sig);
       notifications.show({ title: 'Added to collection', message: sig, color: 'green' });
       invalidate(asset.publicKey);
