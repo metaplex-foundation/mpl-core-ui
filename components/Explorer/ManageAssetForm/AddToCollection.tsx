@@ -42,7 +42,11 @@ export function AddToCollection({ asset }: AssetWithCollection) {
       invalidate(asset.publicKey);
     } catch (error: any) {
       console.error('Add to collection failed', error);
-      notifications.show({ title: 'Add to collection failed', message: error.message, color: 'red' });
+      notifications.show({ 
+        title: 'Add to collection failed', 
+        message: error?.message || String(error), 
+        color: 'red' 
+      });
     } finally {
       setLoading(false);
     }
