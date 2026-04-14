@@ -46,7 +46,7 @@ export function AddToCollection({ asset }: AssetWithCollection) {
     } finally {
       setLoading(false);
     }
-  }, [umi, form.values.collectionAddress, asset]);
+  }, [umi, form.values.collectionAddress, asset, invalidate]);
 
   return (
     <Stack gap="xs">
